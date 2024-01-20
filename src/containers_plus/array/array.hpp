@@ -5,7 +5,7 @@
 
 namespace s21 {
   template <typename T, std::size_t N>
-  class Array {
+  class array {
   public:
     using value_type = T;
     using reference = value_type&;
@@ -14,14 +14,14 @@ namespace s21 {
     using const_iterator = const value_type*;
     using size_type = size_t;
 
-    constexpr Array();
-    constexpr Array(std::initializer_list<value_type> const& items);
-    constexpr Array(const Array& a);
-    constexpr Array(Array&& a);
-    ~Array() = default;
+    constexpr array();
+    constexpr array(std::initializer_list<value_type> const& items);
+    constexpr array(const array& a);
+    constexpr array(array&& a);
+    ~array() = default;
 
-    constexpr Array& operator=(Array&& a);
-    constexpr Array& operator=(const std::initializer_list<value_type>& values);
+    constexpr array& operator=(array&& a);
+    constexpr array& operator=(const std::initializer_list<value_type>& values);
     constexpr reference operator[](const size_type& pos);
     constexpr const_reference operator[](const size_type& pos) const;
 
@@ -43,7 +43,7 @@ namespace s21 {
     constexpr size_type size() const noexcept;
     constexpr size_type max_size() const noexcept;
 
-    constexpr void swap(const Array& other) noexcept;
+    constexpr void swap(const array& other) noexcept;
     constexpr void fill(const_reference value) noexcept;
 
   private:

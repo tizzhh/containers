@@ -18,7 +18,7 @@ namespace s21 {
 
   template <typename T>
   constexpr vector<T>::vector(std::initializer_list<value_type> const &items) : capacity_(items.size()), size_(items.size()) {
-    storage_ = new T[items.size()];
+    storage_ = new value_type[items.size()];
     if(!storage_) throw std::bad_alloc();
     size_type i = 0;
     for(auto val : items) storage_[i++] = val;
@@ -26,7 +26,7 @@ namespace s21 {
 
   template <typename T> 
   constexpr vector<T>::vector(const vector& a) : capacity_(a.size()), size_(a.size()){
-    storage_ = new T[a.size()]();
+    storage_ = new value_type[a.size()]();
     if(!storage_) throw std::bad_alloc();
     for(size_t i = 0;i != a.size();++i) storage_[i] = a[i];
   }
@@ -35,14 +35,25 @@ namespace s21 {
   constexpr vector<T>::vector(vector&& a) : capacity_(a.capacity()), size_(a.size()) {
     storage_ = a.GetStorage();
     a.SetStorage(nullptr);
-    capacity_ = a.GetCapacity();
-    a.SetCapacity(0);
-    size_ = a.GetSize();
-    a.SetSize(0);
+    capacity_ = a.capacity();
+    a.reserve(0);
+    size_ = a.size();
+    a.resize(0);
   }
+
   template <typename T>
   vector<T>::~vector() {
     delete[] storage_;
+  }
+
+  template <typename T>
+  constexpr vector<T>& vector<T>::operator=(vector&& a) noexcept{
+    storage_ = a.GetStorage();
+    a.SetStorage(nullptr);
+    capacity_ = a.GetCapacity();
+    a.reserve(0);
+    size_ = a.GetSize();
+    a.resize(0);
   }
 
   template <typename T>
@@ -54,20 +65,97 @@ namespace s21 {
   constexpr typename vector<T>::const_reference vector<T>::operator[](const size_type& pos) const{
     return /*pos > size_ ? 0 :*/ storage_[pos];
   }
+
+  template <typename T>
+  constexpr typename vector<T>::reference vector<T>::at(const size_type& pos) {
+    if (pos > capacity_) throw std::out_of_range("#");
+    return /*pos > size_ ? 0 :*/ storage_[pos];
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::const_reference vector<T>::at(
+      const size_type& pos) const {
+    if (pos > capacity_) throw std::out_of_range("#");
+    return /*pos > size_ ? 0 :*/ storage_[pos];
+  }
+  template <typename T>
+  constexpr typename vector<T>::reference vector<T>::front() noexcept {
+    // if(size_ == 0) std::logic_error("#");
+    return storage_[0];
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::const_reference vector<T>::front() const noexcept {
+    // if(size_ == 0) std::logic_error("#");
+    return storage_[0];
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::reference vector<T>::back() noexcept {
+    // if(size_ == 0) std::logic_error("#");
+    return storage_[size_ - 1];
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::const_reference vector<T>::back() const noexcept {
+    // if(size_ == 0) std::logic_error("#");
+    return storage_[size_ - 1];
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::iterator vector<T>::data() noexcept {
+    // if(size_ == 0) throw std::logic_error("#");
+    return storage_;
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::const_iterator vector<T>::data() const noexcept {
+    // if(size_ == 0) throw std::logic_error("#");
+    return storage_;
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::iterator
+  vector<T>::begin() noexcept {  // returns an iterator to the beginning
+    return storage_;
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::const_iterator vector<T>::cbegin()
+      const noexcept {  // returns an iterator to the beginning
+    return storage_;
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::iterator
+  vector<T>::end() noexcept {  // returns an iterator to the end
+    return storage_ + size_;
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::const_iterator vector<T>::cend()
+      const noexcept {  // returns an iterator to the end
+    return storage_ + size_;
+  }
+
+  template <typename T>
+  constexpr inline bool vector<T>::empty() const noexcept {
+    return this.begin() == this.end();
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::size_type vector<T>::size() const noexcept {
+    return size_;
+  }
+
+  template <typename T>
+  constexpr typename vector<T>::size_type vector<T>::max_size() const noexcept {
+    return capacity_;
+  }
   
   template <typename T>
   constexpr void vector<T>::SetStorage(iterator value) noexcept {
     storage_ = value;
-  }
-
-  template <typename T>
-  constexpr void vector<T>::SetSize(size_t num) noexcept {
-    size_ = num;
-  }
-
-  template <typename T>
-  constexpr void vector<T>::SetCapacity(size_t num) noexcept {
-    capacity_ = num;
   }
 
   template <typename T>
@@ -76,14 +164,75 @@ namespace s21 {
   }
 
   template <typename T>
-  constexpr typename vector<T>::size_type vector<T>::GetSize() const noexcept {
-    return size_;
+  constexpr void vector<T>::reserve(size_type size) noexcept {
+    if(capacity_ < size) capacity_ = size;
   }
 
   template <typename T>
-  constexpr typename vector<T>::size_type vector<T>::GetCapacity() const noexcept {
+  constexpr void vector<T>::resize(size_type size) noexcept {
+    if(size_ > capacity_) {
+      value_type temp[size_];
+      for(int i = 0;i != size_; i++) temp[i] = storage_[i];
+      delete[] storage_;
+      capacity_ *=2;
+      storage_ = new value_type[capacity_];
+      for(int i = 0;i != size_; i++) storage_[i] = temp[i];
+      for(int i = size_;i != size; i++) storage_[i] = 0;
+
+      
+    }
+    if(size > size_) {
+      for(int i = size_;i != size; i++) storage_[i] = 0;
+    }
+    size_ = size;
+  }
+  
+  template <typename T>
+  constexpr typename vector<T>::size_type vector<T>::capacity() const noexcept{
     return capacity_;
   }
+  
+  template <typename T>
+  constexpr void vector<T>::shrink_to_fit() noexcept{
+    capacity_ = size_;
+  }
+
+  template <typename T>
+  constexpr void vector<T>::clear() noexcept {
+    for(auto num : storage_) *num = (char)1;
+    size_ = 0;
+  }
+
+  // constexpr iterator insert(iterator pos, const_reference value); // ?
+
+
+  template <typename T>
+  constexpr void vector<T>::erase(iterator pos) noexcept{ // delete element move other shit to left size-- capacity state iter income
+    for(auto i = pos;pos - 1!= i;++i) *i = *(i + 1);
+    
+    --size_;
+  }
+
+  template <typename T>
+  constexpr void vector<T>::push_back(const_reference value) {
+    if(capacity_ == size_) this.reserve(size_ * 2);
+    storage_[size_++] = value;
+  }
+
+  template <typename T>
+  constexpr void vector<T>::pop_back() noexcept {
+    --size_;
+  }
+template <typename T>
+constexpr void vector<T>::swap(vector& other) noexcept {
+  auto mem = std::make_tuple(other.size(), other.capacity(), other.GetStorage());
+  other.resize(size_);
+  other.reserve(capacity_);
+  other.SetStorage(storage_);
+  size_ = std::get<0>(mem);
+  capacity_ = std::get<1>(mem);
+  storage_ = std::get<2>(mem);
+}
   //при [0] а сайз равен 0 то сег фолт
 };
 
