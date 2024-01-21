@@ -140,7 +140,7 @@ namespace s21 {
 
   template <typename T>
   constexpr inline bool vector<T>::empty() const noexcept {
-    return this.begin() == this.end();
+    return this->cbegin() == this->cend();
   }
 
   template <typename T>
@@ -150,7 +150,7 @@ namespace s21 {
 
   template <typename T>
   constexpr typename vector<T>::size_type vector<T>::max_size() const noexcept {
-    return capacity_;
+    return std::numeric_limits<std::size_t>::max() / sizeof(value_type) / 2;
   }
   
   template <typename T>
@@ -172,17 +172,17 @@ namespace s21 {
   constexpr void vector<T>::resize(size_type size) noexcept {
     if(size_ > capacity_) {
       value_type temp[size_];
-      for(int i = 0;i != size_; i++) temp[i] = storage_[i];
+      for(size_type i = 0;i != size_; i++) temp[i] = storage_[i];
       delete[] storage_;
       capacity_ *=2;
       storage_ = new value_type[capacity_];
-      for(int i = 0;i != size_; i++) storage_[i] = temp[i];
-      for(int i = size_;i != size; i++) storage_[i] = 0;
+      for(size_type i = 0;i != size_; i++) storage_[i] = temp[i];
+      for(size_type i = size_;i != size; i++) storage_[i] = 0;
 
       
     }
     if(size > size_) {
-      for(int i = size_;i != size; i++) storage_[i] = 0;
+      for(size_type i = size_;i != size; i++) storage_[i] = 0;
     }
     size_ = size;
   }
@@ -199,23 +199,38 @@ namespace s21 {
 
   template <typename T>
   constexpr void vector<T>::clear() noexcept {
-    for(auto num : storage_) *num = (char)1;
+    for(size_type i = 0;i != capacity_;++i) storage_[i] = (char)(i+1);
     size_ = 0;
   }
 
-  // constexpr iterator insert(iterator pos, const_reference value); // ?
+  template <typename T>
+  constexpr typename vector<T>::iterator vector<T>::insert(iterator pos, const_reference value) {
+    value_type last_element = *(this->end() - 1);
+    for(auto i = this->end() - 1; i != pos; --i) *i = *(i - 1);
+    *pos = value;
+    auto index = pos - this->begin();
+    if(size_ == capacity_) {
+      value_type temp[capacity_] = {0};
+      for(size_type i=0;i != capacity_;++i) temp[i] = storage_[i];
+      delete[] storage_;
+      capacity_ *= 2;
+      storage_ = new value_type[capacity_];
+      for(size_type i=0;i != size_;++i) storage_[i] = temp[i];                                    
+    }
+    storage_[size_++] = last_element;
+    return this->begin() + index;
+  }
 
 
   template <typename T>
   constexpr void vector<T>::erase(iterator pos) noexcept{ // delete element move other shit to left size-- capacity state iter income
-    for(auto i = pos;pos - 1!= i;++i) *i = *(i + 1);
-    
+    for(auto i = pos;i!= this->end();++i) *i = *(i + 1);
     --size_;
   }
 
   template <typename T>
   constexpr void vector<T>::push_back(const_reference value) {
-    if(capacity_ == size_) this.reserve(size_ * 2);
+    if(capacity_ == size_) this->reserve(size_ * 2);
     storage_[size_++] = value;
   }
 

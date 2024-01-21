@@ -1,8 +1,6 @@
-#include <gtest/gtest.h>
-
-#include <vector>
-
 #include "../s21_containerplus.hpp"
+#include <gtest/gtest.h>
+#include <vector>
 
 TEST(ConstructorVector, Default) {
   try {
@@ -122,13 +120,6 @@ TEST(IteratorsVector, Begin) {
   }
 }
 
-TEST(IteratorsVector, BeginNoThrow) {
-  s21::vector<char> b = {'a', 'b', 'c'};
-  auto iter_b = b.begin();
-  iter_b -= 100;
-  ASSERT_NO_THROW(*iter_b);
-}
-
 TEST(IteratorsVector, End) {
   std::vector<char> a = {'a', 'b', 'c'};
   s21::vector<char> b = {'a', 'b', 'c'};
@@ -137,13 +128,6 @@ TEST(IteratorsVector, End) {
   for (; iter_a != a.end();) {
     ASSERT_EQ(*iter_a++, *iter_b++);
   }
-}
-
-TEST(IteratorsVector, EndNoThrow) {
-  s21::vector<char> b = {'a', 'b', 'c'};
-  auto iter_b = b.end();
-  iter_b += 100;
-  ASSERT_NO_THROW(*iter_b);
 }
 
 TEST(CapacityVector, EmptyTrue) {
@@ -260,8 +244,6 @@ TEST(ModifiersVector, Erase) {
 TEST(ModifiersVector, PushBack) {
   std::vector<float> a = {1.0, 2.0, 3.0};
   s21::vector<float> b = {1.0, 2.0, 3.0};
-  auto iter_a = a.begin();
-  auto iter_b = b.begin();
   a.push_back(5.0);
   b.push_back(5.0);
   ASSERT_EQ(a.size(), b.size());
@@ -274,8 +256,6 @@ TEST(ModifiersVector, PushBack) {
 TEST(ModifiersVector, PopBack) {
   std::vector<float> a = {1.0, 2.0, 3.0};
   s21::vector<float> b = {1.0, 2.0, 3.0};
-  auto iter_a = a.begin();
-  auto iter_b = b.begin();
   a.pop_back();
   b.pop_back();
   ASSERT_EQ(a.size(), b.size());

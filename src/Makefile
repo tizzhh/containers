@@ -1,4 +1,4 @@
-# Provide a Makefile for testing the library (with targets clean, test)
+#Provide a Makefile for testing the library(with targets clean, test)
 CXX = g++
 CXXFLAGS = -Wall -Werror -Wextra -std=c++17
 LFLAGS = -lgtest

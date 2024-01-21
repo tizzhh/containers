@@ -4,7 +4,7 @@
 
 #include "../s21_containerplus.hpp"
 
-TEST(Constructor, Default) {
+TEST(ConstructorArray, Default) {
   try {
     s21::array<int, 0> b;
     SUCCEED();
@@ -13,7 +13,7 @@ TEST(Constructor, Default) {
   }
 }
 
-TEST(Constructor, InitializerListOk) {
+TEST(ConstructorArray, InitializerListOk) {
   try {
     s21::array<int, 2> b = {1, 2};
     SUCCEED();
@@ -22,7 +22,7 @@ TEST(Constructor, InitializerListOk) {
   }
 }
 
-TEST(Constructor, InitializerListThrow) {
+TEST(ConstructorArray, InitializerListThrow) {
   try {
     s21::array<int, 0> b = {1, 2};
     FAIL() << "Doesn't throw";
@@ -31,7 +31,7 @@ TEST(Constructor, InitializerListThrow) {
   }
 }
 
-TEST(Constructor, CopyOk) {
+TEST(ConstructorArray, CopyOk) {
   try {
     s21::array<float, 2> a = {1.0, 2.0};
     s21::array<float, 2> b = a;
@@ -41,17 +41,18 @@ TEST(Constructor, CopyOk) {
 }
 
 // Мне буквально скомпилить не дает, так что хз чет как это протестить
-// TEST(Constructor, CopyFail) {
+// TEST(ConstructorArray, CopyFail) {
 //     try {
-//         s21::array<float, 2> a ={1.0, 2.0};
-//         s21::array<float, 0> b = a;
+//         std::array<float, 2> a ={1.0, 2.0};
+//         std::array<float, 2> b = a;
+//         b[0] = 1.0;
 //         FAIL() << "Copy constructor doesn't fail";
 //     } catch (...) {
 //         SUCCEED();
 //     }
 // }
 
-TEST(Constructor, MoveOk) {
+TEST(ConstructorArray, MoveOk) {
   try {
     s21::array<long, 2> a = {1, 2};
     s21::array<long, 2> b(std::move(a));
@@ -61,7 +62,7 @@ TEST(Constructor, MoveOk) {
   }
 }
 
-TEST(Constructor, MoveLogic) {
+TEST(ConstructorArray, MoveLogic) {
   s21::array<int, 2> a = {1, 2};
   s21::array<int, 2> b(std::move(a));
   std::array<int, 2> c = {1, 2};
@@ -77,17 +78,17 @@ TEST(Constructor, MoveLogic) {
 }
 
 // такая же тема, что и с копи
-// TEST(Constructor, MoveThrow) {
+// TEST(ConstructorArray, MoveThrow) {
 //     try {
-//         s21::array<int, 2> a ={1, 2};
-//         s21::array<int, 0> b(std::move(a));
+//         std::array<int, 2> a ={1, 2};
+//         std::array<int, 2> b(std::move(a));
 //         FAIL() << "Move constructor doesn't fail";
 //     } catch (...) {
 //         SUCCEED();
 //     }
 // }
 
-TEST(Constructor, MoveOperOk) {
+TEST(ConstructorArray, MoveOperOk) {
   try {
     s21::array<long, 2> a = {1, 2};
     s21::array<long, 2> b = std::move(a);
@@ -97,7 +98,7 @@ TEST(Constructor, MoveOperOk) {
   }
 }
 
-TEST(Constructor, MoveOperLogic) {
+TEST(ConstructorArray, MoveOperLogic) {
   s21::array<int, 2> a = {1, 2};
   s21::array<int, 2> b = std::move(a);
   std::array<int, 2> c = {1, 2};
@@ -113,7 +114,7 @@ TEST(Constructor, MoveOperLogic) {
 }
 
 // опять не компил ;(
-// TEST(Constructor, MoveOperFail) {
+// TEST(ConstructorArray, MoveOperFail) {
 //     try {
 //         s21::array<long, 2> a ={1, 2};
 //         s21::array<long, 0> b = std::move(a);
@@ -123,45 +124,46 @@ TEST(Constructor, MoveOperLogic) {
 //     }
 // }
 
-TEST(ArrayElementAccess, AtOk) {
+TEST(ElementAccessArray, AtOk) {
   std::array<int, 2> a = {1, 2};
   s21::array<int, 2> b = {1, 2};
   ASSERT_EQ(a.at(0), b.at(0));
   ASSERT_EQ(a.at(1), b.at(1));
 }
 
-TEST(ArrayElementAccess, AtThrow) {
+TEST(ElementAccessArray, AtThrow) {
   std::array<int, 2> a = {1, 2};
   ASSERT_ANY_THROW(a.at(-100));
   ASSERT_ANY_THROW(a.at(100));
 }
 
-TEST(ArrayElementAccess, OperAtOk) {
+TEST(ElementAccessArray, OperAtOk) {
   std::array<int, 2> a = {1, 2};
   s21::array<int, 2> b = {1, 2};
   ASSERT_EQ(a[0], b[0]);
   ASSERT_EQ(a[1], b[1]);
 }
 
-TEST(ArrayElementAccess, OperAtThrow) {
-  std::array<int, 2> a = {1, 2};
-  ASSERT_ANY_THROW(a[-100]);
-  ASSERT_ANY_THROW(a[100]);
-}
+// TEST(ElementAccessArray, OperAtThrow) {  DEFAULT STD::ARRAY THROW UB
+// (-13112412412, 21421321, 132321.. )
+//   std::array<int, 2> a = {1, 2};
+//   ASSERT_ANY_THROW(a[-100]);
+//   ASSERT_ANY_THROW(a[100]);
+// }
 
-TEST(ArrayElementAccess, Front) {
+TEST(ElementAccessArray, Front) {
   std::array<int, 2> a = {1, 2};
   s21::array<int, 2> b = {1, 2};
   ASSERT_EQ(a.front(), b.front());
 }
 
-TEST(ArrayElementAccess, Back) {
+TEST(ElementAccessArray, Back) {
   std::array<int, 2> a = {1, 2};
   s21::array<int, 2> b = {1, 2};
   ASSERT_EQ(a.back(), b.back());
 }
 
-TEST(ArrayElementAccess, Data) {
+TEST(ElementAccessArray, Data) {
   std::array<char, 5> a = {'a', 'b', 'c', 'd', 'e'};
   s21::array<char, 5> b = {'a', 'b', 'c', 'd', 'e'};
   auto iter_a = a.data();
@@ -172,65 +174,65 @@ TEST(ArrayElementAccess, Data) {
   }
 }
 
-TEST(ArrayIterators, Begin) {
+TEST(IteratorsArray, Begin) {
   std::array<int, 2> a = {1, 2};
   s21::array<int, 2> b = {1, 2};
   ASSERT_EQ(*a.begin(), *b.begin());
 }
 
-TEST(ArrayIterators, End) {
+TEST(IteratorsArray, End) {
   std::array<char, 2> a = {'a', 'b'};
   s21::array<char, 2> b = {'a', 'b'};
-  ASSERT_EQ(*a.end(), *b.end());
+  ASSERT_EQ(*(a.end() - 1), *(b.end() - 1));
 }
 
-TEST(ArrayCapacity, EmptyTrue) {
+TEST(CapacityArray, EmptyTrue) {
   std::array<float, 0> a;
   s21::array<float, 0> b;
   ASSERT_EQ(a.empty(), b.empty());
 }
 
-TEST(ArrayCapacity, EmptyFalse) {
+TEST(CapacityArray, EmptyFalse) {
   std::array<long, 2> a = {1, 2};
   s21::array<long, 2> b = {1, 2};
   ASSERT_EQ(a.empty(), b.empty());
 }
 
-TEST(ArrayCapacity, Size0) {
+TEST(CapacityArray, Size0) {
   std::array<int, 0> a;
   s21::array<int, 0> b;
   ASSERT_EQ(a.size(), b.size());
 }
 
-TEST(ArrayCapacity, Size5) {
+TEST(CapacityArray, Size5) {
   std::array<char, 5> a = {'a', 'b', 'c', 'd', 'e'};
   s21::array<char, 5> b = {'a', 'b', 'c', 'd', 'e'};
   ASSERT_EQ(a.size(), b.size());
 }
 
-TEST(ArrayCapacity, Size2NotFull) {
+TEST(CapacityArray, Size2NotFull) {
   std::array<float, 5> a = {1.0, 2.0};
   s21::array<float, 5> b = {1.0, 2.0};
   ASSERT_EQ(a.size(), b.size());
 }
 
-TEST(ArrayCapacity, MaxSize0) {
+TEST(CapacityArray, MaxSize0) {
   std::array<long, 0> a;
   s21::array<long, 0> b;
   ASSERT_EQ(a.size(), b.size());
 }
 
-TEST(ArrayCapacity, MaxSize10) {
+TEST(CapacityArray, MaxSize10) {
   std::array<int, 10> a;
   s21::array<int, 10> b;
   ASSERT_EQ(a.size(), b.size());
 }
 
-TEST(ArrayModifiers, Swap) {
+TEST(ModifiersArray, Swap) {
   std::array<char, 5> a = {'a', 'b', 'c', 'd', 'e'};
-  std::array<char, 5> b;
+  std::array<char, 5> b = {'e', 'f', 'g', 'h', 'i'};
   s21::array<char, 5> c = {'a', 'b', 'c', 'd', 'e'};
-  s21::array<char, 5> d;
+  s21::array<char, 5> d = {'e', 'f', 'g', 'h', 'i'};
   a.swap(b);
   c.swap(d);
   auto iter_a = a.data();
@@ -239,15 +241,15 @@ TEST(ArrayModifiers, Swap) {
   auto iter_d = d.data();
   ASSERT_EQ(a.size(), c.size());
   ASSERT_EQ(b.size(), d.size());
-  for (size_t i = 0; i != a.size(); ++i) {
+  for (; iter_a != a.end();) {
     ASSERT_EQ(*iter_a++, *iter_c++);
   }
-  for (size_t i = 0; i != b.size(); ++i) {
+  for (; iter_b != b.end();) {
     ASSERT_EQ(*iter_b++, *iter_d++);
   }
 }
 
-TEST(ArrayModifiers, Fill) {
+TEST(ModifiersArray, Fill) {
   std::array<int, 3> a;
   s21::array<int, 3> b;
   a.fill(5);
@@ -255,7 +257,7 @@ TEST(ArrayModifiers, Fill) {
   auto iter_a = a.data();
   auto iter_b = b.data();
   ASSERT_EQ(a.size(), b.size());
-  for (size_t i = 0; i != a.size(); ++i) {
+  for (; iter_a != a.end();) {
     ASSERT_EQ(*iter_a++, *iter_b++);
   }
 }
