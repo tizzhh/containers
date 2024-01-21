@@ -1,6 +1,8 @@
-#include "../s21_containerplus.hpp"
 #include <gtest/gtest.h>
+
 #include <vector>
+
+#include "../s21_containerplus.hpp"
 
 TEST(ConstructorVector, Default) {
   try {

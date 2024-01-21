@@ -1,5 +1,5 @@
-#ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_STACK_STACK_TPP
-#define S21_CONTAINERS_SRC_S21_CONTAINERS_STACK_STACK_TPP
+#ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_QUEUE_QUEUE_TPP
+#define S21_CONTAINERS_SRC_S21_CONTAINERS_QUEUE_QUEUE_TPP
 
 namespace s21 {
 template <typename T>
@@ -18,7 +18,7 @@ constexpr queue<T>::queue(const queue &s) {
 template <typename T>
 constexpr queue<T>::queue(queue &&s) {
   top_ = s.top_;
-  s.top_ = nullptr;
+  s.top_.clear();
 }
 
 template <typename T>
@@ -28,7 +28,12 @@ constexpr queue<T> &queue<T>::operator=(queue &&s) {
 }
 
 template <typename T>
-constexpr typename queue<T>::const_reference queue<T>::top() const noexcept {
+constexpr typename queue<T>::const_reference queue<T>::front() const noexcept {
+  return top_.front();
+}
+
+template <typename T>
+constexpr typename queue<T>::const_reference queue<T>::back() const noexcept {
   return top_.back();
 }
 
@@ -49,12 +54,12 @@ constexpr void queue<T>::push(const_reference value) {
 
 template <typename T>
 constexpr void queue<T>::pop() {
-  top_.pop_back();
+  top_.pop_front();
 }
 
 template <typename T>
 constexpr void queue<T>::swap(queue &other) {
-  top_.swap(other);
+  top_.swap(other.top_);
 }
 
 template <typename T>

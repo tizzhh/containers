@@ -18,7 +18,7 @@ constexpr stack<T>::stack(const stack &s) {
 template <typename T>
 constexpr stack<T>::stack(stack &&s) {
   top_ = s.top_;
-  s.top_ = nullptr;
+  s.top_.clear();
 }
 
 template <typename T>
@@ -54,7 +54,7 @@ constexpr void stack<T>::pop() {
 
 template <typename T>
 constexpr void stack<T>::swap(stack &other) {
-  top_.swap(other);
+  top_.swap(other.top_);
 }
 
 template <typename T>

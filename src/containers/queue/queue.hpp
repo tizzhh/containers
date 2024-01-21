@@ -1,6 +1,7 @@
 #ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_QUEUE_QUEUE_HPP
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_QUEUE_QUEUE_HPP
 
+// это надо не забыть поменять на s21::list))
 #include <list>
 
 namespace s21 {
@@ -30,7 +31,7 @@ class queue {
   constexpr void swap(queue &other);
 
  private:
-  std::list<value_type> top_ = nullptr;
+  std::list<value_type> top_;
 };
 
 };  // namespace s21

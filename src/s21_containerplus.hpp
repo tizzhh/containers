@@ -3,5 +3,7 @@
 
 #include "containers/vector/vector.hpp"
 #include "containers_plus/array/array.hpp"
+#include "containers/queue/queue.hpp"
+#include "containers/stack/stack.hpp"
 
 #endif
