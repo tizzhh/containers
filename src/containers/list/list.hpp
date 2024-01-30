@@ -1,14 +1,22 @@
 #ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_LIST_LIST_HPP
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_LIST_LIST_HPP
 
-#include <initializer_list>
+#include <stdlib.h>
 
+#include <initializer_list>
+#include <limits>
+
+// CLANG МЕНЯЕТ 2 СЛЕДУЮЩИХ МЕСТАМИ И ВСЕ ИДЕТ ПО ПИЗДЕ
+#include "list_node.hpp"
 #include "list_iterator.hpp"
 
 namespace s21 {
 template <typename T>
 class list {
  public:
+  friend class ListIterator<T>;
+  friend class ListConstIterator<T>;
+
   using value_type = T;
   using reference = T &;
   using const_reference = const T &;
@@ -16,11 +24,6 @@ class list {
   using const_iterator = ListConstIterator<T>;
   using size_type = size_t;
 
-  // List Functions
-  // в пустом листе тоже есть значения в фронт и бэк
-  // в случае инта и чара - это 0. В случае со
-  // стрингом у меня вообще бесконечный цикл лол.
-  // так что пусть будет NULL пока.
   list();
   list(size_type n);
   list(std::initializer_list<value_type> const &items);
@@ -30,12 +33,14 @@ class list {
   list &operator=(list &&l);
 
   // List Element access
-  const_reference front();
-  const_reference back();
+  const_reference front() const;
+  const_reference back() const;
 
   // List Iterators
   iterator begin();
   iterator end();
+  const_iterator begin() const;
+  const_iterator end() const;
 
   // List Capacity
   bool empty();
@@ -58,13 +63,8 @@ class list {
   void sort();
 
  private:
-  struct node {
-    value_type data = T();
-    struct node *prev = nullptr;
-    struct node *next = nullptr;
-  };
-  node *front_ = nullptr;
-  node *back_ = nullptr;
+  node<T> *front_ = nullptr;
+  node<T> *back_ = nullptr;
   size_type size_ = 0;
 };
 };  // namespace s21

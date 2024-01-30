@@ -5,7 +5,10 @@ namespace s21 {
 // List Functions
 template <typename T>
 list<T>::list() {
-  node *head = new node();
+  // здесь такая хуйня по причине того, что стд лист
+  // возвращает T() для пустого листа.
+  // То же самое касается и мува, опер= и клира
+  node<T> *head = new node<T>();
   front_ = back_ = head;
 }
 
@@ -25,6 +28,9 @@ list<T>::list(std::initializer_list<value_type> const &items) : list() {
 
 template <typename T>
 list<T>::list(const list &l) : list() {
+  // не понимаю, как сделать этот конструктор
+  // нам нужен КОНСТ итератор, который НЕ имеет ++ и -- методов
+  // тем не менее, стд лист как-то работает, используя конст итератор.
   for (const auto &elem : l) {
     push_back(elem);
   }
@@ -32,7 +38,7 @@ list<T>::list(const list &l) : list() {
 
 template <typename T>
 list<T>::list(list &&l) : front_(l.front_), back_(l.back_), size_(l.size_) {
-  node *head = new node();
+  node<T> *head = new node<T>();
   l.front_ = head;
   l.back_ = head;
   l.size_ = 0;
@@ -43,7 +49,7 @@ list<T> &list<T>::operator=(list &&l) {
   front_ = l.front_;
   back_ = l.back_;
   size_ = l.size_;
-  node *head = new node();
+  node<T> *head = new node<T>();
   l.front_ = head;
   l.back_ = head;
   l.size_ = 0;
@@ -52,10 +58,10 @@ list<T> &list<T>::operator=(list &&l) {
 
 template <typename T>
 list<T>::~list() {
-  node *pointer = front_;
-  node *next = pointer;
+  node<T> *pointer = front_;
+  node<T> *next = pointer;
   while (pointer != nullptr) {
-    node *next = pointer->next;
+    node<T> *next = pointer->next;
     delete pointer;
     pointer = next;
   }
@@ -68,7 +74,7 @@ void list<T>::push_back(const_reference value) {
   if (size_ == 0) {
     front_->data = value;
   } else {
-    node *new_elem = new node();
+    node<T> *new_elem = new node<T>();
     new_elem->data = value;
     back_->next = new_elem;
     new_elem->prev = back_;
@@ -79,16 +85,47 @@ void list<T>::push_back(const_reference value) {
 
 // List Element access
 template <typename T>
-typename list<T>::const_reference list<T>::back() {
+typename list<T>::const_reference list<T>::back() const {
   return back_->data;
 }
 
 template <typename T>
-typename list<T>::const_reference list<T>::front() {
+typename list<T>::const_reference list<T>::front() const {
   return front_->data;
 }
 
+// List Iterators
+template <typename T>
+typename list<T>::iterator list<T>::begin() {
+  return ListIterator(front_);
+}
+
+template <typename T>
+typename list<T>::iterator list<T>::end() {
+  return ListIterator(back_->next);
+}
+
+template <typename T>
+typename list<T>::const_iterator list<T>::begin() const {
+  return ListConstIterator(front_);
+}
+
+template <typename T>
+typename list<T>::const_iterator list<T>::end() const {
+  return ListConstIterator(back_->next);
+}
+
 // List capacity
+template <typename T>
+bool list<T>::empty() {
+  return size_ != 0;
+}
+
+template <typename T>
+typename list<T>::size_type list<T>::max_size() {
+  return std::numeric_limits<std::size_t>::max() / sizeof(value_type);
+}
+
 template <typename T>
 typename list<T>::size_type list<T>::size() {
   return size_;
