@@ -44,6 +44,19 @@ T& ListIterator<T>::operator*() {
 }
 
 template <typename T>
+node<T>* ListIterator<T>::operator->() {
+  // if (pointer_ == nullptr) {
+  // throw std::out_of_range("Iterator is out of range");
+  // }
+  return pointer_;
+}
+
+template <typename T>
+node<T>* ListIterator<T>::get_ptr() {
+  return pointer_;
+}
+
+template <typename T>
 ListIterator<T>& ListIterator<T>::advance(size_t num) {
   std::cout << "aboba" << '\n';
   if (num > 0) {

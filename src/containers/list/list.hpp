@@ -65,6 +65,7 @@ class list {
  private:
   node<T> *front_ = nullptr;
   node<T> *back_ = nullptr;
+  node<T> *end_ = nullptr;
   size_type size_ = 0;
 };
 };  // namespace s21

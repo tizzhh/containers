@@ -5,16 +5,24 @@
 
 int main(void) {
     std::list<int> l1 = {1, 2, 3};
-    std::list<int> l(l1);
-    for (auto elem : l1) {
-        std::cout << elem << ' ';
-    }
-    std::cout << '\n';
-
-    for (auto elem : l) {
-        std::cout << elem << ' ';
-    }
-    std::cout << '\n';
+    // std::cout << l1.empty() << '\n';
+    // std::list<int> l(l1);
+    // for (auto elem : l1) {
+    //     std::cout << elem << ' ';
+    // }
+    // std::cout << '\n';
+    // auto it = l1.end();
+    // --it;
+    // it;
+    // l1.insert(it, 6);
+    // for (auto elem : l1) {
+    //     std::cout << elem << ' ';
+    // }
+    // std::cout << '\n';
+    // for (auto elem : l) {
+    //     std::cout << elem << ' ';
+    // }
+    // std::cout << '\n';
     // std::cout << l1.front() << l1.back() << l1.size() << '\n';
     // l1.clear();
     // std::cout << l1.front() << l1.back() << l1.size() << '\n';
@@ -35,9 +43,26 @@ int main(void) {
     // std::cout << '\n';
 
 
-    s21::list<int> lst1 = {1, 2, 3, 4};
+    s21::list<int> lst1 = {1, 2, 3};
+    // for (auto elem : lst1) {
+    //     std::cout << elem << ' ';
+    // }
+    // std::cout << '\n';
+    // auto s21iter = lst1.end();
+    // --s21iter;
+    // ++s21iter;
+    // ++s21iter;
+    // lst1.insert(s21iter, 6);
+    // s21iter = s21iter->prev;
+    // std::cout << *s21iter << '\n';
+    // for (auto elem : lst1) {
+    //     std::cout << elem << ' ';
+    // }
+    // std::cout << '\n';
+
+    // std::cout << lst1.front() << ' ' << lst1.back() << ' ' << lst1.size() << '\n';
     // s21::list<int> lst(lst1);
-    // auto s21iter = lst1.begin();
+    // const auto s21iter = lst1.begin();
     // *s21iter = 5;
     // for (auto elem : lst1) {
     // while (s21iter != lst1.end()){

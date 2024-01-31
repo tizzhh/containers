@@ -14,6 +14,8 @@ class ListIterator {
   bool operator==(const ListIterator &other);
   bool operator!=(const ListIterator &other);
   T &operator*();
+  node<T> *operator->();
+  node<T> *get_ptr();
   ListIterator &advance(size_t num);
   ListIterator &next(size_t num = 1);
   ListIterator &prev(size_t num = -1);

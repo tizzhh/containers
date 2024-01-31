@@ -10,6 +10,7 @@ list<T>::list() {
   // То же самое касается и мува, опер= и клира
   node<T> *head = new node<T>();
   front_ = back_ = head;
+  size_ = 0;
 }
 
 template <typename T>
@@ -58,6 +59,13 @@ list<T> &list<T>::operator=(list &&l) {
 
 template <typename T>
 list<T>::~list() {
+  clear();
+  delete front_;
+}
+
+// List Modifiers
+template <typename T>
+void list<T>::clear() {
   node<T> *pointer = front_;
   node<T> *next = pointer;
   while (pointer != nullptr) {
@@ -66,9 +74,41 @@ list<T>::~list() {
     pointer = next;
   }
   front_ = back_ = nullptr;
+  node<T> *head = new node<T>();
+  front_ = back_ = head;
+  size_ = 0;
 }
 
-// List Modifiers
+template <typename T>
+typename list<T>::iterator list<T>::insert(iterator pos,
+                                           const_reference value) {
+  node<T> *new_elem = new node<T>();
+  new_elem->data = value;
+  new_elem->next = pos.get_ptr();
+
+  if (pos == end()) {
+    back_->next = new_elem;
+    new_elem->prev = back_;
+    back_ = new_elem;
+  } else {
+    new_elem->prev = pos->prev;
+
+    if (pos->prev != nullptr) {
+      pos->prev->next = new_elem;
+    } else {
+      front_ = new_elem;
+    }
+
+    pos->prev = new_elem;
+
+    if (pos->next != nullptr) {
+      pos->next->prev = new_elem;
+    }
+  }
+  ++size_;
+  return ListIterator(new_elem);
+}
+
 template <typename T>
 void list<T>::push_back(const_reference value) {
   if (size_ == 0) {
@@ -80,7 +120,7 @@ void list<T>::push_back(const_reference value) {
     new_elem->prev = back_;
     back_ = new_elem;
   }
-  size_++;
+  ++size_;
 }
 
 // List Element access
@@ -100,6 +140,7 @@ typename list<T>::iterator list<T>::begin() {
   return ListIterator(front_);
 }
 
+// у энда должна быть связь с превом, я еблан
 template <typename T>
 typename list<T>::iterator list<T>::end() {
   return ListIterator(back_->next);
