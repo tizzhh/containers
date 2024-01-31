@@ -26,7 +26,9 @@ template <typename T>
 list<T>::list() {
   // здесь такая хуйня по причине того, что стд лист
   // возвращает T() для пустого листа.
-  // То же самое касается и мува, опер= и клира
+  // То же самое касается и мува, опер= и клира.
+  // Я бы вообще сделал для пустого нуллптр для всего нах +
+  // исключения при попытке к ним обратиться. В конце решим(у) чо делать
   alloc_new_front_back_end_();
 }
 
@@ -47,8 +49,8 @@ list<T>::list(std::initializer_list<value_type> const &items) : list() {
 template <typename T>
 list<T>::list(const list &l) : list() {
   // не понимаю, как сделать этот конструктор нормально
-  // нам нужен КОНСТ итератор, который НЕ имеет ++ и -- методов
-  // тем не менее, стд лист как-то работает, используя конст итератор.
+  // нам нужен КОНСТ итератор, который НЕ имеет ++ и -- перегрузов.
+  // тем не менее стд лист как-то работает, используя конст итератор.
   for (const auto &elem : l) {
     push_back(elem);
   }
@@ -105,13 +107,39 @@ void list<T>::clear() {
 }
 
 template <typename T>
+void list<T>::erase(iterator pos) {
+  if (pos == end()) {
+    // std::erase в таком случае даст сегу, что является кринжем,
+    // поэтому я поменял поведение
+    pos = pos->prev;
+    pos->prev->next = nullptr;
+    back_ = pos->prev;
+  } else {
+    if (pos->prev != nullptr) {
+      pos->prev->next = pos->next;
+    } else {
+      front_ = front_->next;
+    }
+
+    if (pos->next != end().get_ptr()) {
+      pos->next->prev = pos->prev;
+    } else {
+      back_ = back_->prev;
+    }
+  }
+  delete pos.get_ptr();
+  move_end_ptr_();
+  --size_;
+}
+
+template <typename T>
 typename list<T>::iterator list<T>::insert(iterator pos,
                                            const_reference value) {
   node<T> *new_elem = new node<T>();
   new_elem->data = value;
   new_elem->next = pos.get_ptr();
 
-  // придумать мб еще что-то здесь  
+  // придумать мб еще что-то здесь
   if (pos == end()) {
     back_->next = new_elem;
     new_elem->prev = back_;
@@ -151,6 +179,22 @@ void list<T>::push_back(const_reference value) {
   ++size_;
 }
 
+template <typename T>
+void list<T>::pop_back() {
+  if (size_ == 0) {
+    throw std::length_error("Container is empty!");
+  }
+  node<T> *temp = back_;
+  back_ = back_->prev;
+  delete temp;
+  --size_;
+  if (size_ == 0) {
+    alloc_new_front_back_end_();
+  } else {
+    move_end_ptr_();
+  }
+}
+
 // List Element access
 template <typename T>
 typename list<T>::const_reference list<T>::back() const {
@@ -168,7 +212,6 @@ typename list<T>::iterator list<T>::begin() {
   return ListIterator(front_);
 }
 
-// у энда должна быть связь с превом, я еблан
 template <typename T>
 typename list<T>::iterator list<T>::end() {
   return ListIterator(end_);
