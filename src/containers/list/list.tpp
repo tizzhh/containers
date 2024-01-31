@@ -46,7 +46,7 @@ list<T>::list(std::initializer_list<value_type> const &items) : list() {
 
 template <typename T>
 list<T>::list(const list &l) : list() {
-  // не понимаю, как сделать этот конструктор
+  // не понимаю, как сделать этот конструктор нормально
   // нам нужен КОНСТ итератор, который НЕ имеет ++ и -- методов
   // тем не менее, стд лист как-то работает, используя конст итератор.
   for (const auto &elem : l) {
@@ -61,6 +61,8 @@ list<T>::list(list &&l)
   l.front_ = head;
   l.back_ = head;
   l.size_ = 0;
+  node<T> *end = new node<T>();
+  l.end_ = end;
   l.back_->next = l.end_;
   l.end_->prev = l.back_;
 }
@@ -76,6 +78,8 @@ list<T> &list<T>::operator=(list &&l) {
   l.front_ = head;
   l.back_ = head;
   l.size_ = 0;
+  node<T> *end = new node<T>();
+  l.end_ = end;
   l.back_->next = l.end_;
   l.end_->prev = l.back_;
   return *this;
@@ -107,6 +111,7 @@ typename list<T>::iterator list<T>::insert(iterator pos,
   new_elem->data = value;
   new_elem->next = pos.get_ptr();
 
+  // придумать мб еще что-то здесь  
   if (pos == end()) {
     back_->next = new_elem;
     new_elem->prev = back_;
@@ -176,18 +181,18 @@ typename list<T>::const_iterator list<T>::begin() const {
 
 template <typename T>
 typename list<T>::const_iterator list<T>::end() const {
-  return ListConstIterator(back_->next);
+  return ListConstIterator(end_);
 }
 
 // List capacity
 template <typename T>
 bool list<T>::empty() {
-  return size_ != 0;
+  return size_ == 0;
 }
 
 template <typename T>
 typename list<T>::size_type list<T>::max_size() {
-  return std::numeric_limits<std::size_t>::max() / sizeof(value_type);
+  return std::numeric_limits<std::size_t>::max() / sizeof(node<T>) / 2;
 }
 
 template <typename T>

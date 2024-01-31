@@ -55,7 +55,6 @@ node<T>* ListIterator<T>::get_ptr() {
 
 template <typename T>
 ListIterator<T>& ListIterator<T>::advance(size_t num) {
-  std::cout << "aboba" << '\n';
   if (num > 0) {
     while (num--) {
       operator++();
@@ -90,7 +89,6 @@ bool ListConstIterator<T>::operator==(const ListConstIterator& other) {
 
 template <typename T>
 bool ListConstIterator<T>::operator!=(const ListConstIterator& other) {
-  std::cout << "aboba" << '\n';
   return pointer_ != other.pointer_;
 }
 
