@@ -44,23 +44,25 @@ int main(void) {
 
 
     s21::list<int> lst1 = {1, 2, 3};
-    // for (auto elem : lst1) {
-    //     std::cout << elem << ' ';
-    // }
-    // std::cout << '\n';
-    // auto s21iter = lst1.end();
+    for (auto elem : lst1) {
+        std::cout << elem << ' ';
+    }
+    std::cout << '\n';
+
+    auto s21iter = lst1.end();
     // --s21iter;
     // ++s21iter;
     // ++s21iter;
-    // lst1.insert(s21iter, 6);
+    // ++s21iter;
+    lst1.insert(s21iter, 6);
     // s21iter = s21iter->prev;
-    // std::cout << *s21iter << '\n';
-    // for (auto elem : lst1) {
-    //     std::cout << elem << ' ';
-    // }
-    // std::cout << '\n';
+    for (auto elem : lst1) {
+        std::cout << elem << ' ';
+    }
+    std::cout << '\n';
 
-    // std::cout << lst1.front() << ' ' << lst1.back() << ' ' << lst1.size() << '\n';
+    std::cout << lst1.front() << ' ' << lst1.back() << ' ' << lst1.size() << '\n';
+    std::cout << lst1.end()->prev->data << '\n';
     // s21::list<int> lst(lst1);
     // const auto s21iter = lst1.begin();
     // *s21iter = 5;

@@ -2,15 +2,32 @@
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_LIST_LIST_TPP
 
 namespace s21 {
+// Helper methods
+template <typename T>
+void list<T>::alloc_new_front_back_end_() {
+  node<T> *head = new node<T>();
+  front_ = back_ = head;
+  size_ = 0;
+
+  node<T> *end = new node<T>();
+  end_ = end;
+  back_->next = end_;
+  end_->prev = back_;
+}
+
+template <typename T>
+void list<T>::move_end_ptr_() {
+  back_->next = end_;
+  end_->prev = back_;
+}
+
 // List Functions
 template <typename T>
 list<T>::list() {
   // здесь такая хуйня по причине того, что стд лист
   // возвращает T() для пустого листа.
   // То же самое касается и мува, опер= и клира
-  node<T> *head = new node<T>();
-  front_ = back_ = head;
-  size_ = 0;
+  alloc_new_front_back_end_();
 }
 
 template <typename T>
@@ -38,11 +55,14 @@ list<T>::list(const list &l) : list() {
 }
 
 template <typename T>
-list<T>::list(list &&l) : front_(l.front_), back_(l.back_), size_(l.size_) {
+list<T>::list(list &&l)
+    : front_(l.front_), back_(l.back_), size_(l.size_), end_(l.end_) {
   node<T> *head = new node<T>();
   l.front_ = head;
   l.back_ = head;
   l.size_ = 0;
+  l.back_->next = l.end_;
+  l.end_->prev = l.back_;
 }
 
 template <typename T>
@@ -50,33 +70,34 @@ list<T> &list<T>::operator=(list &&l) {
   front_ = l.front_;
   back_ = l.back_;
   size_ = l.size_;
+  back_->next = end_;
+  end_->prev = back_;
   node<T> *head = new node<T>();
   l.front_ = head;
   l.back_ = head;
   l.size_ = 0;
+  l.back_->next = l.end_;
+  l.end_->prev = l.back_;
   return *this;
 }
 
 template <typename T>
 list<T>::~list() {
   clear();
+  delete end_;
   delete front_;
 }
 
 // List Modifiers
 template <typename T>
 void list<T>::clear() {
-  node<T> *pointer = front_;
-  node<T> *next = pointer;
-  while (pointer != nullptr) {
-    node<T> *next = pointer->next;
-    delete pointer;
-    pointer = next;
+  while (front_ != nullptr) {
+    node<T> *next = front_->next;
+    delete front_;
+    front_ = next;
   }
   front_ = back_ = nullptr;
-  node<T> *head = new node<T>();
-  front_ = back_ = head;
-  size_ = 0;
+  alloc_new_front_back_end_();
 }
 
 template <typename T>
@@ -105,6 +126,7 @@ typename list<T>::iterator list<T>::insert(iterator pos,
       pos->next->prev = new_elem;
     }
   }
+  move_end_ptr_();
   ++size_;
   return ListIterator(new_elem);
 }
@@ -120,6 +142,7 @@ void list<T>::push_back(const_reference value) {
     new_elem->prev = back_;
     back_ = new_elem;
   }
+  move_end_ptr_();
   ++size_;
 }
 
@@ -143,7 +166,7 @@ typename list<T>::iterator list<T>::begin() {
 // у энда должна быть связь с превом, я еблан
 template <typename T>
 typename list<T>::iterator list<T>::end() {
-  return ListIterator(back_->next);
+  return ListIterator(end_);
 }
 
 template <typename T>

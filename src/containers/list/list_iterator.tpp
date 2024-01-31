@@ -16,12 +16,9 @@ ListIterator<T>& ListIterator<T>::operator--() {
 
 template <typename T>
 ListIterator<T>& ListIterator<T>::operator++() {
-  // if (pointer_->next != nullptr) {
-  // закомменчено из-за for-each лупа и подобных проходов от бегина до энда
-  // без проверки есть риск сеги (сделал эксепшном), с проверкой он просто не
-  // дойдет до end, хз как сделать нормально поэтому.
-  pointer_ = pointer_->next;
-  // }
+  if (pointer_->next != nullptr) {
+    pointer_ = pointer_->next;
+  }
   return *this;
 }
 
@@ -45,9 +42,9 @@ T& ListIterator<T>::operator*() {
 
 template <typename T>
 node<T>* ListIterator<T>::operator->() {
-  // if (pointer_ == nullptr) {
-  // throw std::out_of_range("Iterator is out of range");
-  // }
+  if (pointer_ == nullptr) {
+    throw std::out_of_range("Iterator is out of range");
+  }
   return pointer_;
 }
 

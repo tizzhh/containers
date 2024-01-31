@@ -63,6 +63,9 @@ class list {
   void sort();
 
  private:
+  void alloc_new_front_back_end_();
+  void move_end_ptr_();
+
   node<T> *front_ = nullptr;
   node<T> *back_ = nullptr;
   node<T> *end_ = nullptr;
