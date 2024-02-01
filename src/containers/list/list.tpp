@@ -48,9 +48,6 @@ list<T>::list(std::initializer_list<value_type> const &items) : list() {
 
 template <typename T>
 list<T>::list(const list &l) : list() {
-  // не понимаю, как сделать этот конструктор нормально
-  // нам нужен КОНСТ итератор, который НЕ имеет ++ и -- перегрузов.
-  // тем не менее стд лист как-то работает, используя конст итератор.
   for (const auto &elem : l) {
     push_back(elem);
   }
@@ -193,6 +190,51 @@ void list<T>::pop_back() {
   } else {
     move_end_ptr_();
   }
+}
+
+template <typename T>
+void list<T>::push_front(const_reference value) {
+  if (size_ == 0) {
+    front_->data = value;
+  } else {
+    node<T> *new_elem = new node<T>();
+    new_elem->data = value;
+    new_elem->next = front_;
+    front_->prev = new_elem;
+    front_ = new_elem;
+  }
+  ++size_;
+}
+
+template <typename T>
+void list<T>::pop_front() {
+  if (size_ == 0) {
+    throw std::length_error("Container is empty!");
+  } else {
+    node<T> *temp = front_;
+    front_ = front_->next;
+    front_->prev = nullptr;
+    delete temp;
+  }
+  --size_;
+}
+
+template <typename T>
+void list<T>::swap(list& other) {
+  if (other != this) {
+    std::swap(front_, other.front_);
+    std::swap(back_, other.back_);
+    std::swap(end_, other.end_);
+    std::swap(size_, other.size_);
+  }
+}
+
+template <typename T>
+void list<T>::splice(const_iterator pos, list& other) {
+  for (const auto &elem : other) {
+    insert(pos, elem);
+  }
+  other.clear();
 }
 
 // List Element access

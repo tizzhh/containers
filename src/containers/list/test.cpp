@@ -3,27 +3,18 @@
 #include <string>
 #include "list.hpp"
 
-int main(void) {
-    std::list<int> lst;
-    for (const auto &elem : lst) {
-        std::cout << elem << ' ';
-    }
-    std::cout << '\n';
-    // lst.pop_back();
-    for (const auto &elem : lst) {
-        std::cout << elem << ' ';
-    }
-    std::cout << '\n';
+std::ostream& operator<<(std::ostream& ostr, const std::list<int>& list)
+{
+    for (auto& i : list)
+        ostr << ' ' << i;
+ 
+    return ostr;
+}
 
-    s21::list<int> ls;
-    for (const auto &elem : ls) {
-        std::cout << elem << ' ';
-    }
-    std::cout << '\n';
-    ls.push_back(10);
-    ls.pop_back();
-    for (const auto &elem : ls) {
-        std::cout << elem << ' ';
-    }
-    std::cout << '\n';
+int main(void) {
+   const std::list<int> lst = {1, 2, 3};
+   const s21::list<int> lst1 = {1, 2, 3};
+   auto iter = lst.begin();
+   auto iter2 = lst1.begin();
+//    auto iter2 = s21::ListConstIterator<int>(iter);
 }
