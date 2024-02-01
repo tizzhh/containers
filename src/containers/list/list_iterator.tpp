@@ -7,7 +7,8 @@ template <typename T>
 ListIterator<T>::ListIterator(node<T>* ptr) : pointer_(ptr) {}
 
 template <typename T>
-ListIterator<T>::ListIterator(const ListConstIterator<T>& other) : pointer_(other.get_ptr()) {}
+ListIterator<T>::ListIterator(const ListConstIterator<T>& other)
+    : pointer_(other.get_ptr()) {}
 
 template <typename T>
 ListIterator<T>& ListIterator<T>::operator--() {
@@ -86,7 +87,8 @@ template <typename T>
 ListConstIterator<T>::ListConstIterator(node<T>* ptr) : pointer_(ptr) {}
 
 template <typename T>
-ListConstIterator<T>::ListConstIterator(const ListIterator<T>& other) : pointer_(other.get_ptr()) {}
+ListConstIterator<T>::ListConstIterator(const ListIterator<T>& other)
+    : pointer_(other.get_ptr()) {}
 
 template <typename T>
 bool ListConstIterator<T>::operator==(const ListConstIterator& other) {
@@ -107,7 +109,7 @@ const node<T>* ListConstIterator<T>::operator->() {
 }
 
 template <typename T>
-node<T>* ListConstIterator<T>::get_ptr() const{
+node<T>* ListConstIterator<T>::get_ptr() const {
   return pointer_;
 }
 

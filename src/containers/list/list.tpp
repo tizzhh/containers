@@ -220,8 +220,8 @@ void list<T>::pop_front() {
 }
 
 template <typename T>
-void list<T>::swap(list& other) {
-  if (other != this) {
+void list<T>::swap(list &other) {
+  if (other.front_ != this->front_) {
     std::swap(front_, other.front_);
     std::swap(back_, other.back_);
     std::swap(end_, other.end_);
@@ -230,11 +230,44 @@ void list<T>::swap(list& other) {
 }
 
 template <typename T>
-void list<T>::splice(const_iterator pos, list& other) {
+void list<T>::splice(const_iterator pos, list &other) {
   for (const auto &elem : other) {
     insert(pos, elem);
   }
   other.clear();
+}
+
+template <typename T>
+void list<T>::reverse() {
+  auto it = begin();
+  while (it != nullptr) {
+    auto next = it->next;
+    it->next = it->prev;
+    it->prev = next;
+    it = next;
+  }
+  end_->next = nullptr;
+  back_->prev = nullptr;
+  node<T> *temp = front_;
+  front_ = back_;
+  back_ = temp;
+  move_end_ptr_();
+}
+
+template <typename T>
+void list<T>::unique() {
+  auto prev = T();
+  auto it = begin();
+  ++it;
+  while (it != end()) {
+    auto next = it->next;
+    auto it_val = *it;
+    if (it_val == prev) {
+      erase(it);
+    }
+    prev = it_val;
+    it = next;
+  }
 }
 
 // List Element access

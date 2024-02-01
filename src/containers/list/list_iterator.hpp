@@ -12,7 +12,7 @@ class ListIterator {
  public:
   ListIterator() = default;
   ListIterator(node<T> *ptr);
-  ListIterator(const ListConstIterator<T>& other);
+  ListIterator(const ListConstIterator<T> &other);
   ListIterator &operator--();
   ListIterator &operator++();
   bool operator==(const ListIterator &other);
@@ -33,9 +33,9 @@ class ListConstIterator {
  public:
   ListConstIterator() = default;
   ListConstIterator(node<T> *ptr);
-  ListConstIterator(const ListIterator<T>& other);
-  bool operator==(const ListConstIterator& other);
-  bool operator!=(const ListConstIterator& other);
+  ListConstIterator(const ListIterator<T> &other);
+  bool operator==(const ListConstIterator &other);
+  bool operator!=(const ListConstIterator &other);
   ListConstIterator &operator--();
   ListConstIterator &operator++();
   const T &operator*();

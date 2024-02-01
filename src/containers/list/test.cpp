@@ -11,10 +11,21 @@ std::ostream& operator<<(std::ostream& ostr, const std::list<int>& list)
     return ostr;
 }
 
+std::ostream& operator<<(std::ostream& ostr, const s21::list<int>& list)
+{
+    for (auto& i : list)
+        ostr << ' ' << i;
+ 
+    return ostr;
+}
+
 int main(void) {
-   const std::list<int> lst = {1, 2, 3};
-   const s21::list<int> lst1 = {1, 2, 3};
-   auto iter = lst.begin();
-   auto iter2 = lst1.begin();
-//    auto iter2 = s21::ListConstIterator<int>(iter);
+   std::list<int> lst;
+   s21::list<int> lst1;
+   std::cout << lst << '\n';
+   std::cout << lst1 << '\n';
+   lst.unique();
+   lst1.unique();
+   std::cout << lst << '\n';
+   std::cout << lst1 << '\n';
 }
