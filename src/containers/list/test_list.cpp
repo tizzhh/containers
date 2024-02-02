@@ -653,6 +653,73 @@ TEST(ModifiersList, UniqueEmpty) {
   }
 }
 
+TEST(ModifiersList, Merge) {
+  std::list<int> a({1, 3, 3, 5, 9});
+  std::list<int> a1({2, 3, 4, 4, 7, 8});
+  s21::list<int> b({1, 3, 3, 5, 9});
+  s21::list<int> b1({2, 3, 4, 4, 7, 8});
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  ASSERT_EQ(a1.front(), b1.front());
+  ASSERT_EQ(a1.back(), b1.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, MergeFromEmpty) {
+  std::list<int> a({1, 3, 3, 5, 9});
+  std::list<int> a1;
+  s21::list<int> b({1, 3, 3, 5, 9});
+  s21::list<int> b1;
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  ASSERT_EQ(a1.front(), b1.front());
+  ASSERT_EQ(a1.back(), b1.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+
+TEST(ModifiersList, MergeIntoEmpty) {
+  std::list<int> a({1, 3, 3, 5, 9});
+  std::list<int> a1;
+  s21::list<int> b({1, 3, 3, 5, 9});
+  s21::list<int> b1;
+  a1.merge(a);
+  b1.merge(b);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  ASSERT_EQ(a1.front(), b1.front());
+  ASSERT_EQ(a1.back(), b1.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

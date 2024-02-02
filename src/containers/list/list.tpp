@@ -240,14 +240,12 @@ void list<T>::splice(const_iterator pos, list &other) {
 template <typename T>
 void list<T>::reverse() {
   auto it = begin();
-  while (it != nullptr) {
+  while (it != end()) {
     auto next = it->next;
     it->next = it->prev;
     it->prev = next;
     it = next;
   }
-  end_->next = nullptr;
-  back_->prev = nullptr;
   node<T> *temp = front_;
   front_ = back_;
   back_ = temp;
@@ -269,6 +267,58 @@ void list<T>::unique() {
     it = next;
   }
 }
+
+template <typename T>
+void list<T>::merge(list &other) {
+  if (front_ != other.front_ && !other.empty()) {
+    if (empty()) {
+      swap(other);
+      return;
+    }
+
+    if (!check_if_list_sorted_() or !other.check_if_list_sorted_()) {
+      throw std::logic_error("Lists should be sorted");
+    }
+    auto temp = list(size_ + other.size_);
+    auto it1 = begin();
+    auto it2 = other.begin();
+    for (auto new_iter = temp.begin(); new_iter != temp.end(); ++new_iter) {
+      if (it1 == end()) {
+        *new_iter = *it2;
+        ++it2;
+      } else if (it2 == other.end()) {
+        *new_iter = *it1;
+        ++it1;
+      } else {
+        if (*it1 <= *it2) {
+          *new_iter = *it1;
+          ++it1;
+        } else {
+          *new_iter = *it2;
+          ++it2;
+        }
+      }
+    }
+    swap(temp);
+    other.clear();
+  }
+}
+
+template <typename T>
+bool list<T>::check_if_list_sorted_() {
+  auto prev = T();
+  bool is_eq = true;
+  for (auto iter = begin(); iter != end() && is_eq; ++iter) {
+    if (*iter < prev) {
+      is_eq = false;
+    }
+    prev = *iter;
+  }
+  return is_eq;
+}
+
+template <typename T>
+void list<T>::sort() {}
 
 // List Element access
 template <typename T>
