@@ -720,6 +720,121 @@ TEST(ModifiersList, MergeIntoEmpty) {
   }
 }
 
+TEST(ModifiersList, InsertManyBegin) {
+  s21::list<int> a({1, 2, 3});
+  s21::list<int> b({10, 11, 12, 1, 2, 3});
+  a.insert_many(a.begin(), 10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, InsertManyEnd) {
+  s21::list<int> a({1, 2, 3});
+  s21::list<int> b({1, 2, 3, 10, 11, 12});
+  a.insert_many(a.end(), 10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, InsertManyMid) {
+  s21::list<int> a({1, 2, 3, 4});
+  s21::list<int> b({1, 2, 10, 11, 12, 3, 4});
+  auto iter = a.begin();
+  ++iter;
+  ++iter;
+  a.insert_many(iter, 10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, InsertManyBack) {
+  s21::list<int> a({1, 2, 3});
+  s21::list<int> b({1, 2, 3, 10, 11, 12});
+  a.insert_many_back(10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, InsertManyBackEmpty) {
+  s21::list<int> a;
+  s21::list<int> b({10, 11, 12});
+  a.insert_many_back(10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, InsertManyFront) {
+  s21::list<int> a({1, 2, 3});
+  s21::list<int> b({12, 11, 10, 1, 2, 3});
+  a.insert_many_front(10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, InsertManyFrontEmpty) {
+  s21::list<int> a;
+  s21::list<int> b({12, 11, 10});
+  a.insert_many_front(10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

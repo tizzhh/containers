@@ -24,11 +24,6 @@ void list<T>::move_end_ptr_() {
 // List Functions
 template <typename T>
 list<T>::list() {
-  // здесь такая хуйня по причине того, что стд лист
-  // возвращает T() для пустого листа.
-  // То же самое касается и мува, опер= и клира.
-  // Я бы вообще сделал для пустого нуллптр для всего нах +
-  // исключения при попытке к ним обратиться. В конце решим(у) чо делать
   alloc_new_front_back_end_();
 }
 
@@ -106,8 +101,6 @@ void list<T>::clear() {
 template <typename T>
 void list<T>::erase(iterator pos) {
   if (pos == end()) {
-    // std::erase в таком случае даст сегу, что является кринжем,
-    // поэтому я поменял поведение
     pos = pos->prev;
     pos->prev->next = nullptr;
     back_ = pos->prev;
@@ -136,7 +129,6 @@ typename list<T>::iterator list<T>::insert(iterator pos,
   new_elem->data = value;
   new_elem->next = pos.get_ptr();
 
-  // придумать мб еще что-то здесь
   if (pos == end()) {
     back_->next = new_elem;
     new_elem->prev = back_;
@@ -163,7 +155,7 @@ typename list<T>::iterator list<T>::insert(iterator pos,
 
 template <typename T>
 void list<T>::push_back(const_reference value) {
-  if (size_ == 0) {
+  if (empty()) {
     front_->data = value;
   } else {
     node<T> *new_elem = new node<T>();
@@ -178,14 +170,14 @@ void list<T>::push_back(const_reference value) {
 
 template <typename T>
 void list<T>::pop_back() {
-  if (size_ == 0) {
+  if (empty()) {
     throw std::length_error("Container is empty!");
   }
   node<T> *temp = back_;
   back_ = back_->prev;
   delete temp;
   --size_;
-  if (size_ == 0) {
+  if (empty()) {
     alloc_new_front_back_end_();
   } else {
     move_end_ptr_();
@@ -194,7 +186,7 @@ void list<T>::pop_back() {
 
 template <typename T>
 void list<T>::push_front(const_reference value) {
-  if (size_ == 0) {
+  if (empty()) {
     front_->data = value;
   } else {
     node<T> *new_elem = new node<T>();
@@ -208,7 +200,7 @@ void list<T>::push_front(const_reference value) {
 
 template <typename T>
 void list<T>::pop_front() {
-  if (size_ == 0) {
+  if (empty()) {
     throw std::length_error("Container is empty!");
   } else {
     node<T> *temp = front_;
@@ -319,6 +311,33 @@ bool list<T>::check_if_list_sorted_() {
 
 template <typename T>
 void list<T>::sort() {}
+
+template <typename T>
+template <typename... Args>
+typename list<T>::iterator list<T>::insert_many(const_iterator pos,
+                                                Args &&...args) {
+  iterator last_inserted;
+  for (auto &&elem : {args...}) {
+    last_inserted = insert(pos, elem);
+  }
+  return last_inserted;
+}
+
+template <typename T>
+template <typename... Args>
+void list<T>::insert_many_back(Args &&...args) {
+  for (auto &&elem : {args...}) {
+    push_back(elem);
+  }
+}
+
+template <typename T>
+template <typename... Args>
+void list<T>::insert_many_front(Args &&...args) {
+  for (auto &&elem : {args...}) {
+    push_front(elem);
+  }
+}
 
 // List Element access
 template <typename T>

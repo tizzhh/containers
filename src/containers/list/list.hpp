@@ -63,6 +63,14 @@ class list {
   void unique();
   void sort();
 
+  // Part 3 bonus
+  template <typename... Args>
+  iterator insert_many(const_iterator pos, Args &&...args);
+  template <typename... Args>
+  void insert_many_back(Args &&...args);
+  template <typename... Args>
+  void insert_many_front(Args &&...args);
+
  private:
   void alloc_new_front_back_end_();
   void move_end_ptr_();

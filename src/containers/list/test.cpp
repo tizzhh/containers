@@ -20,12 +20,8 @@ std::ostream& operator<<(std::ostream& ostr, const s21::list<int>& list)
 }
 
 int main(void) {
-    std::list<int> a;
-    std::list<int> a1({1, 3, 3, 5, 9});
-    s21::list<int> b;
-    s21::list<int> b1({1, 3, 3, 5, 9});
-    a.merge(a1);
-    b.merge(b1);
-    std::cout << a << '\n';
+    std::list<int> a = {1, 2, 3};
+    s21::list<int> b = {1, 2, 3};
+    b.insert_many(b.begin(), 10, 11, 12, 13);
     std::cout << b << '\n';
 }

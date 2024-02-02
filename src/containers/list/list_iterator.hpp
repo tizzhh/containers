@@ -40,8 +40,6 @@ class ListConstIterator {
   ListConstIterator &operator++();
   const T &operator*();
   const node<T> *operator->();
-  // танцы с бубнами, чтобы splice номрально работал (он принимает
-  // const_iterator)
   node<T> *get_ptr() const;
   ListConstIterator &advance(size_t num);
   ListConstIterator &next(size_t num = 1);
