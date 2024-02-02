@@ -29,7 +29,7 @@ list<T>::list() {
 
 template <typename T>
 list<T>::list(size_type n) : list() {
-  for (int i = 0; i < n; ++i) {
+  for (size_t i = 0; i < n; ++i) {
     push_back(T());
   }
 }
@@ -373,7 +373,7 @@ typename list<T>::const_iterator list<T>::end() const {
 
 // List capacity
 template <typename T>
-bool list<T>::empty() {
+bool list<T>::empty() const noexcept {
   return size_ == 0;
 }
 
@@ -383,7 +383,7 @@ typename list<T>::size_type list<T>::max_size() {
 }
 
 template <typename T>
-typename list<T>::size_type list<T>::size() {
+typename list<T>::size_type list<T>::size() const noexcept {
   return size_;
 }
 }  // namespace s21

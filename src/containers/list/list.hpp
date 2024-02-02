@@ -44,8 +44,8 @@ class list {
   const_iterator end() const;
 
   // List Capacity
-  bool empty();
-  size_type size();
+  bool empty() const noexcept;
+  size_type size() const noexcept;
   size_type max_size();
 
   // List Modifiers
@@ -78,8 +78,8 @@ class list {
 
   node<T> *front_ = nullptr;
   node<T> *back_ = nullptr;
-  node<T> *end_ = nullptr;
   size_type size_ = 0;
+  node<T> *end_ = nullptr;
 };
 };  // namespace s21
 #include "list.tpp"

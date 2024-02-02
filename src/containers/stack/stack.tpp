@@ -12,13 +12,14 @@ constexpr stack<T>::stack(std::initializer_list<value_type> const &items) {
 template <typename T>
 constexpr stack<T>::stack(const stack &s) {
   top_.clear();
-  top_ = s.top_;
+  for (const auto &elem : s.top_){
+    top_.push_back(elem);
+  }
 }
 
 template <typename T>
 constexpr stack<T>::stack(stack &&s) {
-  top_ = s.top_;
-  s.top_.clear();
+  top_ = std::move(s.top_);
 }
 
 template <typename T>

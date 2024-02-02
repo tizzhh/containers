@@ -2,7 +2,9 @@
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_STACK_STACK_HPP
 
 // это надо не забыть поменять на s21::list))
-#include <list>
+// здесь нужно доделать insert many
+#include "../../s21_containerplus.hpp"
+#include <stdlib.h>
 
 namespace s21 {
 template <typename T>
@@ -30,7 +32,7 @@ class stack {
   constexpr void swap(stack &other);
 
  private:
-  std::list<value_type> top_;
+  list<T> top_;
 };
 
 };  // namespace s21

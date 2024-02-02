@@ -12,13 +12,14 @@ constexpr queue<T>::queue(std::initializer_list<value_type> const &items) {
 template <typename T>
 constexpr queue<T>::queue(const queue &s) {
   top_.clear();
-  top_ = s.top_;
+  for (const auto &elem : s.top_){
+    top_.push_back(elem);
+  }
 }
 
 template <typename T>
 constexpr queue<T>::queue(queue &&s) {
-  top_ = s.top_;
-  s.top_.clear();
+  top_ = std::move(s.top_);
 }
 
 template <typename T>
