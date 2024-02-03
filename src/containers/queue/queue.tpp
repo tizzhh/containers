@@ -10,21 +10,21 @@ constexpr queue<T>::queue(std::initializer_list<value_type> const &items) {
 }
 
 template <typename T>
-constexpr queue<T>::queue(const queue &s) {
+constexpr queue<T>::queue(const queue &q) {
   top_.clear();
-  for (const auto &elem : s.top_){
+  for (const auto &elem : q.top_) {
     top_.push_back(elem);
   }
 }
 
 template <typename T>
-constexpr queue<T>::queue(queue &&s) {
-  top_ = std::move(s.top_);
+constexpr queue<T>::queue(queue &&q) {
+  top_ = std::move(q.top_);
 }
 
 template <typename T>
-constexpr queue<T> &queue<T>::operator=(queue &&s) {
-  top_ = std::move(s);
+constexpr queue<T> &queue<T>::operator=(queue &&q) {
+  top_ = std::move(q);
   return *this;
 }
 
@@ -65,7 +65,8 @@ constexpr void queue<T>::swap(queue &other) {
 
 template <typename T>
 queue<T>::~queue() {
-  top_.clear();
+  // top_.clear();
+  // delete top_.get_end_();
 }
 }  // namespace s21
 

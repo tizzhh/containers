@@ -12,7 +12,7 @@ constexpr stack<T>::stack(std::initializer_list<value_type> const &items) {
 template <typename T>
 constexpr stack<T>::stack(const stack &s) {
   top_.clear();
-  for (const auto &elem : s.top_){
+  for (const auto &elem : s.top_) {
     top_.push_back(elem);
   }
 }

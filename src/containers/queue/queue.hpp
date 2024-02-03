@@ -2,13 +2,15 @@
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_QUEUE_QUEUE_HPP
 
 // здесь нужно доделать insert many
-#include "../../s21_containerplus.hpp"
 #include <stdlib.h>
+
+#include "../../s21_containerplus.hpp"
 
 namespace s21 {
 template <typename T>
 class queue {
  public:
+  // friend class list<T>;
   using value_type = T;
   using reference = T &;
   using const_reference = const T &;
@@ -16,10 +18,10 @@ class queue {
 
   constexpr queue() = default;
   constexpr queue(std::initializer_list<value_type> const &items);
-  constexpr queue(const queue &s);
-  constexpr queue(queue &&s);
+  constexpr queue(const queue &q);
+  constexpr queue(queue &&q);
   ~queue();
-  constexpr queue &operator=(queue &&s);
+  constexpr queue &operator=(queue &&q);
 
   constexpr const_reference front() const noexcept;
   constexpr const_reference back() const noexcept;
