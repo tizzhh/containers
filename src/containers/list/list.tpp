@@ -63,19 +63,20 @@ list<T>::list(list &&l)
 
 template <typename T>
 list<T> &list<T>::operator=(list &&l) {
+  auto front_temp = front_, back_temp = back_, end_temp = end_;
+  auto size_temp = size_;
+  
   front_ = l.front_;
   back_ = l.back_;
   size_ = l.size_;
+  end_ = l.end_;
   back_->next = end_;
   end_->prev = back_;
-  node<T> *head = new node<T>();
-  l.front_ = head;
-  l.back_ = head;
-  l.size_ = 0;
-  node<T> *end = new node<T>();
-  l.end_ = end;
-  l.back_->next = l.end_;
-  l.end_->prev = l.back_;
+
+  l.front_ = front_temp;
+  l.back_ = back_temp;
+  l.end_ = end_temp;
+  l.size_ = size_temp;
   return *this;
 }
 
