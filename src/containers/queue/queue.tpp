@@ -64,9 +64,11 @@ constexpr void queue<T>::swap(queue &other) {
 }
 
 template <typename T>
-queue<T>::~queue() {
-  // top_.clear();
-  // delete top_.get_end_();
+template <typename... Args>
+void queue<T>::insert_many_back(Args &&...args) {
+  for (auto &&elem : {args...}) {
+    push(elem);
+  }
 }
 }  // namespace s21
 

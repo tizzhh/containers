@@ -20,7 +20,7 @@ class stack {
   constexpr stack(std::initializer_list<value_type> const &items);
   constexpr stack(const stack &s);
   constexpr stack(stack &&s);
-  ~stack();
+  ~stack() = default;
   constexpr stack &operator=(stack &&s);
 
   constexpr const_reference top() const noexcept;
@@ -31,6 +31,9 @@ class stack {
   constexpr void push(const_reference value);
   constexpr void pop();
   constexpr void swap(stack &other);
+
+  template <typename... Args>
+  void insert_many_front(Args &&...args);
 
  private:
   list<T> top_;

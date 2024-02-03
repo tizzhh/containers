@@ -59,8 +59,11 @@ constexpr void stack<T>::swap(stack &other) {
 }
 
 template <typename T>
-stack<T>::~stack() {
-  top_.clear();
+template <typename... Args>
+void stack<T>::insert_many_front(Args &&...args) {
+  for (auto &&elem : {args...}) {
+    push(elem);
+  }
 }
 }  // namespace s21
 

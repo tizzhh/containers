@@ -20,7 +20,7 @@ class queue {
   constexpr queue(std::initializer_list<value_type> const &items);
   constexpr queue(const queue &q);
   constexpr queue(queue &&q);
-  ~queue();
+  ~queue() = default;
   constexpr queue &operator=(queue &&q);
 
   constexpr const_reference front() const noexcept;
@@ -32,6 +32,9 @@ class queue {
   constexpr void push(const_reference value);
   constexpr void pop();
   constexpr void swap(queue &other);
+
+  template <typename... Args>
+  void insert_many_back(Args &&...args);
 
  private:
   list<T> top_;

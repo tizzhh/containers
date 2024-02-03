@@ -130,3 +130,13 @@ TEST(ModifiersQueue, SwapSameSizes) {
   ASSERT_EQ(b.front(), d.front());
   ASSERT_EQ(b.back(), d.back());
 }
+
+TEST(ModifiersQueue, InsertManyBack) {
+  s21::queue<int> a({1, 2, 3});
+  s21::queue<int> b({1, 2, 3, 10, 11, 12});
+  a.insert_many_back(10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+}

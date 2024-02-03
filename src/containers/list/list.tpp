@@ -65,7 +65,7 @@ template <typename T>
 list<T> &list<T>::operator=(list &&l) {
   auto front_temp = front_, back_temp = back_, end_temp = end_;
   auto size_temp = size_;
-  
+
   front_ = l.front_;
   back_ = l.back_;
   size_ = l.size_;

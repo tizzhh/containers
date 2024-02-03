@@ -2,12 +2,13 @@
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_VECTOR_VECTOR_HPP
 
 #include <iostream>
+#include <limits>
 #include <stdexcept>
 #include <tuple>
-#include <limits>
 namespace s21 {
-template <typename T> class vector {
-public:
+template <typename T>
+class vector {
+ public:
   using value_type = T;
   using reference = value_type &;
   using const_reference = const value_type &;
@@ -48,24 +49,24 @@ public:
   constexpr void shrink_to_fit() noexcept;
 
   constexpr void clear() noexcept;
-  constexpr iterator insert(iterator pos, const_reference value); // ?
+  constexpr iterator insert(iterator pos, const_reference value);  // ?
   constexpr void erase(iterator pos) noexcept;
   constexpr void push_back(const_reference value);
   constexpr void pop_back() noexcept;
   constexpr void swap(vector &other) noexcept;
 
-protected:
+ protected:
   //    size_type CapacityCalc(size_type amount_of_elements) const noexcept;
   constexpr void SetStorage(iterator value) noexcept;
   constexpr iterator GetStorage() const noexcept;
 
-private:
+ private:
   iterator storage_ = nullptr;
   size_type capacity_ = 0;
   size_type size_ = 0;
 };
-}; // namespace s21
+};  // namespace s21
 
 #include "vector.tpp"
 
-#endif // S21_CONTAINERS_SRC_S21_CONTAINERS_VECTOR_VECTOR_HPP
+#endif  // S21_CONTAINERS_SRC_S21_CONTAINERS_VECTOR_VECTOR_HPP

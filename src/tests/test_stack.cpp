@@ -118,3 +118,12 @@ TEST(ModifiersStack, SwapSameSizes) {
   ASSERT_EQ(a.top(), c.top());
   ASSERT_EQ(b.top(), d.top());
 }
+
+TEST(ModifiersStack, InsertManyFront) {
+  s21::stack<int> a({1, 2, 3});
+  s21::stack<int> b({1, 2, 3, 10, 11, 12});
+  a.insert_many_front(10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.top(), b.top());
+}
