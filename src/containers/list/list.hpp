@@ -3,12 +3,13 @@
 
 #include <stdlib.h>
 
+#include <algorithm>
 #include <initializer_list>
 #include <limits>
 #include <stdexcept>
 
 // CLANG МЕНЯЕТ 2 СЛЕДУЮЩИХ МЕСТАМИ И ВСЕ ИДЕТ ПО ПИЗДЕ
-#include "list_node.hpp"
+#include "../vector/vector.hpp"
 #include "list_iterator.hpp"
 
 namespace s21 {

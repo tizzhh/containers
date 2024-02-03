@@ -311,7 +311,19 @@ bool list<T>::check_if_list_sorted_() {
 }
 
 template <typename T>
-void list<T>::sort() {}
+void list<T>::sort() {
+  if (!empty()) {
+    vector<T> a;
+    for (auto iter = begin(); iter != end(); ++iter) {
+      a.push_back(*iter);
+    }
+    std::sort(a.begin(), a.end());
+    clear();
+    for (const auto & elem : a) {
+      push_back(elem);
+    }
+  }
+}
 
 template <typename T>
 template <typename... Args>

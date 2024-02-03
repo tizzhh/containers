@@ -238,7 +238,7 @@ constexpr void vector<T>::erase(
 
 template <typename T>
 constexpr void vector<T>::push_back(const_reference value) {
-  if (capacity_ == size_) {
+  if (capacity_ != 0) {
     this->reserve(size_ * 2);
     value_type temp[size_];
     for (size_type i = 0; i != size_; i++) temp[i] = storage_[i];
@@ -246,6 +246,9 @@ constexpr void vector<T>::push_back(const_reference value) {
     storage_ = new value_type[capacity_];
     for (size_type i = 0; i != size_; i++) storage_[i] = temp[i];
     for (size_type i = size_; i != capacity_; i++) storage_[i] = 0;
+  } else {
+    storage_ = new value_type[1];
+    capacity_ = 1;
   }
   storage_[size_++] = value;
 }

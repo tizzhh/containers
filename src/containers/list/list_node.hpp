@@ -7,6 +7,8 @@ struct node {
   T data = T();
   struct node *prev = nullptr;
   struct node *next = nullptr;
+
+  bool operator<(const node &other) const { return (data < other.data); }
 };
 }  // namespace s21
 

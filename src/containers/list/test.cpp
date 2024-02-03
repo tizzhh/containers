@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include "list.hpp"
-
+#include <vector>
 std::ostream& operator<<(std::ostream& ostr, const std::list<int>& list)
 {
     for (auto& i : list)
@@ -20,13 +20,10 @@ std::ostream& operator<<(std::ostream& ostr, const s21::list<int>& list)
 }
 
 int main(void) {
-    s21::list<int> a = {1, 2, 3};
-    s21::list<int> a2 = {4, 5, 6};
-    s21::list<int> a1(a);
-    // a1 = std::move(a2);
-    a1 = std::move(a2);
-    // std::list<int> a2;
-    // s21::list<int> b = {1, 2, 3};
-    // b.insert_many(b.begin(), 10, 11, 12, 13);
-    std::cout << a1 << '\n';
+    s21::list<int> a = {3, 2 ,1};
+    std::cout << a << '\n';
+    // auto iter = a.begin();
+    // auto iter2 = a.begin();
+    a.sort();
+    std::cout << a << '\n';
 }

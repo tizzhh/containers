@@ -37,6 +37,11 @@ bool ListIterator<T>::operator!=(const ListIterator& other) {
 }
 
 template <typename T>
+bool ListIterator<T>::operator<(const ListIterator &other) const {
+  return pointer_->data <= other.pointer_->data;
+}
+
+template <typename T>
 T& ListIterator<T>::operator*() {
   if (pointer_ == nullptr) {
     throw std::out_of_range("Iterator is out of range");

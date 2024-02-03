@@ -1,7 +1,7 @@
 #ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_LIST_LIST_ITERATOR_HPP
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_LIST_LIST_ITERATOR_HPP
 
-// #include "list.hpp"
+#include "list_node.hpp"
 
 namespace s21 {
 template <typename T>
@@ -17,6 +17,9 @@ class ListIterator {
   ListIterator &operator++();
   bool operator==(const ListIterator &other);
   bool operator!=(const ListIterator &other);
+
+  bool operator<(const ListIterator &other) const;
+
   T &operator*();
   node<T> *operator->();
   node<T> *get_ptr() const;
