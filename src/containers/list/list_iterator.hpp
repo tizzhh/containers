@@ -17,15 +17,12 @@ class ListIterator {
   ListIterator &operator++();
   bool operator==(const ListIterator &other);
   bool operator!=(const ListIterator &other);
-
-  bool operator<(const ListIterator &other) const;
-
   T &operator*();
   node<T> *operator->();
   node<T> *get_ptr() const;
-  ListIterator &advance(size_t num);
-  ListIterator &next(size_t num = 1);
-  ListIterator &prev(size_t num = -1);
+  ListIterator &advance(int num);
+  ListIterator &next(int num = 1);
+  ListIterator &prev(int num = -1);
 
  private:
   node<T> *pointer_ = nullptr;
@@ -44,9 +41,9 @@ class ListConstIterator {
   const T &operator*();
   const node<T> *operator->();
   node<T> *get_ptr() const;
-  ListConstIterator &advance(size_t num);
-  ListConstIterator &next(size_t num = 1);
-  ListConstIterator &prev(size_t num = -1);
+  ListConstIterator &advance(int num);
+  ListConstIterator &next(int num = 1);
+  ListConstIterator &prev(int num = -1);
 
  private:
   node<T> *pointer_ = nullptr;

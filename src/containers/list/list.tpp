@@ -179,6 +179,7 @@ void list<T>::pop_back() {
   delete temp;
   --size_;
   if (empty()) {
+    delete end_;
     alloc_new_front_back_end_();
   } else {
     move_end_ptr_();
@@ -210,6 +211,10 @@ void list<T>::pop_front() {
     delete temp;
   }
   --size_;
+  if (empty()) {
+    delete end_;
+    alloc_new_front_back_end_();
+  }
 }
 
 template <typename T>
@@ -319,7 +324,7 @@ void list<T>::sort() {
     }
     std::sort(a.begin(), a.end());
     clear();
-    for (const auto & elem : a) {
+    for (const auto &elem : a) {
       push_back(elem);
     }
   }

@@ -1,7 +1,10 @@
 #ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_LIST_LIST_ITERATOR_TPP
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_LIST_LIST_ITERATOR_TPP
 
+#include <cstddef>
+
 #include "list_iterator.hpp"
+
 namespace s21 {
 template <typename T>
 ListIterator<T>::ListIterator(node<T>* ptr) : pointer_(ptr) {}
@@ -37,23 +40,12 @@ bool ListIterator<T>::operator!=(const ListIterator& other) {
 }
 
 template <typename T>
-bool ListIterator<T>::operator<(const ListIterator &other) const {
-  return pointer_->data <= other.pointer_->data;
-}
-
-template <typename T>
 T& ListIterator<T>::operator*() {
-  if (pointer_ == nullptr) {
-    throw std::out_of_range("Iterator is out of range");
-  }
   return pointer_->data;
 }
 
 template <typename T>
 node<T>* ListIterator<T>::operator->() {
-  if (pointer_ == nullptr) {
-    throw std::out_of_range("Iterator is out of range");
-  }
   return pointer_;
 }
 
@@ -63,7 +55,7 @@ node<T>* ListIterator<T>::get_ptr() const {
 }
 
 template <typename T>
-ListIterator<T>& ListIterator<T>::advance(size_t num) {
+ListIterator<T>& ListIterator<T>::advance(int num) {
   if (num > 0) {
     while (num--) {
       operator++();
@@ -77,13 +69,13 @@ ListIterator<T>& ListIterator<T>::advance(size_t num) {
 }
 
 template <typename T>
-ListIterator<T>& ListIterator<T>::next(size_t num) {
+ListIterator<T>& ListIterator<T>::next(int num) {
   advance(num);
   return *this;
 }
 
 template <typename T>
-ListIterator<T>& ListIterator<T>::prev(size_t num) {
+ListIterator<T>& ListIterator<T>::prev(int num) {
   advance(num);
   return *this;
 }
@@ -107,9 +99,6 @@ bool ListConstIterator<T>::operator!=(const ListConstIterator& other) {
 
 template <typename T>
 const node<T>* ListConstIterator<T>::operator->() {
-  if (pointer_ == nullptr) {
-    throw std::out_of_range("Iterator is out of range");
-  }
   return pointer_;
 }
 
@@ -120,9 +109,6 @@ node<T>* ListConstIterator<T>::get_ptr() const {
 
 template <typename T>
 const T& ListConstIterator<T>::operator*() {
-  if (pointer_ == nullptr) {
-    throw std::out_of_range("Iterator is out of range");
-  }
   return pointer_->data;
 }
 
@@ -143,7 +129,7 @@ ListConstIterator<T>& ListConstIterator<T>::operator++() {
 }
 
 template <typename T>
-ListConstIterator<T>& ListConstIterator<T>::advance(size_t num) {
+ListConstIterator<T>& ListConstIterator<T>::advance(int num) {
   if (num > 0) {
     while (num--) {
       operator++();
@@ -157,13 +143,13 @@ ListConstIterator<T>& ListConstIterator<T>::advance(size_t num) {
 }
 
 template <typename T>
-ListConstIterator<T>& ListConstIterator<T>::next(size_t num) {
+ListConstIterator<T>& ListConstIterator<T>::next(int num) {
   advance(num);
   return *this;
 }
 
 template <typename T>
-ListConstIterator<T>& ListConstIterator<T>::prev(size_t num) {
+ListConstIterator<T>& ListConstIterator<T>::prev(int num) {
   advance(num);
   return *this;
 }

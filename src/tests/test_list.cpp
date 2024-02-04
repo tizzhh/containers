@@ -105,7 +105,6 @@ TEST(CapacityList, MaxSize) {
   ASSERT_EQ(a.max_size(), b.max_size());
 }
 
-// добавить тестов на конст итератор
 TEST(IteratorList, Begin) {
   std::list<long> a({1, 2, 3});
   s21::list<long> b({1, 2, 3});
@@ -150,6 +149,180 @@ TEST(IteratorList, TraverseEndToBegin) {
     ASSERT_EQ(*it1, *it2);
   }
   ASSERT_EQ(*it1, *it2);
+}
+
+TEST(IteratorList, Advance) {
+  std::list<long> a({1, 2, 3});
+  s21::list<long> b({1, 2, 3});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  std::advance(it1, 1);
+  it2.advance(1);
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(IteratorList, AdvanceFromEnd) {
+  std::list<long> a({1, 2, 3});
+  s21::list<long> b({1, 2, 3});
+  auto it1 = a.end();
+  auto it2 = b.end();
+  std::advance(it1, -1);
+  it2.advance(-1);
+  for (; it1 != a.begin(); --it1, --it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  ASSERT_EQ(*it1, *it2);
+}
+
+TEST(IteratorList, Next) {
+  std::list<long> a({1, 2, 3});
+  s21::list<long> b({1, 2, 3});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  it1 = std::next(it1);
+  it2.next();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(IteratorList, Prev) {
+  std::list<long> a({1, 2, 3});
+  s21::list<long> b({1, 2, 3});
+  auto it1 = a.end();
+  auto it2 = b.end();
+  it1 = std::prev(it1);
+  it2.prev();
+  for (; it1 != a.begin(); --it1, --it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  ASSERT_EQ(*it1, *it2);
+}
+
+TEST(IteratorList, Eq) {
+  std::list<long> a({1, 2, 3});
+  s21::list<long> b({1, 2, 3});
+  auto it1 = a.begin();
+  auto it2 = a.begin();
+  auto it3 = b.begin();
+  auto it4 = b.begin();
+  ASSERT_EQ(it1 == it2, it3 == it4);
+}
+
+TEST(ConstIteratorList, Begin) {
+  const std::list<long> a({1, 2, 3});
+  const s21::list<long> b({1, 2, 3});
+  ASSERT_EQ(*a.begin(), *b.begin());
+}
+
+TEST(ConstIteratorList, End) {
+  const s21::list<long> b({1, 2, 3});
+  ASSERT_EQ(*b.end(), long());
+}
+
+TEST(ConstIteratorList, Increment) {
+  const std::list<long> a({1, 2, 3});
+  const s21::list<long> b({1, 2, 3});
+  ASSERT_EQ(*(++a.begin()), *(++b.begin()));
+}
+
+TEST(ConstIteratorList, Decrement) {
+  const std::list<int> a({1, 2, 3});
+  const s21::list<int> b({1, 2, 3});
+  ASSERT_EQ(*(--a.end()), *(--b.end()));
+}
+
+TEST(ConstIteratorList, TraverseBeginToEnd) {
+  const std::list<long> a({1, 2, 3});
+  const s21::list<long> b({1, 2, 3});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ConstIteratorList, TraverseEndToBegin) {
+  const std::list<long> a({1, 2, 3});
+  const s21::list<long> b({1, 2, 3});
+  auto it1 = a.end();
+  auto it2 = b.end();
+  --it1;
+  --it2;
+  for (; it1 != a.begin(); --it1, --it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  ASSERT_EQ(*it1, *it2);
+}
+
+TEST(ConstIteratorList, Eq) {
+  const std::list<long> a({1, 2, 3});
+  const s21::list<long> b({1, 2, 3});
+  auto it1 = a.begin();
+  auto it2 = a.begin();
+  auto it3 = b.begin();
+  auto it4 = b.begin();
+  ASSERT_EQ(it1 == it2, it3 == it4);
+}
+
+TEST(ConstIteratorList, Advance) {
+  const std::list<long> a({1, 2, 3});
+  const s21::list<long> b({1, 2, 3});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  std::advance(it1, 1);
+  it2.advance(1);
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ConstIteratorList, AdvanceFromEnd) {
+  const std::list<long> a({1, 2, 3});
+  const s21::list<long> b({1, 2, 3});
+  auto it1 = a.end();
+  auto it2 = b.end();
+  std::advance(it1, -1);
+  it2.advance(-1);
+  for (; it1 != a.begin(); --it1, --it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  ASSERT_EQ(*it1, *it2);
+}
+
+TEST(ConstIteratorList, Next) {
+  const std::list<long> a({1, 2, 3});
+  const s21::list<long> b({1, 2, 3});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  it1 = std::next(it1);
+  it2.next();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ConstIteratorList, Prev) {
+  const std::list<long> a({1, 2, 3});
+  const s21::list<long> b({1, 2, 3});
+  auto it1 = a.end();
+  auto it2 = b.end();
+  it1 = std::prev(it1);
+  it2.prev();
+  for (; it1 != a.begin(); --it1, --it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  ASSERT_EQ(*it1, *it2);
+}
+
+TEST(ConstIteratorList, OperArrow) {
+  const s21::list<long> b({1, 2, 3});
+  auto it2 = b.begin();
+  it2 = it2->next;
+  int res = *it2;
+  ASSERT_EQ(res, 2);
 }
 
 TEST(ModifiersList, Clear) {
@@ -391,6 +564,23 @@ TEST(ModifiersList, PopBackThrow) {
   ASSERT_ANY_THROW(b.pop_back());
 }
 
+TEST(ModifiersList, PopBackOneELem) {
+  std::list<int> a({1});
+  s21::list<int> b({1});
+  a.pop_back();
+  b.pop_back();
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
 TEST(ModifiersList, PushFront) {
   std::list<char> a({'a', 'b', 'c'});
   s21::list<char> b({'a', 'b', 'c'});
@@ -445,6 +635,23 @@ TEST(ModifiersList, PopFront) {
 TEST(ModifiersList, PopFrontThrow) {
   s21::list<int> b;
   ASSERT_ANY_THROW(b.pop_front());
+}
+
+TEST(ModifiersList, PopFrontOneELem) {
+  std::list<int> a({1});
+  s21::list<int> b({1});
+  a.pop_front();
+  b.pop_front();
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
 }
 
 TEST(ModifiersList, Swap) {
@@ -636,7 +843,6 @@ TEST(ModifiersList, Unique) {
   }
 }
 
-
 TEST(ModifiersList, UniqueEmpty) {
   std::list<long> a;
   s21::list<long> b;
@@ -653,7 +859,29 @@ TEST(ModifiersList, UniqueEmpty) {
   }
 }
 
-TEST(ModifiersList, Merge) {
+TEST(ModifiersList, MergeThisSmaller) {
+  std::list<int> a({1, 3, 3, 5});
+  std::list<int> a1({2, 3, 4, 4, 7, 8});
+  s21::list<int> b({1, 3, 3, 5});
+  s21::list<int> b1({2, 3, 4, 4, 7, 8});
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  ASSERT_EQ(a1.front(), b1.front());
+  ASSERT_EQ(a1.back(), b1.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, MergeOtherSmaller) {
   std::list<int> a({1, 3, 3, 5, 9});
   std::list<int> a1({2, 3, 4, 4, 7, 8});
   s21::list<int> b({1, 3, 3, 5, 9});
@@ -697,7 +925,6 @@ TEST(ModifiersList, MergeFromEmpty) {
   }
 }
 
-
 TEST(ModifiersList, MergeIntoEmpty) {
   std::list<int> a({1, 3, 3, 5, 9});
   std::list<int> a1;
@@ -718,6 +945,12 @@ TEST(ModifiersList, MergeIntoEmpty) {
   for (; it1 != a.end(); ++it1, ++it2) {
     ASSERT_EQ(*it1, *it2);
   }
+}
+
+TEST(ModifiersList, MergeThrow) {
+  s21::list<int> b({3, 2, 1});
+  s21::list<int> b1({2, 3, 4, 4, 7, 8});
+  ASSERT_ANY_THROW(b.merge(b1));
 }
 
 TEST(ModifiersList, InsertManyBegin) {
@@ -828,6 +1061,54 @@ TEST(ModifiersList, InsertManyFrontEmpty) {
   ASSERT_EQ(a.front(), b.front());
   ASSERT_EQ(a.back(), b.back());
   ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, Sort) {
+  std::list<long> a = {3, 2, 1};
+  s21::list<long> b = {3, 2, 1};
+  a.sort();
+  b.sort();
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, SortNothing) {
+  std::list<long> a = {1, 2, 3};
+  s21::list<long> b = {1, 2, 3};
+  a.sort();
+  b.sort();
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersList, SortEmpty) {
+  std::list<long> a;
+  s21::list<long> b;
+  a.sort();
+  b.sort();
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
   auto it1 = a.begin();
   auto it2 = b.begin();
   for (; it1 != a.end(); ++it1, ++it2) {
