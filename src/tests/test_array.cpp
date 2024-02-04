@@ -22,6 +22,25 @@ TEST(ConstructorArray, InitializerListOk) {
   }
 }
 
+TEST(ConstructorArray, InitializerListFillWithZerorsOk) {
+  try {
+    s21::array<int, 5> b = {1, 2};
+    SUCCEED();
+  } catch (...) {
+    FAIL() << "Initializer list constructor fails";
+  }
+}
+
+TEST(ConstructorArray, InitializerList2Ok) {
+  try {
+    s21::array<int, 2> b;
+    b = {1, 2};
+    SUCCEED();
+  } catch (...) {
+    FAIL() << "Initializer list constructor fails";
+  }
+}
+
 TEST(ConstructorArray, InitializerListThrow) {
   try {
     s21::array<int, 0> b = {1, 2};
@@ -91,7 +110,8 @@ TEST(ConstructorArray, MoveLogic) {
 TEST(ConstructorArray, MoveOperOk) {
   try {
     s21::array<long, 2> a = {1, 2};
-    s21::array<long, 2> b = std::move(a);
+    s21::array<long, 2> b;
+    b = std::move(a);
     SUCCEED();
   } catch (...) {
     FAIL() << "Move constructor fails";
@@ -144,6 +164,26 @@ TEST(ElementAccessArray, OperAtOk) {
   ASSERT_EQ(a[1], b[1]);
 }
 
+TEST(ConstElementAccessArray, AtOk) {
+  const std::array<int, 2> a = {1, 2};
+  const s21::array<int, 2> b = {1, 2};
+  ASSERT_EQ(a.at(0), b.at(0));
+  ASSERT_EQ(a.at(1), b.at(1));
+}
+
+TEST(ConstElementAccessArray, AtThrow) {
+  const std::array<int, 2> a = {1, 2};
+  ASSERT_ANY_THROW(a.at(-100));
+  ASSERT_ANY_THROW(a.at(100));
+}
+
+TEST(ConstElementAccessArray, OperAtOk) {
+  const std::array<int, 2> a = {1, 2};
+  const s21::array<int, 2> b = {1, 2};
+  ASSERT_EQ(a[0], b[0]);
+  ASSERT_EQ(a[1], b[1]);
+}
+
 // TEST(ElementAccessArray, OperAtThrow) {  DEFAULT STD::ARRAY THROW UB
 // (-13112412412, 21421321, 132321.. )
 //   std::array<int, 2> a = {1, 2};
@@ -174,6 +214,29 @@ TEST(ElementAccessArray, Data) {
   }
 }
 
+TEST(ConstElementAccessArray, Front) {
+  const std::array<int, 2> a = {1, 2};
+  const s21::array<int, 2> b = {1, 2};
+  ASSERT_EQ(a.front(), b.front());
+}
+
+TEST(ConstElementAccessArray, Back) {
+  const std::array<int, 2> a = {1, 2};
+  const s21::array<int, 2> b = {1, 2};
+  ASSERT_EQ(a.back(), b.back());
+}
+
+TEST(ConstElementAccessArray, Data) {
+  const std::array<char, 5> a = {'a', 'b', 'c', 'd', 'e'};
+  const s21::array<char, 5> b = {'a', 'b', 'c', 'd', 'e'};
+  auto iter_a = a.data();
+  auto iter_b = b.data();
+  ASSERT_EQ(a.size(), b.size());
+  for (size_t i = 0; i != a.size(); ++i) {
+    ASSERT_EQ(*iter_a++, *iter_b++);
+  }
+}
+
 TEST(IteratorsArray, Begin) {
   std::array<int, 2> a = {1, 2};
   s21::array<int, 2> b = {1, 2};
@@ -184,6 +247,18 @@ TEST(IteratorsArray, End) {
   std::array<char, 2> a = {'a', 'b'};
   s21::array<char, 2> b = {'a', 'b'};
   ASSERT_EQ(*(a.end() - 1), *(b.end() - 1));
+}
+
+TEST(IteratorsArray, CBegin) {
+  std::array<int, 2> a = {1, 2};
+  s21::array<int, 2> b = {1, 2};
+  ASSERT_EQ(*a.cbegin(), *b.cbegin());
+}
+
+TEST(IteratorsArray, CEnd) {
+  std::array<char, 2> a = {'a', 'b'};
+  s21::array<char, 2> b = {'a', 'b'};
+  ASSERT_EQ(*(a.cend() - 1), *(b.cend() - 1));
 }
 
 TEST(CapacityArray, EmptyTrue) {

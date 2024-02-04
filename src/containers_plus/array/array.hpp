@@ -4,8 +4,9 @@
 #include <iostream>
 #include <tuple>
 namespace s21 {
-template <typename T, std::size_t N> class array {
-public:
+template <typename T, std::size_t N>
+class array {
+ public:
   using value_type = T;
   using reference = value_type &;
   using const_reference = const value_type &;
@@ -45,13 +46,13 @@ public:
   constexpr void swap(array &other) noexcept;
   constexpr void fill(const_reference value) noexcept;
 
-private:
+ private:
   value_type storage_[N] = {};
   size_type capacity_ = N;
   size_type size_ = 0;
 };
 
-}; // namespace s21
+};  // namespace s21
 #include "array.tpp"
 
-#endif // S21_CONTAINERS_SRC_S21_CONTAINERS_PLUS_ARRAY_ARRAY_HPP
+#endif  // S21_CONTAINERS_SRC_S21_CONTAINERS_PLUS_ARRAY_ARRAY_HPP

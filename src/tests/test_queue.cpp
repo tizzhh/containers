@@ -45,7 +45,8 @@ TEST(ConstructorQueue, MoveOk) {
 TEST(ConstructorQueue, MoveOperOk) {
   try {
     s21::queue<int> a({1, 2});
-    s21::queue<int> b = std::move(a);
+    s21::queue<int> b;
+    b = std::move(a);
     SUCCEED();
   } catch (...) {
     FAIL() << "Move oper constructor fails";

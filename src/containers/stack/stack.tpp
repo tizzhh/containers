@@ -24,7 +24,7 @@ constexpr stack<T>::stack(stack &&s) {
 
 template <typename T>
 constexpr stack<T> &stack<T>::operator=(stack &&s) {
-  top_ = std::move(s);
+  top_ = std::move(s.top_);
   return *this;
 }
 

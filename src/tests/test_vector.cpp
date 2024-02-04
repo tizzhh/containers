@@ -54,7 +54,8 @@ TEST(ConstructorVector, MoveOk) {
 TEST(ConstructorVector, MoveOperOk) {
   try {
     s21::vector<int> a = {1, 2};
-    s21::vector<int> b = std::move(a);
+    s21::vector<int> b;
+    b = std::move(a);
     SUCCEED();
   } catch (...) {
     FAIL() << "Move oper constructor fails";
@@ -87,6 +88,32 @@ TEST(ElementAccessVector, AtOperNotThrow) {
   ASSERT_NO_THROW(b[100]);
 }
 
+TEST(ConstElementAccessVector, AtOk) {
+  const std::vector<float> a = {1.0, 2.0};
+  const s21::vector<float> b = {1.0, 2.0};
+  ASSERT_EQ(a.at(0), b.at(0));
+  ASSERT_EQ(a.at(1), b.at(1));
+}
+
+TEST(ConstElementAccessVector, AtThrow) {
+  const s21::vector<float> b = {1.0, 2.0};
+  ASSERT_ANY_THROW(b.at(-100));
+  ASSERT_ANY_THROW(b.at(100));
+}
+
+TEST(ConstElementAccessVector, AtOperOk) {
+  const std::vector<float> a = {1.0, 2.0};
+  const s21::vector<float> b = {1.0, 2.0};
+  ASSERT_EQ(a[0], b[0]);
+  ASSERT_EQ(a[1], b[1]);
+}
+
+TEST(ConstElementAccessVector, AtOperNotThrow) {
+  const s21::vector<float> b = {1.0, 2.0};
+  ASSERT_NO_THROW(b[-100]);
+  ASSERT_NO_THROW(b[100]);
+}
+
 TEST(ElementAccessVector, Front) {
   std::vector<long> a = {1, 2};
   s21::vector<long> b = {1, 2};
@@ -104,6 +131,31 @@ TEST(ElementAccessVector, Back) {
 TEST(ElementAccessVector, Data) {
   std::vector<char> a = {'a', 'b', 'c'};
   s21::vector<char> b = {'a', 'b', 'c'};
+  auto iter_a = a.data();
+  auto iter_b = b.data();
+  ASSERT_EQ(a.size(), b.size());
+  for (size_t i = 0; i != a.size(); ++i) {
+    ASSERT_EQ(*iter_a++, *iter_b++);
+  }
+}
+
+TEST(ConstElementAccessVector, Front) {
+  const std::vector<long> a = {1, 2};
+  const s21::vector<long> b = {1, 2};
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.front(), b.front());
+}
+
+TEST(ConstElementAccessVector, Back) {
+  const std::vector<long> a = {1, 2};
+  const s21::vector<long> b = {1, 2};
+  ASSERT_EQ(a.back(), b.back());
+  ASSERT_EQ(a.back(), b.back());
+}
+
+TEST(ConstElementAccessVector, Data) {
+  const std::vector<char> a = {'a', 'b', 'c'};
+  const s21::vector<char> b = {'a', 'b', 'c'};
   auto iter_a = a.data();
   auto iter_b = b.data();
   ASSERT_EQ(a.size(), b.size());
@@ -201,8 +253,15 @@ TEST(CapacityVector, ShrinkToFit) {
   ASSERT_EQ(a.size(), b.size());
 }
 
-// 1) std нихрена не чистит втф, поэтому 226 строчка
-// 2) не компилится
+TEST(CapacityVector, Resize) {
+  std::vector<int> a = {1, 2, 3};
+  s21::vector<int> b = {1, 2, 3};
+  a.resize(10);
+  b.resize(10);
+  ASSERT_EQ(a.capacity(), b.capacity());
+  ASSERT_EQ(a.size(), b.size());
+}
+
 TEST(ModifiersVector, Clear) {
   std::vector<float> a = {1.0, 2.0, 3.0};
   s21::vector<float> b = {1.0, 2.0, 3.0};

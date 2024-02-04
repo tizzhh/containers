@@ -45,7 +45,8 @@ TEST(ConstructorStack, MoveOk) {
 TEST(ConstructorStack, MoveOperOk) {
   try {
     s21::stack<int> a({1, 2});
-    s21::stack<int> b = std::move(a);
+    s21::stack<int> b;
+    b = std::move(a);
     SUCCEED();
   } catch (...) {
     FAIL() << "Move oper constructor fails";

@@ -24,7 +24,7 @@ constexpr queue<T>::queue(queue &&q) {
 
 template <typename T>
 constexpr queue<T> &queue<T>::operator=(queue &&q) {
-  top_ = std::move(q);
+  top_ = std::move(q.top_);
   return *this;
 }
 

@@ -54,10 +54,11 @@ template <typename T>
 constexpr vector<T>& vector<T>::operator=(vector&& a) noexcept {
   storage_ = a.GetStorage();
   a.SetStorage(nullptr);
-  capacity_ = a.GetCapacity();
+  capacity_ = a.capacity();
   a.reserve(0);
-  size_ = a.GetSize();
+  size_ = a.size();
   a.resize(0);
+  return *this;
 }
 
 template <typename T>
@@ -181,7 +182,7 @@ constexpr void vector<T>::resize(size_type size) noexcept {
     value_type temp[size_];
     for (size_type i = 0; i != size_; i++) temp[i] = storage_[i];
     delete[] storage_;
-    capacity_ *= 2;
+    capacity_ = size;
     storage_ = new value_type[capacity_];
     for (size_type i = 0; i != size_; i++) storage_[i] = temp[i];
     for (size_type i = size_; i != size; i++) storage_[i] = 0;
