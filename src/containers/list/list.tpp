@@ -23,33 +23,34 @@ void list<T>::move_end_ptr_() {
 
 // List Functions
 template <typename T>
-list<T>::list() {
+constexpr list<T>::list() {
   alloc_new_front_back_end_();
 }
 
 template <typename T>
-list<T>::list(size_type n) : list() {
+constexpr list<T>::list(size_type n) : list() {
   for (size_t i = 0; i < n; ++i) {
     push_back(T());
   }
 }
 
 template <typename T>
-list<T>::list(std::initializer_list<value_type> const &items) : list() {
+constexpr list<T>::list(std::initializer_list<value_type> const &items)
+    : list() {
   for (const auto &elem : items) {
     push_back(elem);
   }
 }
 
 template <typename T>
-list<T>::list(const list &l) : list() {
+constexpr list<T>::list(const list &l) : list() {
   for (const auto &elem : l) {
     push_back(elem);
   }
 }
 
 template <typename T>
-list<T>::list(list &&l)
+constexpr list<T>::list(list &&l)
     : front_(l.front_), back_(l.back_), size_(l.size_), end_(l.end_) {
   node<T> *head = new node<T>();
   l.front_ = head;
@@ -62,7 +63,7 @@ list<T>::list(list &&l)
 }
 
 template <typename T>
-list<T> &list<T>::operator=(list &&l) {
+constexpr list<T> &list<T>::operator=(list &&l) {
   auto front_temp = front_, back_temp = back_, end_temp = end_;
   auto size_temp = size_;
 
@@ -359,49 +360,49 @@ void list<T>::insert_many_front(Args &&...args) {
 
 // List Element access
 template <typename T>
-typename list<T>::const_reference list<T>::back() const {
+constexpr typename list<T>::const_reference list<T>::back() const noexcept {
   return back_->data;
 }
 
 template <typename T>
-typename list<T>::const_reference list<T>::front() const {
+constexpr typename list<T>::const_reference list<T>::front() const noexcept {
   return front_->data;
 }
 
 // List Iterators
 template <typename T>
-typename list<T>::iterator list<T>::begin() {
+constexpr typename list<T>::iterator list<T>::begin() noexcept {
   return ListIterator(front_);
 }
 
 template <typename T>
-typename list<T>::iterator list<T>::end() {
+constexpr typename list<T>::iterator list<T>::end() noexcept {
   return ListIterator(end_);
 }
 
 template <typename T>
-typename list<T>::const_iterator list<T>::begin() const {
+constexpr typename list<T>::const_iterator list<T>::begin() const noexcept {
   return ListConstIterator(front_);
 }
 
 template <typename T>
-typename list<T>::const_iterator list<T>::end() const {
+constexpr typename list<T>::const_iterator list<T>::end() const noexcept {
   return ListConstIterator(end_);
 }
 
 // List capacity
 template <typename T>
-bool list<T>::empty() const noexcept {
+constexpr bool list<T>::empty() const noexcept {
   return size_ == 0;
 }
 
 template <typename T>
-typename list<T>::size_type list<T>::max_size() {
+constexpr typename list<T>::size_type list<T>::max_size() const noexcept {
   return std::numeric_limits<std::size_t>::max() / sizeof(node<T>) / 2;
 }
 
 template <typename T>
-typename list<T>::size_type list<T>::size() const noexcept {
+constexpr typename list<T>::size_type list<T>::size() const noexcept {
   return size_;
 }
 }  // namespace s21

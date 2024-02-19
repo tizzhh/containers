@@ -636,7 +636,6 @@ TEST(ModifiersList, Unique) {
   }
 }
 
-
 TEST(ModifiersList, UniqueEmpty) {
   std::list<long> a;
   s21::list<long> b;
@@ -696,7 +695,6 @@ TEST(ModifiersList, MergeFromEmpty) {
     ASSERT_EQ(*it1, *it2);
   }
 }
-
 
 TEST(ModifiersList, MergeIntoEmpty) {
   std::list<int> a({1, 3, 3, 5, 9});

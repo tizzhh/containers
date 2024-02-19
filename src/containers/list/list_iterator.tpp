@@ -7,14 +7,14 @@
 
 namespace s21 {
 template <typename T>
-ListIterator<T>::ListIterator(node<T>* ptr) : pointer_(ptr) {}
+constexpr ListIterator<T>::ListIterator(node<T>* ptr) : pointer_(ptr) {}
 
 template <typename T>
-ListIterator<T>::ListIterator(const ListConstIterator<T>& other)
+constexpr ListIterator<T>::ListIterator(const ListConstIterator<T>& other)
     : pointer_(other.get_ptr()) {}
 
 template <typename T>
-ListIterator<T>& ListIterator<T>::operator--() {
+constexpr ListIterator<T>& ListIterator<T>::operator--() noexcept {
   if (pointer_->prev != nullptr) {
     pointer_ = pointer_->prev;
   }
@@ -22,7 +22,7 @@ ListIterator<T>& ListIterator<T>::operator--() {
 }
 
 template <typename T>
-ListIterator<T>& ListIterator<T>::operator++() {
+constexpr ListIterator<T>& ListIterator<T>::operator++() noexcept {
   if (pointer_->next != nullptr) {
     pointer_ = pointer_->next;
   }
@@ -30,32 +30,32 @@ ListIterator<T>& ListIterator<T>::operator++() {
 }
 
 template <typename T>
-bool ListIterator<T>::operator==(const ListIterator& other) {
+constexpr bool ListIterator<T>::operator==(const ListIterator& other) noexcept {
   return pointer_ == other.pointer_;
 }
 
 template <typename T>
-bool ListIterator<T>::operator!=(const ListIterator& other) {
+constexpr bool ListIterator<T>::operator!=(const ListIterator& other) noexcept {
   return pointer_ != other.pointer_;
 }
 
 template <typename T>
-T& ListIterator<T>::operator*() {
+constexpr T& ListIterator<T>::operator*() {
   return pointer_->data;
 }
 
 template <typename T>
-node<T>* ListIterator<T>::operator->() {
+constexpr node<T>* ListIterator<T>::operator->() {
   return pointer_;
 }
 
 template <typename T>
-node<T>* ListIterator<T>::get_ptr() const {
+constexpr node<T>* ListIterator<T>::get_ptr() const {
   return pointer_;
 }
 
 template <typename T>
-ListIterator<T>& ListIterator<T>::advance(int num) {
+constexpr ListIterator<T>& ListIterator<T>::advance(int num) noexcept {
   if (num > 0) {
     while (num--) {
       operator++();
@@ -69,51 +69,54 @@ ListIterator<T>& ListIterator<T>::advance(int num) {
 }
 
 template <typename T>
-ListIterator<T>& ListIterator<T>::next(int num) {
+constexpr ListIterator<T>& ListIterator<T>::next(int num) noexcept {
   advance(num);
   return *this;
 }
 
 template <typename T>
-ListIterator<T>& ListIterator<T>::prev(int num) {
+constexpr ListIterator<T>& ListIterator<T>::prev(int num) noexcept {
   advance(num);
   return *this;
 }
 
 template <typename T>
-ListConstIterator<T>::ListConstIterator(node<T>* ptr) : pointer_(ptr) {}
+constexpr ListConstIterator<T>::ListConstIterator(node<T>* ptr)
+    : pointer_(ptr) {}
 
 template <typename T>
-ListConstIterator<T>::ListConstIterator(const ListIterator<T>& other)
+constexpr ListConstIterator<T>::ListConstIterator(const ListIterator<T>& other)
     : pointer_(other.get_ptr()) {}
 
 template <typename T>
-bool ListConstIterator<T>::operator==(const ListConstIterator& other) {
+constexpr bool ListConstIterator<T>::operator==(
+    const ListConstIterator& other) noexcept {
   return pointer_ == other.pointer_;
 }
 
 template <typename T>
-bool ListConstIterator<T>::operator!=(const ListConstIterator& other) {
+constexpr bool ListConstIterator<T>::operator!=(
+    const ListConstIterator& other) noexcept {
   return pointer_ != other.pointer_;
 }
 
 template <typename T>
-const node<T>* ListConstIterator<T>::operator->() {
+constexpr const node<T>* ListConstIterator<T>::operator->() const {
   return pointer_;
 }
 
 template <typename T>
-node<T>* ListConstIterator<T>::get_ptr() const {
+constexpr node<T>* ListConstIterator<T>::get_ptr() const {
   return pointer_;
 }
 
 template <typename T>
-const T& ListConstIterator<T>::operator*() {
+constexpr const T& ListConstIterator<T>::operator*() const {
   return pointer_->data;
 }
 
 template <typename T>
-ListConstIterator<T>& ListConstIterator<T>::operator--() {
+constexpr ListConstIterator<T>& ListConstIterator<T>::operator--() noexcept {
   if (pointer_->prev != nullptr) {
     pointer_ = pointer_->prev;
   }
@@ -121,7 +124,7 @@ ListConstIterator<T>& ListConstIterator<T>::operator--() {
 }
 
 template <typename T>
-ListConstIterator<T>& ListConstIterator<T>::operator++() {
+constexpr ListConstIterator<T>& ListConstIterator<T>::operator++() noexcept {
   if (pointer_->next != nullptr) {
     pointer_ = pointer_->next;
   }
@@ -129,7 +132,8 @@ ListConstIterator<T>& ListConstIterator<T>::operator++() {
 }
 
 template <typename T>
-ListConstIterator<T>& ListConstIterator<T>::advance(int num) {
+constexpr ListConstIterator<T>& ListConstIterator<T>::advance(
+    int num) noexcept {
   if (num > 0) {
     while (num--) {
       operator++();
@@ -143,13 +147,13 @@ ListConstIterator<T>& ListConstIterator<T>::advance(int num) {
 }
 
 template <typename T>
-ListConstIterator<T>& ListConstIterator<T>::next(int num) {
+constexpr ListConstIterator<T>& ListConstIterator<T>::next(int num) noexcept {
   advance(num);
   return *this;
 }
 
 template <typename T>
-ListConstIterator<T>& ListConstIterator<T>::prev(int num) {
+constexpr ListConstIterator<T>& ListConstIterator<T>::prev(int num) noexcept {
   advance(num);
   return *this;
 }

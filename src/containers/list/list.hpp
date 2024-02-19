@@ -26,28 +26,28 @@ class list {
   using const_iterator = ListConstIterator<T>;
   using size_type = size_t;
 
-  list();
-  list(size_type n);
-  list(std::initializer_list<value_type> const &items);
-  list(const list &l);
-  list(list &&l);
+  constexpr list();
+  constexpr list(size_type n);
+  constexpr list(std::initializer_list<value_type> const &items);
+  constexpr list(const list &l);
+  constexpr list(list &&l);
   ~list();
-  list &operator=(list &&l);
+  constexpr list &operator=(list &&l);
 
   // List Element access
-  const_reference front() const;
-  const_reference back() const;
+  constexpr const_reference front() const noexcept;
+  constexpr const_reference back() const noexcept;
 
   // List Iterators
-  iterator begin();
-  iterator end();
-  const_iterator begin() const;
-  const_iterator end() const;
+  constexpr iterator begin() noexcept;
+  constexpr iterator end() noexcept;
+  constexpr const_iterator begin() const noexcept;
+  constexpr const_iterator end() const noexcept;
 
   // List Capacity
-  bool empty() const noexcept;
-  size_type size() const noexcept;
-  size_type max_size();
+  constexpr bool empty() const noexcept;
+  constexpr size_type size() const noexcept;
+  constexpr size_type max_size() const noexcept;
 
   // List Modifiers
   void clear();
