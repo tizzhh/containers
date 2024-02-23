@@ -192,7 +192,7 @@ void Node<T, K>::fixHeight() {
     balanceShit();
   }
   if (prev) {
-    puts("here");
+    // puts("here");
     prev->fixHeight();
   }
 }
@@ -201,7 +201,7 @@ template <typename T, typename K>
 void Node<T, K>::balanceShit() {
   const int diff = calcDiff();
   if (abs(diff) > 1) {
-    std::cout << "delaem";
+    // std::cout << "delaem";
     if (diff < 0) {
       if (right->calcDiff() <= 0)
         leftSmallRotate();

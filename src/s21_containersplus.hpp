@@ -5,6 +5,7 @@
 #include "containers/queue/queue.hpp"
 #include "containers/stack/stack.hpp"
 #include "containers/vector/vector.hpp"
+#include "containers/set/set.hpp"
 #include "containers_plus/array/array.hpp"
 
 #endif

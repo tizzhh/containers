@@ -32,9 +32,9 @@ class Node {
   void leftBigRotate();
   void rightBigRotate();
   T item;
+  K item_value;  // key
   Node *left = nullptr, *right = nullptr, *prev = nullptr;
   size_t height = 1;
-  K item_value;  // key
   static Node end_;
   Node *root_;
 };

@@ -5,7 +5,7 @@ LFLAGS = -lgtest
 
 .PHONY: clean all test rebuild gcov_report
 
-HEADERS = s21_containerplus.hpp
+HEADERS = s21_containersplus.hpp
 
 HPP_FILES = $(wildcard */*/*.hpp)
 TPP_FILES = $(wildcard */*/*.tpp)
