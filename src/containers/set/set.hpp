@@ -94,7 +94,9 @@ public:
     return result;
   }
   void erase(iterator pos) {
-    root_->erase(root_->find(*pos));
+    // root_ = root_->erase(root_->find(*pos));
+    auto iter = root_->find(*pos);
+    root_ = root_->erase(iter);
     --size_;  
   }
   void swap(set &other) {

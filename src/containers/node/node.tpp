@@ -160,21 +160,42 @@ constexpr Node<T, K> *Node<T, K>::erase(Node<T, K> *iter) {
     iter->item = temp->item;
     iter->item_value = temp->item_value;
     temp->prev->fixHeight();  // need to be tested
+
+    if (iter->left == temp) {
+      iter->left = temp->left;
+    } else if (iter->right == temp) {
+      iter->right = temp->right;
+    }
+
+    temp->right = nullptr;
+    temp->left = nullptr;
+    if (temp->prev->right == temp) {
+      temp->prev->right = nullptr; // может быть не очень
+    }
+    temp->prev = nullptr;
     delete temp;
-    return iter;
+    return iter->getHead()->begin();
 
   } else {
     if (iter->item < iter->prev->item) {
-      iter->prev->left = iter->right;
-      iter->right->prev = iter->prev;
+      iter->prev->left = iter->left;
+      if (iter->left != nullptr) {
+        iter->left->prev = iter->prev;
+      }
     } else {
       iter->prev->right = iter->right;
-      iter->right->prev = iter->prev;
+      if (iter->right != nullptr) {
+        iter->right->prev = iter->prev;
+      }
     }
     Node *to_return = iter->prev;
     to_return->fixHeight();  // need to be tested
+    iter->right = nullptr;
+    iter->left = nullptr;
+    iter->prev = nullptr;
     delete iter;
-    return to_return;
+    // return to_return;
+    return to_return->getHead()->begin();
   }
 }
 
