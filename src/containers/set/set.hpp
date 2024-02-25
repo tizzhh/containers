@@ -107,9 +107,19 @@ public:
     clear();
   }
 
-  iterator begin() { return SetIterator(root_->begin()); }
+  iterator begin() {
+    if (size_ == 0) {
+      return SetIterator(root_->end());
+    }
+    return SetIterator(root_->begin());
+  }
   iterator end() { return SetIterator(root_->end()); }
-  const_iterator cbegin() const { return SetConstIterator(root_->begin()); }
+  const_iterator cbegin() const {
+    if (size_ == 0) {
+      return SetConstIterator(root_->end());
+    }
+    return SetConstIterator(root_->begin());
+  }
   const_iterator cend() const { return SetConstIterator(root_->end()); }
   constexpr bool empty() { return size_ == 0; }
   constexpr size_type size() { return size_; }
@@ -138,14 +148,19 @@ public:
   }
   void erase(iterator pos) {
     // root_ = root_->erase(root_->find(*pos));
-    auto iter = root_->find(*pos);
-    root_ = root_->erase(iter);
-    --size_;  
+    if (pos != end()) {
+      auto iter = root_->find(*pos);
+      root_ = root_->erase(iter);
+      --size_;  
+    }
   }
   void swap(set &other) {
     auto temp = other.root_;
+    auto temp_size = other.size_;
     other.root_ = root_;
+    other.size_ = size_;
     root_ = temp;
+    size_ = temp_size;
   }
   void merge(set &other) {
     s21::vector<value_type> to_delete;

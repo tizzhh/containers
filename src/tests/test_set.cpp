@@ -290,9 +290,11 @@ TEST(ModifiersSet, Clear) {
   ASSERT_EQ(a.size(), b.size());
   ASSERT_EQ(a.empty(), b.empty());
   ASSERT_EQ(*b.end(), char());
-  // b.begin(); // setiterator (nullptr) дает сегу
-  // assert(b.begin() == nullptr);
-  // ASSERT_EQ(b.begin(), nullptr);
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
 }
 
 TEST(ModifiersSet, InsertRight) {
@@ -564,23 +566,19 @@ TEST(ModifiersSet, EraseSeventhElem) {
   }
 }
 
-// проблемы с эндом
-// TEST(ModifiersSet, EraseEnd) {
-//   std::set<int> a({1, 2, 3});
-//   s21::set<int> b({1, 2, 3});
-//   auto it1 = a.end();
-//   auto it2 = b.end();
-//   a.erase(it1);
-//   b.erase(it2);
-//   ASSERT_EQ(a.size(), b.size());
-//   ASSERT_EQ(a.empty(), b.empty());
-//   ASSERT_EQ(*b.end(), int());
-//   it1 = a.begin();
-//   it2 = b.begin();
-//   for (; it1 != a.end(); ++it1, ++it2) {
-//     ASSERT_EQ(*it1, *it2);
-//   }
-// }
+TEST(ModifiersSet, EraseEnd) {
+  std::set<int> a({1, 2, 3});
+  s21::set<int> b({1, 2, 3});
+  b.erase(b.end());
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
 
 TEST(ModifiersSet, EraseMid) {
   std::set<int> a = {1, 2, 3};
@@ -624,29 +622,74 @@ TEST(ModifiersSet, Swap) {
   }
 }
 
-// сега из-за итератора на нуллптр, я так понимаю
-// TEST(ModifiersSet, SwapEmpty) {
-//   std::set<int> a;
-//   std::set<int> a1;
-//   s21::set<int> b;
-//   s21::set<int> b1;
-//   a.swap(a1);
-//   b.swap(b1);
-//   ASSERT_EQ(a.size(), b.size());
-//   ASSERT_EQ(a.empty(), b.empty());
-//   ASSERT_EQ(a1.size(), b1.size());
-//   ASSERT_EQ(a1.empty(), b1.empty());
-//   auto it1 = a.begin();
-//   auto it2 = b.begin();
-//   for (; it1 != a.end(); ++it1, ++it2) {
-//     ASSERT_EQ(*it1, *it2);
-//   }
-//   it1 = a1.begin();
-//   it2 = b1.begin();
-//   for (; it1 != a1.end(); ++it1, ++it2) {
-//     ASSERT_EQ(*it1, *it2);
-//   }
-// }
+TEST(ModifiersSet, SwapFromEmpty) {
+  std::set<int> a({1, 2, 3});
+  std::set<int> a1;
+  s21::set<int> b({1, 2, 3});
+  s21::set<int> b1;
+  a.swap(a1);
+  b.swap(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  it1 = a1.begin();
+  it2 = b1.begin();
+  for (; it1 != a1.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersSet, SwapToEmpty) {
+  std::set<int> a;
+  std::set<int> a1({1, 2, 3});
+  s21::set<int> b;
+  s21::set<int> b1({1, 2, 3});
+  a.swap(a1);
+  b.swap(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  it1 = a1.begin();
+  it2 = b1.begin();
+  for (; it1 != a1.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersSet, SwapEmpty) {
+  std::set<int> a;
+  std::set<int> a1;
+  s21::set<int> b;
+  s21::set<int> b1;
+  a.swap(a1);
+  b.swap(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  it1 = a1.begin();
+  it2 = b1.begin();
+  for (; it1 != a1.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
 
 TEST(ModifiersSet, MergeThisSmaller) {
   std::set<int> a({1, 3, 5});
@@ -689,6 +732,24 @@ TEST(ModifiersSet, MergeIntoEmpty) {
   std::set<int> a1({2, 3, 4, 7, 8});
   s21::set<int> b;
   s21::set<int> b1({2, 3, 4, 7, 8});
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersSet, MergeFromEmpty) {
+  std::set<int> a({2, 3, 4, 7, 8});
+  std::set<int> a1;
+  s21::set<int> b({2, 3, 4, 7, 8});
+  s21::set<int> b1;
   a.merge(a1);
   b.merge(b1);
   ASSERT_EQ(a.size(), b.size());
