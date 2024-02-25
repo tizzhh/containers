@@ -23,36 +23,36 @@ TEST(ConstructorSet, InitializerListOk) {
   }
 }
 
-// SegFaults
-// TEST(ConstructorSet, CopyOk) {
-//   try {
-//     s21::set<int> a({1, 2});
-//     s21::set<int> b = a;
-//     SUCCEED();
-//   } catch (...) {
-//     FAIL() << "Copy constructor fails";
-//   }
-// }
+TEST(ConstructorSet, CopyOk) {
+  try {
+    s21::set<int> a({1, 2});
+    s21::set<int> b = a;
+    SUCCEED();
+  } catch (...) {
+    FAIL() << "Copy constructor fails";
+  }
+}
 
-// TEST(ConstructorSet, MoveOk) {
-//   try {
-//     s21::set<int> a({1, 2});
-//     s21::set<int> b(std::move(a));
-//     SUCCEED();
-//   } catch (...) {
-//     FAIL() << "Move constructor fails";
-//   }
-// }
+TEST(ConstructorSet, MoveOk) {
+  try {
+    s21::set<int> a({1, 2});
+    s21::set<int> b(std::move(a));
+    SUCCEED();
+  } catch (...) {
+    FAIL() << "Move constructor fails";
+  }
+}
 
-// TEST(ConstructorSet, MoveOperOk) {
-//   try {
-//     s21::set<int> a({1, 2});
-//     s21::set<int> b = std::move(a);
-//     SUCCEED();
-//   } catch (...) {
-//     FAIL() << "Move oper constructor fails";
-//   }
-// }
+TEST(ConstructorSet, MoveOperOk) {
+  try {
+    s21::set<int> a({1, 2});
+    s21::set<int> b;
+    b = std::move(a);
+    SUCCEED();
+  } catch (...) {
+    FAIL() << "Move oper constructor fails";
+  }
+}
 
 TEST(IteratorSet, Begin) {
   std::set<long> a({1, 2, 3});

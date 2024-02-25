@@ -92,7 +92,7 @@ constexpr Node<T, K> *Node<T, K>::find(const T &item) {
 template <typename T, typename K>
 Node<T, K> *Node<T, K>::getHead() {
   Node *head = this;
-  while (head->prev) {
+  while (head && head->prev) {
     head = head->prev;
   }
   return head;

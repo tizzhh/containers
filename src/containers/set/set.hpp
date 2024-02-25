@@ -84,14 +84,23 @@ public:
     for (auto i = items.begin(); i != items.end(); ++i)
       root_->insert(*i);
   }
-  constexpr set(const set &s) : root_(s.root_) {}
-  constexpr set(set &&s) {
-    auto temp = std::move(s);
-    root_ = temp.root_;
+  constexpr set(const set &s) {
+    for (auto iter = s.cbegin(); iter != s.cend(); ++iter) {
+      insert(*iter);
+    }
   }
-  constexpr set &operator=(set &&a) noexcept {
-    auto temp = std::move(a);
-    root_ = temp.root_;
+  constexpr set(set &&s) {
+    if (&s != this) {
+      root_ = s.root_;
+      s.root_ = nullptr;
+    }
+  }
+  constexpr set &operator=(set &&s) noexcept {
+    if (&s != this) {
+      root_ = s.root_;
+      s.root_ = nullptr;
+    }
+    return *this;
   }
   ~set() {
     clear();
@@ -114,7 +123,12 @@ public:
     size_ = 0;
   }
   std::pair<iterator, bool> insert(const value_type &value) {
-    auto iter = root_->insert(value);
+    std::pair<iterator, bool> iter{root_, true};
+    if (empty()) {
+      root_ = new Node(value);
+    } else {
+      iter = root_->insert(value);
+    }
     std::pair<iterator, bool> result{SetIterator(iter.first), iter.second};
     if (result.second) {
       ++size_;
