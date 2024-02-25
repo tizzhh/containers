@@ -60,6 +60,22 @@ TEST(IteratorSet, Begin) {
   ASSERT_EQ(*a.begin(), *b.begin());
 }
 
+TEST(IteratorSet, Eq) {
+  std::set<long> a({1, 2, 3});
+  std::set<long> a1({1, 2, 3});
+  s21::set<long> b({1, 2, 3});
+  s21::set<long> b1({1, 2, 3});
+  ASSERT_EQ(a.begin() == a1.begin(), b.begin() == b1.begin());
+}
+
+TEST(IteratorSet, NotEq) {
+  std::set<long> a({1, 2, 3});
+  std::set<long> a1({1, 2, 3});
+  s21::set<long> b({1, 2, 3});
+  s21::set<long> b1({1, 2, 3});
+  ASSERT_EQ(a.begin() != a1.begin(), b.begin() != b1.begin());
+}
+
 TEST(IteratorSet, Incr) {
   std::set<long> a({1, 2, 3});
   s21::set<long> b({1, 2, 3});
@@ -70,15 +86,15 @@ TEST(IteratorSet, Incr) {
   ASSERT_EQ(*iter1, *iter2);
 }
 
-// TEST(IteratorSet, IncrBackwards) {
-//   std::set<long> a({3, 2, 1});
-//   s21::set<long> b({3, 2, 1});
-//   auto iter1 = a.begin();
-//   auto iter2 = b.begin();
-//   ++iter1;
-//   ++iter2;
-//   ASSERT_EQ(*iter1, *iter2);
-// }
+TEST(IteratorSet, IncrBackwards) {
+  std::set<long> a({3, 2, 1});
+  s21::set<long> b({3, 2, 1});
+  auto iter1 = a.begin();
+  auto iter2 = b.begin();
+  ++iter1;
+  ++iter2;
+  ASSERT_EQ(*iter1, *iter2);
+}
 
 TEST(IteratorSet, IncrLastElem) {
   s21::set<long> b({1, 2, 3});
@@ -99,6 +115,32 @@ TEST(IteratorSet, IncrLastElem) {
 //   ASSERT_EQ(*iter1, *iter2);
 // }
 
+TEST(IteratorSet, Decr1) {
+  std::set<long> a({1, 2, 3});
+  s21::set<long> b({1, 2, 3});
+  auto iter1 = a.begin();
+  auto iter2 = b.begin();
+  ++iter1;
+  --iter1;
+  ++iter2;
+  --iter2;
+  ASSERT_EQ(*iter1, *iter2);
+}
+
+TEST(IteratorSet, Decr2) {
+  std::set<long> a({1, 2, 3, 4, 5});
+  s21::set<long> b({1, 2, 3, 4, 5});
+  auto iter1 = a.begin();
+  auto iter2 = b.begin();
+  ++iter1;
+  ++iter1;
+  --iter1;
+  ++iter2;
+  ++iter2;
+  --iter2;
+  ASSERT_EQ(*iter1, *iter2);
+}
+
 TEST(IteratorSet, DecrFirstElement) {
   s21::set<long> b({1, 2, 3});
   auto iter2 = b.begin();
@@ -111,62 +153,104 @@ TEST(IteratorSet, End) {
   ASSERT_EQ(*b.end(), long());
 }
 
-// TEST(ConstIteratorSet, Begin) {
-//   const std::set<long> a({1, 2, 3});
-//   const s21::set<long> b({1, 2, 3});
-//   ASSERT_EQ(*a.cbegin(), *b.cbegin());
-// }
+TEST(ConstIteratorSet, Begin) {
+  const std::set<long> a({1, 2, 3});
+  const s21::set<long> b({1, 2, 3});
+  ASSERT_EQ(*a.cbegin(), *b.cbegin());
+}
 
-// TEST(ConstIteratorSet, Incr) {
+TEST(ConstIteratorSet, Eq) {
+  const std::set<long> a({1, 2, 3});
+  const std::set<long> a1({1, 2, 3});
+  const s21::set<long> b({1, 2, 3});
+  const s21::set<long> b1({1, 2, 3});
+  ASSERT_EQ(a.cbegin() == a1.cbegin(), b.cbegin() == b1.cbegin());
+}
+
+TEST(ConstIteratorSet, NotEq) {
+  const std::set<long> a({1, 2, 3});
+  const std::set<long> a1({1, 2, 3});
+  const s21::set<long> b({1, 2, 3});
+  const s21::set<long> b1({1, 2, 3});
+  ASSERT_EQ(a.cbegin() != a1.cbegin(), b.cbegin() != b1.cbegin());
+}
+
+TEST(ConstIteratorSet, Incr) {
+  const std::set<long> a({1, 2, 3});
+  const s21::set<long> b({1, 2, 3});
+  auto iter1 = a.cbegin();
+  auto iter2 = b.cbegin();
+  ++iter1;
+  ++iter2;
+  ASSERT_EQ(*iter1, *iter2);
+}
+
+TEST(ConstIteratorSet, IncrBackwards) {
+  const std::set<long> a({3, 2, 1});
+  const s21::set<long> b({3, 2, 1});
+  auto iter1 = a.cbegin();
+  auto iter2 = b.cbegin();
+  ++iter1;
+  ++iter2;
+  ASSERT_EQ(*iter1, *iter2);
+}
+
+TEST(ConstIteratorSet, IncrLastElem) {
+  const s21::set<long> b({1, 2, 3});
+  auto iter2 = b.cbegin();
+  ++iter2;
+  ++iter2;
+  ++iter2;
+  ASSERT_EQ(*iter2, *b.cend());
+}
+
+// TEST(ConstIteratorSet, Decr) {
 //   const std::set<long> a({1, 2, 3});
 //   const s21::set<long> b({1, 2, 3});
-//   auto iter1 = a.cbegin();
-//   auto iter2 = b.cbegin();
-//   ++iter1;
-//   ++iter2;
+//   auto iter1 = a.cend();
+//   auto iter2 = b.cend();
+//   --iter1;
+//   --iter2;
 //   ASSERT_EQ(*iter1, *iter2);
 // }
 
-// // TEST(ConstIteratorSet, IncrBackwards) {
-// //   std::set<long> a({3, 2, 1});
-// //   s21::set<lcong> b({3, 2, 1});
-// //   auto iter1 = a.begin();
-// //   auto iter2 = b.begin();
-// //   ++iter1;
-// //   ++iter2;
-// //   ASSERT_EQ(*iter1, *iter2);
-// // }
+TEST(ConstIteratorSet, Decr1) {
+  const std::set<long> a({1, 2, 3});
+  const s21::set<long> b({1, 2, 3});
+  auto iter1 = a.cbegin();
+  auto iter2 = b.cbegin();
+  ++iter1;
+  --iter1;
+  ++iter2;
+  --iter2;
+  ASSERT_EQ(*iter1, *iter2);
+}
 
-// TEST(ConstIteratorSet, IncrLastElem) {
-//   const s21::set<long> b({1, 2, 3});
-//   auto iter2 = b.cbegin();
-//   ++iter2;
-//   ++iter2;
-//   ++iter2;
-//   ASSERT_EQ(*iter2, *b.cend());
-// }
+TEST(ConstIteratorSet, Decr2) {
+  const std::set<long> a({1, 2, 3, 4, 5});
+  const s21::set<long> b({1, 2, 3, 4, 5});
+  auto iter1 = a.cbegin();
+  auto iter2 = b.cbegin();
+  ++iter1;
+  ++iter1;
+  --iter1;
+  ++iter2;
+  ++iter2;
+  --iter2;
+  ASSERT_EQ(*iter1, *iter2);
+}
 
-// // TEST(ConstIteratorSet, Decr) {
-// //   std::set<long> a({1, 2, 3});
-// //   s21::set<lcong> b({1, 2, 3});
-// //   auto iter1 = a.end();
-// //   auto iter2 = b.end();
-// //   --iter1;
-// //   --iter2;
-// //   ASSERT_EQ(*iter1, *iter2);
-// // }
+TEST(ConstIteratorSet, DecrFirstElement) {
+  const s21::set<long> b({1, 2, 3});
+  auto iter2 = b.cbegin();
+  --iter2;
+  ASSERT_EQ(*iter2, *b.cbegin());
+}
 
-// TEST(ConstIteratorSet, DecrFirstElement) {
-//   const s21::set<long> b({1, 2, 3});
-//   auto iter2 = b.cbegin();
-//   --iter2;
-//   ASSERT_EQ(*iter2, *b.cbegin());
-// }
-
-// TEST(ConstIteratorSet, End) {
-//   const s21::set<long> b({1, 2, 3});
-//   ASSERT_EQ(*b.cend(), long());
-// }
+TEST(ConstIteratorSet, End) {
+  const s21::set<long> b({1, 2, 3});
+  ASSERT_EQ(*b.cend(), long());
+}
 
 TEST(CapacitySet, EmptyTrue) {
   std::set<int> a;
