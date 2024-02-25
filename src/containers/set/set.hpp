@@ -2,6 +2,7 @@
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_SET_SET_HPP
 
 #include "../node/node.hpp"
+#include "../vector/vector.hpp"
 #include <iostream>
 #include <limits>
 namespace s21 {
@@ -147,8 +148,15 @@ public:
     root_ = temp;
   }
   void merge(set &other) {
+    s21::vector<value_type> to_delete;
     for (auto i : other) {
-      insert(i);
+      if (!contains(i)) {
+        to_delete.push_back(i);
+        insert(i);
+      }
+    }
+    for (size_t i = 0; i < to_delete.size(); ++i) {
+      other.erase(other.find(to_delete[i]));
     }
   }
   iterator find(const key_type &key) { return SetIterator(root_->find(key)); };

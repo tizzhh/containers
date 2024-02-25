@@ -54,7 +54,8 @@ TEST(ConstructorList, MoveOk) {
 TEST(ConstructorList, MoveOperOk) {
   try {
     s21::list<int> a({1, 2});
-    s21::list<int> b = std::move(a);
+    s21::list<int> b;
+    b = std::move(a);
     SUCCEED();
   } catch (...) {
     FAIL() << "Move oper constructor fails";

@@ -29,7 +29,7 @@ Node<T, K>::~Node() {
 template <typename T, typename K>
 constexpr Node<T, K> *Node<T, K>::begin() {
   Node *temp = getHead();
-  while (temp->left) temp = temp->left;
+  while (temp && temp->left) temp = temp->left;
   return temp;
 }
 
@@ -170,12 +170,24 @@ constexpr Node<T, K> *Node<T, K>::erase(Node<T, K> *iter) {
     temp->right = nullptr;
     temp->left = nullptr;
     if (temp->prev->right == temp) {
-      temp->prev->right = nullptr; // может быть не очень
+      temp->prev->right = nullptr;
     }
     temp->prev = nullptr;
     delete temp;
     return iter->getHead()->begin();
 
+  } else if (!iter->prev) { // 2, 3, 4, 7, 8 erase(2), erase(3)
+    if (iter->right) {
+      auto res = iter->right;
+      iter->right->prev = nullptr;
+      iter->right = nullptr;
+      delete iter;
+      return res->getHead()->begin();
+    } else {
+      item = 0;
+      item_value = 0;
+      height = 0;
+    }
   } else {
     if (iter->item < iter->prev->item) {
       iter->prev->left = iter->left;
@@ -197,6 +209,7 @@ constexpr Node<T, K> *Node<T, K>::erase(Node<T, K> *iter) {
     // return to_return;
     return to_return->getHead()->begin();
   }
+  return getHead()->begin();
 }
 
 // balanceshit
@@ -296,7 +309,9 @@ void Node<T, K>::leftBigRotate() {
       prev->prev->right = prev;
   }
   fixHeight();
-  prev->right->fixHeight();
+  if (prev->right) {
+    prev->right->fixHeight();
+  }
 
   // return prev; // to return new head
 }
@@ -320,7 +335,9 @@ void Node<T, K>::rightBigRotate() {
       prev->prev->right = prev;
   }
   fixHeight();
-  prev->left->fixHeight();
+  if (prev->left) {
+    prev->left->fixHeight();
+  }
 }
 };  // namespace s21
 

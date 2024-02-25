@@ -329,7 +329,6 @@ TEST(ModifiersSet, InsertLeft) {
   ASSERT_EQ(res1.second, res2.second);
 }
 
-// неправильно работает тут, если -1 и потом -2
 TEST(ModifiersSet, InsertManyRightLeft) {
   std::set<int> a({1, 2, 3});
   s21::set<int> b({1, 2, 3});
@@ -337,14 +336,14 @@ TEST(ModifiersSet, InsertManyRightLeft) {
   a.insert(5);
   a.insert(6);
   auto res1 = a.insert(0);
-  // a.insert(-1);
-  // a.insert(-2);
+  a.insert(-1);
+  a.insert(-2);
   b.insert(4);
   b.insert(5);
   b.insert(6);
   auto res2 = b.insert(0);
-  // b.insert(-1);
-  // b.insert(-2)
+  b.insert(-1);
+  b.insert(-2);
   ASSERT_EQ(a.size(), b.size());
   ASSERT_EQ(a.empty(), b.empty());
   ASSERT_EQ(*b.end(), int());
@@ -649,42 +648,59 @@ TEST(ModifiersSet, Swap) {
 //   }
 // }
 
-// TEST(ModifiersSet, MergeThisSmaller) {
-//   std::set<int> a({1, 3, 5});
-//   std::set<int> a1({2, 3, 4, 4, 7, 8});
-//   s21::set<int> b({1, 3, 5});
-//   s21::set<int> b1({2, 3, 4, 4, 7, 8});
-//   a.merge(a1);
-//   b.merge(b1);
-//   ASSERT_EQ(a.size(), b.size());
-//   ASSERT_EQ(a.empty(), b.empty());
-//   ASSERT_EQ(a1.size(), b1.size());
-//   ASSERT_EQ(a1.empty(), b1.empty());
-//   auto it1 = a.begin();
-//   auto it2 = b.begin();
-//   for (; it1 != a.end(); ++it1, ++it2) {
-//     ASSERT_EQ(*it1, *it2);
-//   }
-// }
+TEST(ModifiersSet, MergeThisSmaller) {
+  std::set<int> a({1, 3, 5});
+  std::set<int> a1({2, 3, 4, 7, 8});
+  s21::set<int> b({1, 3, 5});
+  s21::set<int> b1({2, 3, 4, 7, 8});
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
 
-// сега
-// TEST(ModifiersSet, MergeOtherSmaller) {
-//   std::set<int> a({1, 3, 3, 5, 9});
-//   std::set<int> a1({2, 3, 4, 4, 7, 8});
-//   s21::set<int> b({1, 3, 3, 5, 9});
-//   s21::set<int> b1({2, 3, 4, 4, 7, 8});
-//   a.merge(a1);
-//   b.merge(b1);
-//   ASSERT_EQ(a.size(), b.size());
-//   ASSERT_EQ(a.empty(), b.empty());
-//   ASSERT_EQ(a1.size(), b1.size());
-//   ASSERT_EQ(a1.empty(), b1.empty());
-//   auto it1 = a.begin();
-//   auto it2 = b.begin();
-//   for (; it1 != a.end(); ++it1, ++it2) {
-//     ASSERT_EQ(*it1, *it2);
-//   }
-// }
+TEST(ModifiersSet, MergeOtherSmaller) {
+  std::set<int> a({1, 3, 5, 9});
+  std::set<int> a1({2, 3, 4, 7, 8});
+  s21::set<int> b({1, 3, 5, 9});
+  s21::set<int> b1({2, 3, 4, 7, 8});
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersSet, MergeIntoEmpty) {
+  std::set<int> a;
+  std::set<int> a1({2, 3, 4, 7, 8});
+  s21::set<int> b;
+  s21::set<int> b1({2, 3, 4, 7, 8});
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
 
 TEST(LookUpSet, FindLeft) {
   std::set<int> a({1, 2, 3});
