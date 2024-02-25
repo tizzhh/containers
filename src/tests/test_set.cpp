@@ -111,6 +111,63 @@ TEST(IteratorSet, End) {
   ASSERT_EQ(*b.end(), long());
 }
 
+// TEST(ConstIteratorSet, Begin) {
+//   const std::set<long> a({1, 2, 3});
+//   const s21::set<long> b({1, 2, 3});
+//   ASSERT_EQ(*a.cbegin(), *b.cbegin());
+// }
+
+// TEST(ConstIteratorSet, Incr) {
+//   const std::set<long> a({1, 2, 3});
+//   const s21::set<long> b({1, 2, 3});
+//   auto iter1 = a.cbegin();
+//   auto iter2 = b.cbegin();
+//   ++iter1;
+//   ++iter2;
+//   ASSERT_EQ(*iter1, *iter2);
+// }
+
+// // TEST(ConstIteratorSet, IncrBackwards) {
+// //   std::set<long> a({3, 2, 1});
+// //   s21::set<lcong> b({3, 2, 1});
+// //   auto iter1 = a.begin();
+// //   auto iter2 = b.begin();
+// //   ++iter1;
+// //   ++iter2;
+// //   ASSERT_EQ(*iter1, *iter2);
+// // }
+
+// TEST(ConstIteratorSet, IncrLastElem) {
+//   const s21::set<long> b({1, 2, 3});
+//   auto iter2 = b.cbegin();
+//   ++iter2;
+//   ++iter2;
+//   ++iter2;
+//   ASSERT_EQ(*iter2, *b.cend());
+// }
+
+// // TEST(ConstIteratorSet, Decr) {
+// //   std::set<long> a({1, 2, 3});
+// //   s21::set<lcong> b({1, 2, 3});
+// //   auto iter1 = a.end();
+// //   auto iter2 = b.end();
+// //   --iter1;
+// //   --iter2;
+// //   ASSERT_EQ(*iter1, *iter2);
+// // }
+
+// TEST(ConstIteratorSet, DecrFirstElement) {
+//   const s21::set<long> b({1, 2, 3});
+//   auto iter2 = b.cbegin();
+//   --iter2;
+//   ASSERT_EQ(*iter2, *b.cbegin());
+// }
+
+// TEST(ConstIteratorSet, End) {
+//   const s21::set<long> b({1, 2, 3});
+//   ASSERT_EQ(*b.cend(), long());
+// }
+
 TEST(CapacitySet, EmptyTrue) {
   std::set<int> a;
   s21::set<int> b;
@@ -204,6 +261,57 @@ TEST(ModifiersSet, InsertManyRightLeft) {
   auto res2 = b.insert(0);
   // b.insert(-1);
   // b.insert(-2)
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  ASSERT_EQ(*res1.first, *res2.first);
+  ASSERT_EQ(res1.second, res2.second);
+}
+
+TEST(ModifiersSet, RightSmall) {
+  std::set<int> a({19, 15});
+  s21::set<int> b({19, 15});
+  auto res1 = a.insert(12);
+  auto res2 = b.insert(12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  ASSERT_EQ(*res1.first, *res2.first);
+  ASSERT_EQ(res1.second, res2.second);
+}
+
+TEST(ModifiersSet, LeftBig) {
+  std::set<int> a({1, 5, 10, 15, 11, 18, 16, 23});
+  s21::set<int> b({1, 5, 10, 15, 11, 18, 16, 23});
+  auto res1 = a.insert(17);
+  auto res2 = b.insert(17);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  ASSERT_EQ(*res1.first, *res2.first);
+  ASSERT_EQ(res1.second, res2.second);
+}
+
+TEST(ModifiersSet, RightBig) {
+  std::set<int> a({23, 16, 18, 11, 15, 10, 5, 1});
+  s21::set<int> b({23, 16, 18, 11, 15, 10, 5, 1});
+  auto res1 = a.insert(17);
+  auto res2 = b.insert(17);
   ASSERT_EQ(a.size(), b.size());
   ASSERT_EQ(a.empty(), b.empty());
   ASSERT_EQ(*b.end(), int());

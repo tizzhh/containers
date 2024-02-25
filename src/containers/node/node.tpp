@@ -1,6 +1,7 @@
 #ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_NODE_NODE_TPP
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_NODE_NODE_TPP
 
+#include "node.hpp"
 #include <iostream>
 namespace s21 {
 
@@ -27,7 +28,7 @@ Node<T, K>::~Node() {
 
 template <typename T, typename K>
 constexpr Node<T, K> *Node<T, K>::begin() {
-  Node *temp = this;
+  Node *temp = getHead();
   while (temp->left) temp = temp->left;
   return temp;
 }
