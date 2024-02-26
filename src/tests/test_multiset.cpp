@@ -792,3 +792,47 @@ TEST(LookUpMultiSet, ContainsFalse) {
   s21::multiset<int> b({1, 2, 3});
   ASSERT_EQ(false, b.contains(69));
 }
+
+TEST(LookUpMultiSet, CountExists) {
+  std::multiset<long> a({1, 1, 1, 1, 1});
+  s21::multiset<long> b({1, 1, 1, 1, 1});
+  ASSERT_EQ(a.count(1), b.count(1));
+}
+
+TEST(LookUpMultiSet, CountDoesNotExist) {
+  std::multiset<long> a({1, 1, 1, 1, 1});
+  s21::multiset<long> b({1, 1, 1, 1, 1});
+  ASSERT_EQ(a.count(0), b.count(0));
+}
+
+TEST(LookUpMultiSet, LowerBound) {
+  std::multiset<long> a({1, 2, 3, 3, 3, 4, 5});
+  s21::multiset<long> b({1, 2, 3, 3, 3, 4, 5});
+  auto iter1 = a.lower_bound(3);
+  auto iter2 = b.lower_bound(3);
+  for (; iter1 != a.end(); ++iter1, ++iter2) {
+    ASSERT_EQ(*iter1, *iter2);
+  }
+}
+
+TEST(LookUpMultiSet, UpperBound) {
+  std::multiset<long> a({1, 2, 3, 3, 3, 4, 5});
+  s21::multiset<long> b({1, 2, 3, 3, 3, 4, 5});
+  auto iter1 = a.upper_bound(3);
+  auto iter2 = b.upper_bound(3);
+  for (; iter1 != a.end(); ++iter1, ++iter2) {
+    ASSERT_EQ(*iter1, *iter2);
+  }
+}
+
+TEST(LookUpMultiSet, EqualRange) {
+  std::multiset<long> a({1, 2, 3, 3, 3, 4, 5});
+  s21::multiset<long> b({1, 2, 3, 3, 3, 4, 5});
+  auto pair1 = a.equal_range(3);
+  auto pair2 = b.equal_range(3);
+  auto iter1 = pair1.first;
+  auto iter2 = pair2.first;
+  for (; iter1 != pair1.second; ++iter1, ++iter2) {
+    ASSERT_EQ(*iter1, *iter2);
+  }
+}

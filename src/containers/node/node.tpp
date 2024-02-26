@@ -68,10 +68,12 @@ constexpr Node<T, K> *Node<T, K>::prevElement() {
     Node *res = left;
     while (res->right) res = res->right;
     return res;
-  } else if (prev->item >= this->item) {
+  } else {
     Node *res = prev;
-    while (res->prev && res->prev->item < res->item) res = res->prev;
-    return res;
+    while (res->prev && res == res->prev->left) {
+      res = res->prev;
+    }
+    return (res->prev) ? res->prev : this->end();
   }
   return this->prev;
 }
