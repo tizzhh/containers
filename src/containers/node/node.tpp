@@ -51,15 +51,14 @@ constexpr Node<T, K> *Node<T, K>::next() {
   if (right) {
     Node *res = right;
     while (res->left) res = res->left;
-
     return res;
-  } else if (prev->item <= this->item) {
-    Node *res = prev;
-    while (res->prev && res->prev->item < res->item) res = res->prev;
-    if (res->prev) res = res->prev;
-    return res;
+  } else {
+    Node *res = this;
+    while (res->prev && res == res->prev->right) {
+        res = res->prev;
+    }
+    return (res->prev) ? res->prev : this->end();
   }
-  return this->prev;
 }
 
 template <typename T, typename K>
