@@ -55,8 +55,8 @@ constexpr Node<T, K> *Node<T, K>::next() {
     return res;
   } else if (prev->item <= this->item) {
     Node *res = prev;
-    while (res->prev->item < res->item) res = res->prev;
-    res = res->prev;
+    while (res->prev && res->prev->item < res->item) res = res->prev;
+    if (res->prev) res = res->prev;
     return res;
   }
   return this->prev;
@@ -120,7 +120,7 @@ constexpr std::pair<Node<T, K> *, bool> Node<T, K>::insert(const T &item) {
   Node *prev = nullptr;
   while (iter) {
     prev = iter;
-    if (iter->item >= item)
+    if (iter->item > item)
       iter = iter->left;
     else
       iter = iter->right;

@@ -30,19 +30,7 @@ namespace s21 {
   private:
     Node<T> *ptr_ = nullptr;
   };
-  // хз как сделать чтоб оно работало с наследованием, у меня конструктор
-  // нормально не робит :(
-  // template <typename T> class SetConstIterator : public SetIterator<T> {
-  // public:
-  //   using value_type = T;
-  //   SetConstIterator(Node<T> *item) : SetIterator<T>(item){};
-  //   ~SetConstIterator() = default;
-  //   constexpr value_type operator*() const { return ptr_->item; }
-
-  // private:
-  //   Node<T> *const ptr_ = nullptr;
-  // };
-    template <typename T> class SetConstIterator {
+  template <typename T> class SetConstIterator {
   public:
     using value_type = T;
     SetConstIterator(Node<T> *item) : ptr_(item){};
@@ -56,8 +44,6 @@ namespace s21 {
       ptr_ = ptr_->prevElement();
       return *this;
     }
-    // не помню, что мы обсуждали насчет сравнения, но
-    // стд итер не по значению сравнивает
     constexpr bool operator==(const SetConstIterator &iter) const {
       return this->ptr_ == iter.ptr_;
     }
