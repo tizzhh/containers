@@ -79,11 +79,9 @@ public:
   using const_iterator = SetConstIterator<value_type>;
   using size_type = size_t;
   constexpr set() = default;
-  constexpr set(std::initializer_list<value_type> const &items)
-      : size_(items.size()) {
-    root_ = new Node(*items.begin());
+  constexpr set(std::initializer_list<value_type> const &items) {
     for (auto i = items.begin(); i != items.end(); ++i)
-      root_->insert(*i);
+      insert(*i);
   }
   constexpr set(const set &s) {
     for (auto iter = s.cbegin(); iter != s.cend(); ++iter) {
@@ -124,7 +122,7 @@ public:
   constexpr bool empty() { return size_ == 0; }
   constexpr size_type size() { return size_; }
   constexpr size_type max_size() {
-    return std::numeric_limits<std::size_t>::max() / sizeof(set<value_type>) / 2;
+    return (std::numeric_limits<size_type>::max() / (sizeof(size_type) * 10));
   }
   void clear() { 
     if (root_ != nullptr) {
@@ -134,17 +132,18 @@ public:
     size_ = 0;
   }
   std::pair<iterator, bool> insert(const value_type &value) {
-    std::pair<iterator, bool> iter{root_, true};
+    std::pair<iterator, bool> iter{root_, false};
     if (empty()) {
-      root_ = new Node(value);
+        root_ = new Node(value);
+        ++size_;
     } else {
       iter = root_->insert(value);
+      std::pair<iterator, bool> result{SetIterator(iter.first), iter.second};
+      if (iter.second) {
+        ++size_;
+      }
     }
-    std::pair<iterator, bool> result{SetIterator(iter.first), iter.second};
-    if (result.second) {
-      ++size_;
-    }
-    return result;
+    return iter;
   }
   void erase(iterator pos) {
     // root_ = root_->erase(root_->find(*pos));

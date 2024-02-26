@@ -276,11 +276,11 @@ TEST(CapacitySet, Size3) {
   ASSERT_EQ(a.size(), b.size());
 }
 
-// TEST(CapacitySet, MaxSize) {
-//   std::set<char> a({'a'});
-//   s21::set<char> b({'a'});
-//   ASSERT_EQ(a.max_size(), b.max_size());
-// }
+TEST(CapacitySet, MaxSize) {
+  std::set<char> a({'a'});
+  s21::set<char> b({'a'});
+  ASSERT_EQ(a.max_size(), b.max_size());
+}
 
 TEST(ModifiersSet, Clear) {
   std::set<char> a({'a', 'b', 'c'});
@@ -295,6 +295,23 @@ TEST(ModifiersSet, Clear) {
   for (; it1 != a.end(); ++it1, ++it2) {
     ASSERT_EQ(*it1, *it2);
   }
+}
+
+TEST(ModifiersSet, InsertNotUnique) {
+  std::set<int> a({1, 1, 1, 1, 2});
+  s21::set<int> b({1, 1, 1, 1, 2});
+  auto res1 = a.insert(2);
+  auto res2 = b.insert(2);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  ASSERT_EQ(*res1.first, *res2.first);
+  ASSERT_EQ(res1.second, res2.second);
 }
 
 TEST(ModifiersSet, InsertRight) {
