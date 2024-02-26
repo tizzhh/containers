@@ -117,26 +117,24 @@ constexpr std::pair<Node<T, K> *, bool> Node<T, K>::insert(const T &item) {
 
   std::pair<Node *, bool> res{iter, false};
   iter = this->getHead();
-  if (res.first == end()) {
-    Node *prev = nullptr;
-    while (iter) {
-      prev = iter;
-      if (iter->item >= item)
-        iter = iter->left;
-      else
-        iter = iter->right;
-    }
-    iter = new Node(item, prev);
-    if (prev) {
-      if (item < prev->item)
-        prev->left = iter;
-      else
-        prev->right = iter;
-    }
-    res.first = iter;
-    res.second = true;
-    if (prev) prev->fixHeight();
+  Node *prev = nullptr;
+  while (iter) {
+    prev = iter;
+    if (iter->item >= item)
+      iter = iter->left;
+    else
+      iter = iter->right;
   }
+  iter = new Node(item, prev);
+  if (prev) {
+    if (item < prev->item)
+      prev->left = iter;
+    else
+      prev->right = iter;
+  }
+  res.first = iter;
+  res.second = true;
+  if (prev) prev->fixHeight();
   return res;
 }
 

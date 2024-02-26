@@ -132,12 +132,15 @@ public:
     size_ = 0;
   }
   std::pair<iterator, bool> insert(const value_type &value) {
-    std::pair<iterator, bool> iter{root_, false};
+    bool does_contain = contains(value);
+    std::pair<iterator, bool> iter{(!does_contain ? root_ : find(value)), false};
     if (empty()) {
         root_ = new Node(value);
         ++size_;
     } else {
-      iter = root_->insert(value);
+      if (!does_contain) {
+        iter = root_->insert(value);
+      }
       std::pair<iterator, bool> result{SetIterator(iter.first), iter.second};
       if (iter.second) {
         ++size_;
