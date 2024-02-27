@@ -1,17 +1,15 @@
 #ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_NODE_NODE_TPP
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_NODE_NODE_TPP
-
 #include "node.hpp"
-#include <iostream>
-namespace s21 {
 
+namespace s21 {
 template <typename T, typename K>
 constexpr Node<T, K>::Node() = default;
 template <typename T, typename K>
 constexpr Node<T, K>::Node(T item) : item(item), item_value(item){};
 template <typename T, typename K>
 constexpr Node<T, K>::Node(T item, K item_value)
-    : item(item), item_value(item){};
+    : item(item), item_value(item_value){};
 
 template <typename T, typename K>
 constexpr Node<T, K>::Node(T item, Node *prev)
@@ -19,7 +17,7 @@ constexpr Node<T, K>::Node(T item, Node *prev)
 
 template <typename T, typename K>
 constexpr Node<T, K>::Node(T item, K item_value, Node<T, K> *prev)
-    : item(item), item_value(item), prev(prev){};
+    : item(item), item_value(item_value), prev(prev){};
 
 template <typename T, typename K>
 Node<T, K>::~Node() {
@@ -55,7 +53,7 @@ constexpr Node<T, K> *Node<T, K>::next() {
   } else {
     Node *res = this;
     while (res->prev && res == res->prev->right) {
-        res = res->prev;
+      res = res->prev;
     }
     return (res->prev) ? res->prev : this->end();
   }
@@ -140,6 +138,33 @@ constexpr std::pair<Node<T, K> *, bool> Node<T, K>::insert(const T &item) {
 }
 
 template <typename T, typename K>
+constexpr std::pair<Node<T, K> *, bool> Node<T, K>::insert(const T &item,
+                                                           const K &value) {
+  Node *iter = this->find(item);
+
+  std::pair<Node *, bool> res{iter, false};
+  iter = this->getHead();
+  Node *prev = nullptr;
+  while (iter) {
+    prev = iter;
+    if (iter->item > item)
+      iter = iter->left;
+    else
+      iter = iter->right;
+  }
+  iter = new Node(item, value, prev);
+  if (prev) {
+    if (item < prev->item)
+      prev->left = iter;
+    else
+      prev->right = iter;
+  }
+  res.first = iter;
+  res.second = true;
+  if (prev) prev->fixHeight();
+  return res;
+}
+template <typename T, typename K>
 constexpr Node<T, K> *Node<T, K>::erase(Node<T, K> *iter) {
   if (!iter || iter == this->end()) return iter;
   if (iter->left) {
@@ -174,8 +199,7 @@ constexpr Node<T, K> *Node<T, K>::erase(Node<T, K> *iter) {
     temp->prev = nullptr;
     delete temp;
     return iter->getHead()->begin();
-
-  } else if (!iter->prev) { // 2, 3, 4, 7, 8 erase(2), erase(3)
+  } else if (!iter->prev) {
     if (iter->right) {
       auto res = iter->right;
       iter->right->prev = nullptr;
@@ -225,7 +249,6 @@ void Node<T, K>::fixHeight() {
     balanceShit();
   }
   if (prev) {
-    // puts("here");
     prev->fixHeight();
   }
 }
@@ -234,7 +257,6 @@ template <typename T, typename K>
 void Node<T, K>::balanceShit() {
   const int diff = calcDiff();
   if (abs(diff) > 1) {
-    // std::cout << "delaem";
     if (diff < 0) {
       if (right->calcDiff() <= 0)
         leftSmallRotate();

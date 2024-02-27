@@ -6,6 +6,7 @@
 #include "containers/stack/stack.hpp"
 #include "containers/vector/vector.hpp"
 #include "containers/set/set.hpp"
+#include "containers/map/map.hpp"
 #include "containers_plus/multiset/multiset.hpp"
 #include "containers_plus/array/array.hpp"
 

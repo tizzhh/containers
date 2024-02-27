@@ -18,6 +18,7 @@ class Node {
   constexpr Node *next();
   constexpr Node *prevElement();
   constexpr std::pair<Node<T, K> *, bool> insert(const T &item);
+  constexpr std::pair<Node<T, K> *, bool> insert(const T &item, const K &value);
   constexpr Node *find(const T &item);
   constexpr Node *erase(Node *iter);
   constexpr Node *lastElement();

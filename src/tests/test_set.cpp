@@ -1,10 +1,9 @@
 #include <gtest/gtest.h>
+
 #include <set>
 #include <vector>
-#include "../s21_containersplus.hpp"
 
-// СДЕЛАТЬ ИНСЕРТ МЭНИ БЭК ДЛЯ ВЕКТОРА  
-// СДЕЛАТЬ ИНСЕРТ МЭНИ ДЛЯ СЕТА
+#include "../s21_containersplus.hpp"
 
 TEST(ConstructorSet, Default) {
   try {
@@ -106,16 +105,6 @@ TEST(IteratorSet, IncrLastElem) {
   ASSERT_EQ(*iter2, *b.end());
 }
 
-// TEST(IteratorSet, Decr) {
-//   std::set<long> a({1, 2, 3});
-//   s21::set<long> b({1, 2, 3});
-//   auto iter1 = a.end();
-//   auto iter2 = b.end();
-//   --iter1;
-//   --iter2;
-//   ASSERT_EQ(*iter1, *iter2);
-// }
-
 TEST(IteratorSet, Decr1) {
   std::set<long> a({1, 2, 3});
   s21::set<long> b({1, 2, 3});
@@ -204,16 +193,6 @@ TEST(ConstIteratorSet, IncrLastElem) {
   ++iter2;
   ASSERT_EQ(*iter2, *b.cend());
 }
-
-// TEST(ConstIteratorSet, Decr) {
-//   const std::set<long> a({1, 2, 3});
-//   const s21::set<long> b({1, 2, 3});
-//   auto iter1 = a.cend();
-//   auto iter2 = b.cend();
-//   --iter1;
-//   --iter2;
-//   ASSERT_EQ(*iter1, *iter2);
-// }
 
 TEST(ConstIteratorSet, Decr1) {
   const std::set<long> a({1, 2, 3});
@@ -388,7 +367,8 @@ TEST(ModifiersSet, InsertMany) {
   for (; it1 != exp.end(); ++it1, ++it2) {
     ASSERT_EQ(*it1, *it2);
   }
-  std::vector<std::pair<int, bool>> exp_res = {{1, false}, {2, true}, {3, true}, {4, true}};
+  std::vector<std::pair<int, bool>> exp_res = {
+      {1, false}, {2, true}, {3, true}, {4, true}};
   ASSERT_EQ(res2.size(), exp_res.size());
   for (size_t i = 0; i != exp_res.size(); ++i) {
     ASSERT_EQ(*(res2[i].first), exp_res[i].first);

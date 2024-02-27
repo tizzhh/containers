@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
+
 #include <set>
+
 #include "../s21_containersplus.hpp"
 
 TEST(ConstructorMultiSet, Default) {
@@ -102,16 +104,6 @@ TEST(IteratorMultiSet, IncrLastElem) {
   ASSERT_EQ(*iter2, *b.end());
 }
 
-// TEST(IteratorMultiSet, Decr) {
-//   std::multiset<long> a({1, 2, 3});
-//   s21::multiset<long> b({1, 2, 3});
-//   auto iter1 = a.end();
-//   auto iter2 = b.end();
-//   --iter1;
-//   --iter2;
-//   ASSERT_EQ(*iter1, *iter2);
-// }
-
 TEST(IteratorMultiSet, Decr1) {
   std::multiset<long> a({1, 2, 3});
   s21::multiset<long> b({1, 2, 3});
@@ -200,16 +192,6 @@ TEST(ConstIteratorMultiset, IncrLastElem) {
   ++iter2;
   ASSERT_EQ(*iter2, *b.cend());
 }
-
-// TEST(ConstIteratorMultiset, Decr) {
-//   const std::multiset<long> a({1, 2, 3});
-//   const s21::multiset<long> b({1, 2, 3});
-//   auto iter1 = a.cend();
-//   auto iter2 = b.cend();
-//   --iter1;
-//   --iter2;
-//   ASSERT_EQ(*iter1, *iter2);
-// }
 
 TEST(ConstIteratorMultiset, Decr1) {
   const std::multiset<long> a({1, 2, 3});
@@ -368,7 +350,6 @@ TEST(ModifiersMultiSet, InsertManyRightLeft) {
   ASSERT_EQ(*res1, *res2);
 }
 
-
 TEST(ModifiersMultiSet, InsertMany) {
   std::multiset<int> exp({1, 1, 2, 3, 4});
   s21::multiset<int> b({1});
@@ -381,14 +362,14 @@ TEST(ModifiersMultiSet, InsertMany) {
   for (; it1 != exp.end(); ++it1, ++it2) {
     ASSERT_EQ(*it1, *it2);
   }
-  std::vector<std::pair<int, bool>> exp_res = {{1, true}, {2, true}, {3, true}, {4, true}};
+  std::vector<std::pair<int, bool>> exp_res = {
+      {1, true}, {2, true}, {3, true}, {4, true}};
   ASSERT_EQ(res2.size(), exp_res.size());
   for (size_t i = 0; i != exp_res.size(); ++i) {
     ASSERT_EQ(*(res2[i].first), exp_res[i].first);
     ASSERT_EQ(res2[i].second, exp_res[i].second);
   }
 }
-
 
 TEST(ModifiersMultiSet, RightSmall) {
   std::multiset<int> a({19, 15});
