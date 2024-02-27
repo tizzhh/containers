@@ -288,6 +288,84 @@ TEST(ModifiersVector, Insert) {
   }
 }
 
+TEST(ModifiersVector, InsertManyBegin) {
+  s21::vector<int> a({1, 2, 3});
+  s21::vector<int> b({10, 11, 12, 1, 2, 3});
+  a.insert_many(a.begin(), 10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersVector, InsertManyEnd) {
+  s21::vector<int> a({1, 2, 3});
+  s21::vector<int> b({1, 2, 3, 10, 11, 12});
+  a.insert_many(a.end(), 10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersVector, InsertManyMid) {
+  s21::vector<int> a({1, 2, 3, 4});
+  s21::vector<int> b({1, 2, 10, 11, 12, 3, 4});
+  auto iter = a.begin();
+  ++iter;
+  ++iter;
+  a.insert_many(iter, 10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersVector, InsertManyBack) {
+  s21::vector<int> a({1, 2, 3});
+  s21::vector<int> b({1, 2, 3, 10, 11, 12});
+  a.insert_many_back(10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersVector, InsertManyBackEmpty) {
+  s21::vector<int> a;
+  s21::vector<int> b({10, 11, 12});
+  a.insert_many_back(10, 11, 12);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a.front(), b.front());
+  ASSERT_EQ(a.back(), b.back());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
 TEST(ModifiersVector, Erase) {
   std::vector<float> a = {1.0, 2.0, 3.0};
   s21::vector<float> b = {1.0, 2.0, 3.0};

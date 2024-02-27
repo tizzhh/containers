@@ -1,6 +1,7 @@
 #ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_VECTOR_VECTOR_TPP
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_VECTOR_VECTOR_TPP
 
+#include "vector.hpp"
 namespace s21 {
 // template<typename T>
 // constexpr typename vector<T>::size_type vector<T>::CapacityCalc(size_type
@@ -213,19 +214,23 @@ constexpr void vector<T>::clear() noexcept {
 template <typename T>
 constexpr typename vector<T>::iterator vector<T>::insert(
     iterator pos, const_reference value) {
-  value_type last_element = *(this->end() - 1);
-  for (auto i = this->end() - 1; i != pos; --i) *i = *(i - 1);
-  *pos = value;
   auto index = pos - this->begin();
-  if (size_ == capacity_) {
-    value_type temp[capacity_] = {0};
-    for (size_type i = 0; i != capacity_; ++i) temp[i] = storage_[i];
-    delete[] storage_;
-    capacity_ *= 2;
-    storage_ = new value_type[capacity_];
-    for (size_type i = 0; i != size_; ++i) storage_[i] = temp[i];
+  if (pos == end()) {
+    push_back(value);
+  } else {
+    value_type last_element = *(this->end() - 1);
+    for (auto i = this->end() - 1; i != pos; --i) *i = *(i - 1);
+    *pos = value;
+    if (size_ == capacity_) {
+      value_type temp[capacity_] = {0};
+      for (size_type i = 0; i != capacity_; ++i) temp[i] = storage_[i];
+      delete[] storage_;
+      capacity_ *= 2;
+      storage_ = new value_type[capacity_];
+      for (size_type i = 0; i != size_; ++i) storage_[i] = temp[i];
+    }
+    storage_[size_++] = last_element;
   }
-  storage_[size_++] = last_element;
   return this->begin() + index;
 }
 
@@ -269,6 +274,26 @@ constexpr void vector<T>::swap(vector& other) noexcept {
   capacity_ = std::get<1>(mem);
   storage_ = std::get<2>(mem);
 }
+
+template <typename T>
+template <typename... Args>
+typename vector<T>::iterator vector<T>::insert_many(const_iterator pos, Args&&... args) {
+  iterator last_inserted = const_cast<iterator> (pos);
+  for (auto &&elem : {args...}) {
+    last_inserted = insert(last_inserted, elem);
+    ++last_inserted;
+  }
+  return --last_inserted;
+}
+
+template <typename T>
+template <typename... Args>
+void vector<T>::insert_many_back(Args &&...args) {
+  for (auto &&elem : {args...}) {
+    push_back(elem);
+  }
+}
+
 //при [0] а сайз равен 0 то сег фолт
 };  // namespace s21
 
