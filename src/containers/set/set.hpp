@@ -9,6 +9,7 @@ namespace s21 {
   template <typename T> class SetIterator {
   public:
     using value_type = T;
+    SetIterator() = default;
     SetIterator(Node<T> *item) : ptr_(item){};
     ~SetIterator() = default;
     constexpr value_type &operator*() { return ptr_->item; }
@@ -33,6 +34,7 @@ namespace s21 {
   template <typename T> class SetConstIterator {
   public:
     using value_type = T;
+    SetConstIterator() = default;
     SetConstIterator(Node<T> *item) : ptr_(item){};
     ~SetConstIterator() = default;
     constexpr value_type operator*() const { return ptr_->item; }
@@ -164,6 +166,15 @@ public:
   }
   iterator find(const key_type &key) { return SetIterator(root_->find(key)); };
   bool contains(const key_type &key) { return root_->find(key) != root_->end(); }
+  template <typename... Args>
+  vector<std::pair<iterator, bool>> insert_many(Args&&... args) {
+    s21::vector<std::pair<iterator, bool>> result;
+    for (auto &&elem : {args...}) {
+      auto res = insert(elem);
+      result.push_back(res);
+    }
+    return result;
+  }
 
 private:
   size_type size_ = 0;

@@ -8,6 +8,7 @@ template <typename T>
 class MultiSetIterator {
  public:
   using value_type = T;
+  MultiSetIterator() = default;
   MultiSetIterator(Node<T> *item) : ptr_(item){};
   ~MultiSetIterator() = default;
   constexpr value_type &operator*() { return ptr_->item; }
@@ -30,24 +31,25 @@ class MultiSetIterator {
   Node<T> *ptr_ = nullptr;
 };
 template <typename T>
-class MultietConstIterator {
+class MultisetConstIterator {
  public:
   using value_type = T;
-  MultietConstIterator(Node<T> *item) : ptr_(item){};
-  ~MultietConstIterator() = default;
+  MultisetConstIterator() = default;
+  MultisetConstIterator(Node<T> *item) : ptr_(item){};
+  ~MultisetConstIterator() = default;
   constexpr value_type operator*() const { return ptr_->item; }
-  constexpr MultietConstIterator &operator++() {
+  constexpr MultisetConstIterator &operator++() {
     ptr_ = ptr_->next();
     return *this;
   }
-  constexpr MultietConstIterator &operator--() {
+  constexpr MultisetConstIterator &operator--() {
     ptr_ = ptr_->prevElement();
     return *this;
   }
-  constexpr bool operator==(const MultietConstIterator &iter) const {
+  constexpr bool operator==(const MultisetConstIterator &iter) const {
     return this->ptr_ == iter.ptr_;
   }
-  constexpr bool operator!=(const MultietConstIterator &iter) const {
+  constexpr bool operator!=(const MultisetConstIterator &iter) const {
     return this->ptr_ != iter.ptr_;
   }
 
@@ -63,7 +65,7 @@ class multiset {
   using reference = value_type &;
   using const_reference = const value_type &;
   using iterator = MultiSetIterator<value_type>;
-  using const_iterator = MultietConstIterator<value_type>;
+  using const_iterator = MultisetConstIterator<value_type>;
   using size_type = size_t;
   constexpr multiset() = default;
   constexpr multiset(std::initializer_list<value_type> const &items) {
@@ -98,11 +100,11 @@ class multiset {
   iterator end() { return MultiSetIterator(root_->end()); }
   const_iterator cbegin() const {
     if (size_ == 0) {
-      return MultietConstIterator(root_->end());
+      return MultisetConstIterator(root_->end());
     }
-    return MultietConstIterator(root_->begin());
+    return MultisetConstIterator(root_->begin());
   }
-  const_iterator cend() const { return MultietConstIterator(root_->end()); }
+  const_iterator cend() const { return MultisetConstIterator(root_->end()); }
   constexpr bool empty() { return size_ == 0; }
   constexpr size_type size() { return size_; }
   constexpr size_type max_size() {
@@ -186,6 +188,15 @@ class multiset {
         ++iter;
     }
     return iter;
+  }
+
+  template <typename... Args>
+  vector<std::pair<iterator, bool>> insert_many(Args&&... args) {
+    s21::vector<std::pair<iterator, bool>> result;
+    for (auto &&elem : {args...}) {
+      result.push_back({insert(elem), true});
+    }
+    return result;
   }
 
  private:

@@ -185,10 +185,10 @@ constexpr void vector<T>::resize(size_type size) noexcept {
     capacity_ = size;
     storage_ = new value_type[capacity_];
     for (size_type i = 0; i != size_; i++) storage_[i] = temp[i];
-    for (size_type i = size_; i != size; i++) storage_[i] = 0;
+    for (size_type i = size_; i != size; i++) storage_[i] = T();
   }
   if (size > size_) {
-    for (size_type i = size_; i != size; i++) storage_[i] = 0;
+    for (size_type i = size_; i != size; i++) storage_[i] = T();
   }
   size_ = size;
 }
@@ -246,7 +246,7 @@ constexpr void vector<T>::push_back(const_reference value) {
     delete[] storage_;
     storage_ = new value_type[capacity_];
     for (size_type i = 0; i != size_; i++) storage_[i] = temp[i];
-    for (size_type i = size_; i != capacity_; i++) storage_[i] = 0;
+    for (size_type i = size_; i != capacity_; i++) storage_[i] = T();
   } else {
     storage_ = new value_type[1];
     capacity_ = 1;

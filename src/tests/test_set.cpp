@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <set>
+#include <vector>
 #include "../s21_containersplus.hpp"
 
 // СДЕЛАТЬ ИНСЕРТ МЭНИ БЭК ДЛЯ ВЕКТОРА  
@@ -373,6 +374,26 @@ TEST(ModifiersSet, InsertManyRightLeft) {
   }
   ASSERT_EQ(*res1.first, *res2.first);
   ASSERT_EQ(res1.second, res2.second);
+}
+
+TEST(ModifiersSet, InsertMany) {
+  std::set<int> exp({1, 2, 3, 4});
+  s21::set<int> b({1});
+  auto res2 = b.insert_many(1, 2, 3, 4);
+  ASSERT_EQ(exp.size(), b.size());
+  ASSERT_EQ(exp.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  auto it1 = exp.begin();
+  auto it2 = b.begin();
+  for (; it1 != exp.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+  std::vector<std::pair<int, bool>> exp_res = {{1, false}, {2, true}, {3, true}, {4, true}};
+  ASSERT_EQ(res2.size(), exp_res.size());
+  for (size_t i = 0; i != exp_res.size(); ++i) {
+    ASSERT_EQ(*(res2[i].first), exp_res[i].first);
+    ASSERT_EQ(res2[i].second, exp_res[i].second);
+  }
 }
 
 TEST(ModifiersSet, RightSmall) {
