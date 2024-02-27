@@ -55,6 +55,30 @@ TEST(ConstructorMap, MoveOperOk) {
   }
 }
 
+TEST(ElementAccessMap, At) {
+  std::map<char, int> a({{'a', 1}});
+  s21::map<char, int> b({{'a', 1}});
+  ASSERT_EQ(a.at('a'), b.at('a'));
+}
+
+TEST(ElementAccessMap, ConstAt) {
+  const std::map<char, int> a({{'a', 1}});
+  const s21::map<char, int> b({{'a', 1}});
+  ASSERT_EQ(a.at('a'), b.at('a'));
+}
+
+TEST(ElementAccessMap, AtOper) {
+  std::map<char, int> a({{'a', 1}});
+  s21::map<char, int> b({{'a', 1}});
+  ASSERT_EQ(a['a'], b['a']);
+}
+
+TEST(ElementAccessMap, ConstAtOper) {
+  std::map<char, int> a({{'a', 1}});
+  const s21::map<char, int> b({{'a', 1}});
+  ASSERT_EQ(a['a'], b['a']);
+}
+
 TEST(IteratorMap, Begin) {
   std::map<char, long> a({{'a', 1}, {'b', 2}, {'c', 3}});
   s21::map<char, long> b({{'a', 1}, {'b', 2}, {'c', 3}});
@@ -67,10 +91,7 @@ TEST(IteratorMap, Eq) {
   std::map<char, long> a1({{'a', 1}, {'b', 2}, {'c', 3}});
   s21::map<char, long> b({{'a', 1}, {'b', 2}, {'c', 3}});
   s21::map<char, long> b1({{'a', 1}, {'b', 2}, {'c', 3}});
-  ASSERT_EQ(a.begin()->first == a1.begin()->first,
-            b.begin()->second == b1.begin()->second);
-  ASSERT_EQ(a.begin()->first == a1.begin()->first,
-            b.begin()->second == b1.begin()->second);
+  ASSERT_EQ(a.begin() == a1.begin(), b.begin() == b1.begin());
 }
 
 TEST(IteratorMap, NotEq) {
@@ -78,10 +99,7 @@ TEST(IteratorMap, NotEq) {
   std::map<char, long> a1({{'a', 1}, {'b', 2}, {'c', 3}});
   s21::map<char, long> b({{'a', 1}, {'b', 2}, {'c', 3}});
   s21::map<char, long> b1({{'a', 1}, {'b', 2}, {'c', 3}});
-  ASSERT_EQ(a.begin()->first != a1.begin()->first,
-            b.begin()->second != b1.begin()->second);
-  ASSERT_EQ(a.begin()->first != a1.begin()->first,
-            b.begin()->second != b1.begin()->second);
+  ASSERT_EQ(a.begin() != a1.begin(), b.begin() != b1.begin());
 }
 
 TEST(IteratorMap, Incr) {
@@ -158,6 +176,12 @@ TEST(IteratorMap, End) {
   ASSERT_EQ(b.end()->second, long());
 }
 
+TEST(IteratorMap, BeginEmpty) {
+  s21::map<char, long> b;
+  ASSERT_EQ(b.begin()->first, b.end()->first);
+  ASSERT_EQ(b.begin()->second, b.end()->second);
+}
+
 TEST(ConstIteratorMap, Begin) {
   const std::map<char, long> a({{'a', 1}, {'b', 2}, {'c', 3}});
   const s21::map<char, long> b({{'a', 1}, {'b', 2}, {'c', 3}});
@@ -170,10 +194,7 @@ TEST(ConstIteratorMap, Eq) {
   const std::map<char, long> a1({{'a', 1}, {'b', 2}, {'c', 3}});
   const s21::map<char, long> b({{'a', 1}, {'b', 2}, {'c', 3}});
   const s21::map<char, long> b1({{'a', 1}, {'b', 2}, {'c', 3}});
-  ASSERT_EQ(a.cbegin()->first == a1.cbegin()->first,
-            b.cbegin()->second == b1.cbegin()->second);
-  ASSERT_EQ(a.cbegin()->first == a1.cbegin()->first,
-            b.cbegin()->second == b1.cbegin()->second);
+  ASSERT_EQ(a.cbegin() == a1.cbegin(), b.cbegin() == b1.cbegin());
 }
 
 TEST(ConstIteratorMap, NotEq) {
@@ -181,10 +202,7 @@ TEST(ConstIteratorMap, NotEq) {
   const std::map<char, long> a1({{'a', 1}, {'b', 2}, {'c', 3}});
   const s21::map<char, long> b({{'a', 1}, {'b', 2}, {'c', 3}});
   const s21::map<char, long> b1({{'a', 1}, {'b', 2}, {'c', 3}});
-  ASSERT_EQ(a.cbegin()->first != a1.cbegin()->first,
-            b.cbegin()->second != b1.cbegin()->second);
-  ASSERT_EQ(a.cbegin()->first != a1.cbegin()->first,
-            b.cbegin()->second != b1.cbegin()->second);
+  ASSERT_EQ(a.cbegin() != a1.cbegin(), b.cbegin() != b1.cbegin());
 }
 
 TEST(ConstIteratorMap, Incr) {
@@ -261,6 +279,12 @@ TEST(ConstIteratorMap, End) {
   const s21::map<char, long> b({{'a', 1}, {'b', 2}, {'c', 3}});
   ASSERT_EQ(b.cend()->first, char());
   ASSERT_EQ(b.cend()->second, long());
+}
+
+TEST(ConstIteratorMap, BeginEmpty) {
+  const s21::map<char, long> b;
+  ASSERT_EQ(b.cbegin()->first, b.cend()->first);
+  ASSERT_EQ(b.cbegin()->second, b.cend()->second);
 }
 
 TEST(CapacityMap, EmptyTrue) {
@@ -768,91 +792,88 @@ TEST(ModifiersMap, SwapEmpty) {
   }
 }
 
-// TEST(ModifiersMap, MergeThisSmaller) {
-//   std::map<char, int> a({{'a', 1}, {'c', 3}, {'e', 5}});
-//   std::map<char, int> a1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
-//   s21::map<char, int> b({{'a', 1}, {'c', 3}, {'e', 5}});
-//   s21::map<char, int> b1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
-//   a.merge(a1);
-//   b.merge(b1);
-//   ASSERT_EQ(a.size(), b.size());
-//   ASSERT_EQ(a.empty(), b.empty());
-//   ASSERT_EQ(a1.size(), b1.size());
-//   ASSERT_EQ(a1.empty(), b1.empty());
-//   auto it1 = a.begin();
-//   auto it2 = b.begin();
-//   for (; it1 != a.end(); ++it1, ++it2) {
-//     ASSERT_EQ(*it1, *it2);
-//   }
-// }
+TEST(ModifiersMap, MergeThisSmaller) {
+  std::map<char, int> a({{'a', 1}, {'c', 3}, {'e', 5}});
+  std::map<char, int> a1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
+  s21::map<char, int> b({{'a', 1}, {'c', 3}, {'e', 5}});
+  s21::map<char, int> b1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(it1->first, it2->first);
+    ASSERT_EQ(it1->second, it2->second);
+  }
+}
 
-// TEST(ModifiersMap, MergeOtherSmaller) {
-//   std::map<char, int> a({{'a', 1}, {'c', 3}, {'e', 5}, {'i', 9}});
-//   std::map<char, int> a1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
-//   s21::map<char, int> b({{'a', 1}, {'c', 3}, {'e', 5}, {'i', 9}});
-//   s21::map<char, int> b1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
-//   a.merge(a1);
-//   b.merge(b1);
-//   ASSERT_EQ(a.size(), b.size());
-//   ASSERT_EQ(a.empty(), b.empty());
-//   ASSERT_EQ(a1.size(), b1.size());
-//   ASSERT_EQ(a1.empty(), b1.empty());
-//   auto it1 = a.begin();
-//   auto it2 = b.begin();
-//   for (; it1 != a.end(); ++it1, ++it2) {
-//     ASSERT_EQ(*it1, *it2);
-//   }
-// }
+TEST(ModifiersMap, MergeOtherSmaller) {
+  std::map<char, int> a({{'a', 1}, {'c', 3}, {'e', 5}, {'i', 9}});
+  std::map<char, int> a1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
+  s21::map<char, int> b({{'a', 1}, {'c', 3}, {'e', 5}, {'i', 9}});
+  s21::map<char, int> b1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(it1->first, it2->first);
+    ASSERT_EQ(it1->second, it2->second);
+  }
+}
 
-// TEST(ModifiersMap, MergeIntoEmpty) {
-//   std::map<char, int> a;
-//   std::map<char, int> a1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
-//   s21::map<char, int> b;
-//   s21::map<char, int> b1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
-//   a.merge(a1);
-//   b.merge(b1);
-//   ASSERT_EQ(a.size(), b.size());
-//   ASSERT_EQ(a.empty(), b.empty());
-//   ASSERT_EQ(a1.size(), b1.size());
-//   ASSERT_EQ(a1.empty(), b1.empty());
-//   auto it1 = a.begin();
-//   auto it2 = b.begin();
-//   for (; it1 != a.end(); ++it1, ++it2) {
-//     ASSERT_EQ(*it1, *it2);
-//   }
-// }
+TEST(ModifiersMap, MergeIntoEmpty) {
+  std::map<char, int> a;
+  std::map<char, int> a1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
+  s21::map<char, int> b;
+  s21::map<char, int> b1({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(it1->first, it2->first);
+    ASSERT_EQ(it1->second, it2->second);
+  }
+}
 
-// TEST(ModifiersMap, MergeFromEmpty) {
-//   std::map<char, int> a({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
-//   std::map<char, int> a1;
-//   s21::map<char, int> b({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
-//   s21::map<char, int> b1;
-//   a.merge(a1);
-//   b.merge(b1);
-//   ASSERT_EQ(a.size(), b.size());
-//   ASSERT_EQ(a.empty(), b.empty());
-//   ASSERT_EQ(a1.size(), b1.size());
-//   ASSERT_EQ(a1.empty(), b1.empty());
-//   auto it1 = a.begin();
-//   auto it2 = b.begin();
-//   for (; it1 != a.end(); ++it1, ++it2) {
-//     ASSERT_EQ(*it1, *it2);
-//   }
-// }
+TEST(ModifiersMap, MergeFromEmpty) {
+  std::map<char, int> a({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
+  std::map<char, int> a1;
+  s21::map<char, int> b({{'b', 2}, {'c', 3}, {'d', 4}, {'g', 7}, {'h', 8}});
+  s21::map<char, int> b1;
+  a.merge(a1);
+  b.merge(b1);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a1.empty(), b1.empty());
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(it1->first, it2->first);
+    ASSERT_EQ(it1->second, it2->second);
+  }
+}
 
-// // contains std появился в c++20
-// TEST(LookUpMap, ContainsTrue) {
-//   s21::map<char, int> b({{'a', 1}, {'b', 2}, {'c', 3}});
-//   ASSERT_EQ(true, b.contains(1));
-// }
+TEST(LookUpMap, ContainsTrue) {
+  s21::map<char, int> b({{'a', 1}, {'b', 2}, {'c', 3}});
+  ASSERT_EQ(true, b.contains('a'));
+}
 
-// TEST(LookUpMap, ContainsFalse) {
-//   s21::map<char, int> b({{'a', 1}, {'b', 2}, {'c', 3}});
-//   ASSERT_EQ(false, b.contains(69));
-// }
-
-// TEST(LookUpMap, CountExists) {
-//   std::map<char, long> a({1, 1, 1, 1, 1});
-//   s21::map<char, long> b({1, 1, 1, 1, 1});
-//   ASSERT_EQ(a.count(1), b.count(1));
-// }
+TEST(LookUpMap, ContainsFalse) {
+  s21::map<char, int> b({{'a', 1}, {'b', 2}, {'c', 3}});
+  ASSERT_EQ(false, b.contains(69));
+}

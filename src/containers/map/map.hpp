@@ -40,7 +40,6 @@ class MapIterator {
   constexpr bool operator!=(const MapIterator &iter) const {
     return this->ptr_ != iter.ptr_;
   }
-  constexpr void _set_elem(T elem) { this->ptr_->item_value = elem; }
 
  private:
   Node<K, T> *ptr_ = nullptr;
@@ -78,7 +77,6 @@ class MapConstIterator {
   constexpr bool operator!=(const MapConstIterator &iter) const {
     return this->ptr_ != iter.ptr_;
   }
-  constexpr void _set_elem(T elem) { this->ptr_->item_value = elem; }
 
  private:
   Node<K, T> *ptr_ = nullptr;
@@ -211,19 +209,24 @@ class map {
     root_ = temp;
     size_ = temp_size;
   }
+  void merge(map &other) {
+    s21::vector<key_type> to_delete;
+    for (auto iter = other.begin(); iter != other.end(); ++iter) {
+      if (!contains(iter->first)) {
+        to_delete.push_back(iter->first);
+        insert({iter->first, iter->second});
+      }
+    }
+    for (size_t i = 0; i < to_delete.size(); ++i) {
+      other.erase(other.find(to_delete[i]));
+    }
+  }
   constexpr inline void clear() noexcept {
     if (root_ != nullptr) {
       delete root_->getHead();
       root_ = nullptr;
     }
     size_ = 0;
-  }
-  constexpr inline void merge(map &other) {  // in work
-    for (auto i = other.begin(); i != other.end(); ++i) {
-      if (!contains(*i->first)) {
-        insert(*i);
-      }
-    }
   }
   constexpr inline bool contains(const K &key) const noexcept {
     return root_->find(key) != root_->end();

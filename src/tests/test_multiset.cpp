@@ -142,6 +142,11 @@ TEST(IteratorMultiSet, End) {
   ASSERT_EQ(*b.end(), long());
 }
 
+TEST(IteratorMultiSet, BeginEmpty) {
+  s21::set<int> b;
+  ASSERT_EQ(*b.begin(), *b.end());
+}
+
 TEST(ConstIteratorMultiset, Begin) {
   const std::multiset<long> a({1, 2, 3});
   const s21::multiset<long> b({1, 2, 3});
@@ -229,6 +234,11 @@ TEST(ConstIteratorMultiset, DecrFirstElement) {
 TEST(ConstIteratorMultiset, End) {
   const s21::multiset<long> b({1, 2, 3});
   ASSERT_EQ(*b.cend(), long());
+}
+
+TEST(ConstIteratorMultiSet, BeginEmpty) {
+  const s21::multiset<int> b;
+  ASSERT_EQ(*b.cbegin(), *b.cend());
 }
 
 TEST(CapacityMultiSet, EmptyTrue) {

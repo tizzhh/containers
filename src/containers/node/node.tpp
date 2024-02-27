@@ -207,8 +207,8 @@ constexpr Node<T, K> *Node<T, K>::erase(Node<T, K> *iter) {
       delete iter;
       return res->getHead()->begin();
     } else {
-      item = 0;
-      item_value = 0;
+      item = T();
+      item_value = K();
       height = 0;
     }
   } else {

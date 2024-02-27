@@ -143,6 +143,11 @@ TEST(IteratorSet, End) {
   ASSERT_EQ(*b.end(), long());
 }
 
+TEST(IteratorSet, BeginEmpty) {
+  s21::set<int> b;
+  ASSERT_EQ(*b.begin(), *b.end());
+}
+
 TEST(ConstIteratorSet, Begin) {
   const std::set<long> a({1, 2, 3});
   const s21::set<long> b({1, 2, 3});
@@ -230,6 +235,11 @@ TEST(ConstIteratorSet, DecrFirstElement) {
 TEST(ConstIteratorSet, End) {
   const s21::set<long> b({1, 2, 3});
   ASSERT_EQ(*b.cend(), long());
+}
+
+TEST(ConstIteratorSet, BeginEmpty) {
+  const s21::set<int> b;
+  ASSERT_EQ(*b.cbegin(), *b.cend());
 }
 
 TEST(CapacitySet, EmptyTrue) {
