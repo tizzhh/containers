@@ -1,11 +1,10 @@
-#Provide a Makefile for testing the library(with targets clean, test)
 CXX = g++
 CXXFLAGS = -Wall -Werror -Wextra -std=c++17
 LFLAGS = -lgtest
 
 .PHONY: clean all test rebuild gcov_report
 
-HEADERS = s21_containersplus.hpp
+HEADERS = s21_containersplus.hpp s21_containers.hpp
 
 HPP_FILES = $(wildcard */*/*.hpp)
 TPP_FILES = $(wildcard */*/*.tpp)
@@ -25,7 +24,7 @@ gcov_report: clean $(TEST_SOURCES) $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(TEST_SOURCES) --coverage $(LFLAGS) -o test
 	./test
 	lcov -c -d . -o coverage.info --no-external
-	lcov --remove coverage.info '/usr/*' $(CURDIR)/tests/* --output-file coverage.info
+	lcov --remove coverage.info $(CURDIR)/tests/* --output-file coverage.info
 	genhtml coverage.info --output-directory gcov_report
 	open gcov_report/index.html
 

@@ -15,16 +15,16 @@ class vector {
   using iterator = value_type *;
   using const_iterator = const value_type *;
   using size_type = size_t;
-  constexpr vector();
-  constexpr vector(size_type n);
-  constexpr vector(std::initializer_list<value_type> const &items);
-  constexpr vector(const vector &v);
-  constexpr vector(vector &&v);
+  constexpr inline vector();
+  constexpr inline vector(size_type n);
+  constexpr inline vector(std::initializer_list<value_type> const &items);
+  constexpr inline vector(const vector &v);
+  constexpr inline vector(vector &&v);
   ~vector();
 
-  constexpr vector &operator=(vector &&a) noexcept;
-  constexpr reference operator[](const size_type &pos);
-  constexpr const_reference operator[](const size_type &pos) const;
+  constexpr inline vector &operator=(vector &&a) noexcept;
+  constexpr inline reference operator[](const size_type &pos);
+  constexpr inline const_reference operator[](const size_type &pos) const;
 
   constexpr reference at(const size_type &pos);
   constexpr const_reference at(const size_type &pos) const;

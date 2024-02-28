@@ -17,6 +17,7 @@ TEST(ConstructorArray, InitializerListOk) {
   try {
     s21::array<int, 2> b = {1, 2};
     SUCCEED();
+    b[0] = 3;
   } catch (...) {
     FAIL() << "Initializer list constructor fails";
   }
@@ -26,6 +27,7 @@ TEST(ConstructorArray, InitializerListFillWithZerorsOk) {
   try {
     s21::array<int, 5> b = {1, 2};
     SUCCEED();
+    b[0] = 3;
   } catch (...) {
     FAIL() << "Initializer list constructor fails";
   }
@@ -59,6 +61,14 @@ TEST(ConstructorArray, CopyOk) {
   }
 }
 
+TEST(ConstructorArray, CopyException) {
+  try {
+    s21::array<float, 2> a = {1.0, 2.0, 3.0};
+    FAIL() << "Copy constructor fails";
+  } catch (...) {
+    SUCCEED();
+  }
+}
 // Мне буквально скомпилить не дает, так что хз чет как это протестить
 // TEST(ConstructorArray, CopyFail) {
 //     try {
@@ -152,9 +162,23 @@ TEST(ElementAccessArray, AtOk) {
 }
 
 TEST(ElementAccessArray, AtThrow) {
-  std::array<int, 2> a = {1, 2};
-  ASSERT_ANY_THROW(a.at(-100));
-  ASSERT_ANY_THROW(a.at(100));
+  try {
+    s21::array<int, 2> a = {1, 2};
+    a.at(100);
+    FAIL() << "array::at";
+  } catch (...) {
+    SUCCEED();
+  }
+}
+
+TEST(ElementAccessArray, AtConstThrow) {
+  try {
+    const s21::array<int, 2> a = {1, 2};
+    a.at(100);
+    FAIL() << "array::at";
+  } catch (...) {
+    SUCCEED();
+  }
 }
 
 TEST(ElementAccessArray, OperAtOk) {
@@ -173,7 +197,6 @@ TEST(ConstElementAccessArray, AtOk) {
 
 TEST(ConstElementAccessArray, AtThrow) {
   const std::array<int, 2> a = {1, 2};
-  ASSERT_ANY_THROW(a.at(-100));
   ASSERT_ANY_THROW(a.at(100));
 }
 

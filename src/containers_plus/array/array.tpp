@@ -12,28 +12,32 @@ constexpr array<T, N>::array() : capacity_(N), size_(N) {
 template <typename T, std::size_t N>
 constexpr array<T, N>::array(std::initializer_list<value_type> const &items)
     : size_(N) {
-  if (items.size() > capacity_) throw std::invalid_argument("#");
+  if (items.size() > capacity_)
+    throw std::invalid_argument("array::constructor");
   for (size_type i = 0; i != N; i++)
     storage_[i] = i < items.size() ? *(items.begin() + i) : 0;
 }
 
 template <typename T, std::size_t N>
 constexpr array<T, N>::array(const array &a) {
-  if (a.max_size() != capacity_) throw std::invalid_argument("#");
+  if (a.max_size() != capacity_)
+    throw std::invalid_argument("array::constructor");
   for (size_t i = 0; i != a.size(); ++i) storage_[i] = a[i];
   size_ = a.size();
 }
 
 template <typename T, std::size_t N>
 constexpr array<T, N>::array(array &&a) {
-  if (a.max_size() != capacity_) throw std::invalid_argument("#");
+  if (a.max_size() != capacity_)
+    throw std::invalid_argument("array::constructor");
   for (size_t i = 0; i != a.size(); ++i) storage_[i] = std::move(a[i]);
   size_ = a.size();
 }
 
 template <typename T, std::size_t N>
 constexpr array<T, N> &array<T, N>::operator=(array &&a) {
-  if (a.max_size() != capacity_) throw std::invalid_argument("#");
+  if (a.max_size() != capacity_)
+    throw std::invalid_argument("array::constructor");
   for (size_t i = 0; i != a.size(); ++i) storage_[i] = std::move(a[i]);
   size_ = a.size();
   return *this;
@@ -42,7 +46,8 @@ constexpr array<T, N> &array<T, N>::operator=(array &&a) {
 template <typename T, std::size_t N>
 constexpr array<T, N> &array<T, N>::operator=(
     const std::initializer_list<value_type> &values) {
-  if (values.size() > capacity_) throw std::invalid_argument("#");
+  if (values.size() > capacity_)
+    throw std::invalid_argument("array::constructor");
   size_type i = 0;
   for (auto val : values) storage_[i++] = val;
   size_ = i;
@@ -66,14 +71,14 @@ constexpr typename array<T, N>::const_reference array<T, N>::operator[](
 template <typename T, std::size_t N>
 constexpr typename array<T, N>::reference array<T, N>::at(
     const size_type &pos) {
-  if (pos > capacity_) throw std::out_of_range("#");
+  if (pos > capacity_) throw std::out_of_range("array::at");
   return /*pos > size_ ? 0 :*/ storage_[pos];
 }
 
 template <typename T, std::size_t N>
 constexpr typename array<T, N>::const_reference array<T, N>::at(
     const size_type &pos) const {
-  if (pos > capacity_) throw std::out_of_range("#");
+  if (pos > capacity_) throw std::out_of_range("array::at");
   return /*pos > size_ ? 0 :*/ storage_[pos];
 }
 template <typename T, std::size_t N>

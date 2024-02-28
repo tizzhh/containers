@@ -58,7 +58,7 @@ class MultisetConstIterator {
 };
 
 template <typename K>
-class multiset {
+class multiset : public set<K> {
  public:
   using key_type = K;
   using value_type = K;
@@ -71,7 +71,7 @@ class multiset {
   constexpr multiset(std::initializer_list<value_type> const &items) {
     for (auto i = items.begin(); i != items.end(); ++i) insert(*i);
   }
-  constexpr multiset(const multiset &s) {
+  constexpr multiset(const multiset &s) : set<K>(s) {
     for (auto iter = s.cbegin(); iter != s.cend(); ++iter) {
       insert(*iter);
     }

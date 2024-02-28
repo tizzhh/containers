@@ -1,7 +1,6 @@
 #ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_VECTOR_VECTOR_TPP
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_VECTOR_VECTOR_TPP
 
-#include "vector.hpp"
 namespace s21 {
 // template<typename T>
 // constexpr typename vector<T>::size_type vector<T>::CapacityCalc(size_type
@@ -15,28 +14,31 @@ constexpr vector<T>::vector() : capacity_(0), size_(0){};
 template <typename T>
 constexpr vector<T>::vector(size_type n) : capacity_(n), size_(n) {
   storage_ = new T[n]();
-  if (!storage_) throw std::bad_alloc();
+  /*  if (!storage_)
+      throw std::bad_alloc();*/
 };
 
 template <typename T>
-constexpr vector<T>::vector(std::initializer_list<value_type> const& items)
+constexpr vector<T>::vector(std::initializer_list<value_type> const &items)
     : capacity_(items.size()), size_(items.size()) {
   storage_ = new value_type[items.size()];
-  if (!storage_) throw std::bad_alloc();
+  /*  if (!storage_)
+      throw std::bad_alloc();*/
   size_type i = 0;
   for (auto val : items) storage_[i++] = val;
 }
 
 template <typename T>
-constexpr vector<T>::vector(const vector& a)
+constexpr vector<T>::vector(const vector &a)
     : capacity_(a.size()), size_(a.size()) {
   storage_ = new value_type[a.size()]();
-  if (!storage_) throw std::bad_alloc();
+  /*  if (!storage_)
+      throw std::bad_alloc();*/
   for (size_t i = 0; i != a.size(); ++i) storage_[i] = a[i];
 }
 
 template <typename T>
-constexpr vector<T>::vector(vector&& a)
+constexpr vector<T>::vector(vector &&a)
     : capacity_(a.capacity()), size_(a.size()) {
   storage_ = a.GetStorage();
   a.SetStorage(nullptr);
@@ -52,7 +54,7 @@ vector<T>::~vector() {
 }
 
 template <typename T>
-constexpr vector<T>& vector<T>::operator=(vector&& a) noexcept {
+constexpr vector<T> &vector<T>::operator=(vector &&a) noexcept {
   storage_ = a.GetStorage();
   a.SetStorage(nullptr);
   capacity_ = a.capacity();
@@ -64,25 +66,25 @@ constexpr vector<T>& vector<T>::operator=(vector&& a) noexcept {
 
 template <typename T>
 constexpr typename vector<T>::reference vector<T>::operator[](
-    const size_type& pos) {
+    const size_type &pos) {
   return /*pos > size_ ? 0 :*/ storage_[pos];
 }
 
 template <typename T>
 constexpr typename vector<T>::const_reference vector<T>::operator[](
-    const size_type& pos) const {
+    const size_type &pos) const {
   return /*pos > size_ ? 0 :*/ storage_[pos];
 }
 
 template <typename T>
-constexpr typename vector<T>::reference vector<T>::at(const size_type& pos) {
+constexpr typename vector<T>::reference vector<T>::at(const size_type &pos) {
   if (pos > capacity_) throw std::out_of_range("#");
   return /*pos > size_ ? 0 :*/ storage_[pos];
 }
 
 template <typename T>
 constexpr typename vector<T>::const_reference vector<T>::at(
-    const size_type& pos) const {
+    const size_type &pos) const {
   if (pos > capacity_) throw std::out_of_range("#");
   return /*pos > size_ ? 0 :*/ storage_[pos];
 }
@@ -222,12 +224,16 @@ constexpr typename vector<T>::iterator vector<T>::insert(
     for (auto i = this->end() - 1; i != pos; --i) *i = *(i - 1);
     *pos = value;
     if (size_ == capacity_) {
-      value_type temp[capacity_] = {0};
+      value_type *temp = new value_type[capacity_];
+      for (size_t i = 0; i != capacity_; ++i) {
+        temp[i] = 0;
+      }
       for (size_type i = 0; i != capacity_; ++i) temp[i] = storage_[i];
       delete[] storage_;
       capacity_ *= 2;
       storage_ = new value_type[capacity_];
       for (size_type i = 0; i != size_; ++i) storage_[i] = temp[i];
+      delete[] temp;
     }
     storage_[size_++] = last_element;
   }
@@ -264,7 +270,7 @@ constexpr void vector<T>::pop_back() noexcept {
   --size_;
 }
 template <typename T>
-constexpr void vector<T>::swap(vector& other) noexcept {
+constexpr void vector<T>::swap(vector &other) noexcept {
   auto mem =
       std::make_tuple(other.size(), other.capacity(), other.GetStorage());
   other.resize(size_);
@@ -274,13 +280,14 @@ constexpr void vector<T>::swap(vector& other) noexcept {
   capacity_ = std::get<1>(mem);
   storage_ = std::get<2>(mem);
 }
+//при [0] а сайз равен 0 то сег фолт
 
 template <typename T>
 template <typename... Args>
 typename vector<T>::iterator vector<T>::insert_many(const_iterator pos,
-                                                    Args&&... args) {
+                                                    Args &&...args) {
   iterator last_inserted = const_cast<iterator>(pos);
-  for (auto&& elem : {args...}) {
+  for (auto &&elem : {args...}) {
     last_inserted = insert(last_inserted, elem);
     ++last_inserted;
   }
@@ -289,13 +296,12 @@ typename vector<T>::iterator vector<T>::insert_many(const_iterator pos,
 
 template <typename T>
 template <typename... Args>
-void vector<T>::insert_many_back(Args&&... args) {
-  for (auto&& elem : {args...}) {
+void vector<T>::insert_many_back(Args &&...args) {
+  for (auto &&elem : {args...}) {
     push_back(elem);
   }
 }
 
-//при [0] а сайз равен 0 то сег фолт
 };  // namespace s21
 
 #endif  // S21_CONTAINERS_SRC_S21_CONTAINERS_VECTOR_VECTOR_TPP

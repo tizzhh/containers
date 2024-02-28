@@ -2,7 +2,7 @@
 
 #include <stack>
 
-#include "../s21_containersplus.hpp"
+#include "../s21_containers.hpp"
 
 TEST(ConstructorStack, Default) {
   try {

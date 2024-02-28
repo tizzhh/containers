@@ -2,9 +2,7 @@
 
 #include <map>
 
-#include "../s21_containersplus.hpp"
-
-// тесты на element access
+#include "../s21_containers.hpp"
 
 TEST(ConstructorMap, Default) {
   try {
@@ -61,6 +59,16 @@ TEST(ElementAccessMap, At) {
   ASSERT_EQ(a.at('a'), b.at('a'));
 }
 
+TEST(ElementAccessMap, AtException) {
+  try {
+    s21::map<char, int> b({{'a', 1}});
+    b.at('b');
+    FAIL() << "map::at";
+  } catch (...) {
+    SUCCEED();
+  }
+}
+
 TEST(ElementAccessMap, AtChange) {
   std::map<char, int> a({{'a', 1}});
   s21::map<char, int> b({{'a', 1}});
@@ -73,6 +81,16 @@ TEST(ElementAccessMap, ConstAt) {
   const std::map<char, int> a({{'a', 1}});
   const s21::map<char, int> b({{'a', 1}});
   ASSERT_EQ(a.at('a'), b.at('a'));
+}
+
+TEST(ElementAccessMap, ConstAtException) {
+  try {
+    const s21::map<char, int> b({{'a', 1}});
+    b.at('b');
+    FAIL() << "map::at";
+  } catch (...) {
+    SUCCEED();
+  }
 }
 
 TEST(ElementAccessMap, AtOper) {

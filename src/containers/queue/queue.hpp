@@ -1,7 +1,6 @@
 #ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_QUEUE_QUEUE_HPP
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_QUEUE_QUEUE_HPP
 
-// здесь нужно доделать insert many
 #include <stdlib.h>
 
 #include "../../s21_containersplus.hpp"
