@@ -61,6 +61,14 @@ TEST(ElementAccessMap, At) {
   ASSERT_EQ(a.at('a'), b.at('a'));
 }
 
+TEST(ElementAccessMap, AtChange) {
+  std::map<char, int> a({{'a', 1}});
+  s21::map<char, int> b({{'a', 1}});
+  a.at('a') = 5;
+  b.at('a') = 5;
+  ASSERT_EQ(a.at('a'), b.at('a'));
+}
+
 TEST(ElementAccessMap, ConstAt) {
   const std::map<char, int> a({{'a', 1}});
   const s21::map<char, int> b({{'a', 1}});
@@ -70,6 +78,14 @@ TEST(ElementAccessMap, ConstAt) {
 TEST(ElementAccessMap, AtOper) {
   std::map<char, int> a({{'a', 1}});
   s21::map<char, int> b({{'a', 1}});
+  ASSERT_EQ(a['a'], b['a']);
+}
+
+TEST(ElementAccessMap, AtOperChange) {
+  std::map<char, int> a({{'a', 1}});
+  s21::map<char, int> b({{'a', 1}});
+  a['a'] = 5;
+  b['a'] = 5;
   ASSERT_EQ(a['a'], b['a']);
 }
 

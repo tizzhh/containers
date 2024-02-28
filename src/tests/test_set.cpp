@@ -437,6 +437,116 @@ TEST(ModifiersSet, RightBig) {
   ASSERT_EQ(res1.second, res2.second);
 }
 
+TEST(ModifiersSet, EraseOneElem) {
+  std::set<int> a({1});
+  s21::set<int> b({1});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  a.erase(it1);
+  b.erase(it2);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  it1 = a.begin();
+  it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersSet, EraseTwoElem) {
+  std::set<int> a({1, 2});
+  s21::set<int> b({1, 2});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  a.erase(it1);
+  b.erase(it2);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  it1 = a.begin();
+  it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersSet, EraseTwoElem2) {
+  std::set<int> a({1, 2});
+  s21::set<int> b({1, 2});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  a.erase(it1);
+  b.erase(it2);
+  ++it1;
+  ++it2;
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  it1 = a.begin();
+  it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersSet, EraseThreeElem) {
+  std::set<int> a({1, 2, 3});
+  s21::set<int> b({1, 2, 3});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  a.erase(it1);
+  b.erase(it2);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  it1 = a.begin();
+  it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersSet, EraseThreeElem2) {
+  std::set<int> a({1, 2, 3});
+  s21::set<int> b({1, 2, 3});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  ++it1;
+  ++it2;
+  a.erase(it1);
+  b.erase(it2);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  it1 = a.begin();
+  it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
+TEST(ModifiersSet, EraseThreeElem3) {
+  std::set<int> a({1, 2, 3});
+  s21::set<int> b({1, 2, 3});
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  ++it1;
+  ++it1;
+  ++it2;
+  ++it2;
+  a.erase(it1);
+  b.erase(it2);
+  ASSERT_EQ(a.size(), b.size());
+  ASSERT_EQ(a.empty(), b.empty());
+  ASSERT_EQ(*b.end(), int());
+  it1 = a.begin();
+  it2 = b.begin();
+  for (; it1 != a.end(); ++it1, ++it2) {
+    ASSERT_EQ(*it1, *it2);
+  }
+}
+
 TEST(ModifiersSet, EraseBegin) {
   std::set<int> a({1, 2, 3, 4, 5, 6, 7});
   s21::set<int> b({1, 2, 3, 4, 5, 6, 7});

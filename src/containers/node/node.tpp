@@ -171,15 +171,6 @@ constexpr Node<T, K> *Node<T, K>::erase(Node<T, K> *iter) {
     Node *temp = iter->left;
     if (temp->right) {
       while (temp->right) temp = temp->right;
-      if (temp->left) {
-        temp->prev->right = temp->left;
-        temp->left->prev = temp->prev;
-      }
-    } else {
-      if (temp->left) {
-        temp->prev->left = temp->left;
-        temp->left->prev = temp->prev;
-      }
     }
     iter->item = temp->item;
     iter->item_value = temp->item_value;
@@ -187,8 +178,6 @@ constexpr Node<T, K> *Node<T, K>::erase(Node<T, K> *iter) {
 
     if (iter->left == temp) {
       iter->left = temp->left;
-    } else if (iter->right == temp) {
-      iter->right = temp->right;
     }
 
     temp->right = nullptr;
@@ -214,9 +203,6 @@ constexpr Node<T, K> *Node<T, K>::erase(Node<T, K> *iter) {
   } else {
     if (iter->item < iter->prev->item) {
       iter->prev->left = iter->left;
-      if (iter->left != nullptr) {
-        iter->left->prev = iter->prev;
-      }
     } else {
       iter->prev->right = iter->right;
       if (iter->right != nullptr) {
