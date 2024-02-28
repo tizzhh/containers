@@ -198,7 +198,7 @@ class map {
     if (pos != end()) {
       auto iter = root_->find(pos->first);
       root_ = root_->erase(iter);
-      --size_;  
+      --size_;
     }
   }
   void swap(map &other) {

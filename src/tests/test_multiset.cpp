@@ -130,6 +130,30 @@ TEST(IteratorMultiSet, Decr2) {
   ASSERT_EQ(*iter1, *iter2);
 }
 
+TEST(IteratorSet, DecrNotUnique) {
+  std::multiset<long> a({1, 1, 1, 1, 1});
+  s21::multiset<long> b({1, 1, 1, 1, 1});
+  auto iter1 = a.begin();
+  auto iter2 = b.begin();
+  ++iter1;
+  ++iter1;
+  ++iter1;
+  ++iter1;
+  --iter1;
+  --iter1;
+  --iter1;
+  --iter1;
+  ++iter2;
+  ++iter2;
+  ++iter2;
+  ++iter2;
+  --iter2;
+  --iter2;
+  --iter2;
+  --iter2;
+  ASSERT_EQ(*iter1, *iter2);
+}
+
 TEST(IteratorMultiSet, DecrFirstElement) {
   s21::multiset<long> b({1, 2, 3});
   auto iter2 = b.begin();

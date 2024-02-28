@@ -56,9 +56,9 @@ class vector {
   constexpr void swap(vector &other) noexcept;
 
   template <typename... Args>
-  iterator insert_many(const_iterator pos, Args&&... args);
+  iterator insert_many(const_iterator pos, Args &&...args);
   template <typename... Args>
-  void insert_many_back(Args&&... args);
+  void insert_many_back(Args &&...args);
 
  protected:
   //    size_type CapacityCalc(size_type amount_of_elements) const noexcept;

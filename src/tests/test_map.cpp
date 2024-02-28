@@ -693,7 +693,7 @@ TEST(ModifiersMap, EraseMid) {
 }
 
 TEST(ModifiersMap, Swap) {
-  std::map<char, int> a({{'a', 1}, {'b', 2},{'c', 3}});
+  std::map<char, int> a({{'a', 1}, {'b', 2}, {'c', 3}});
   std::map<char, int> a1({{'d', 4}, {'e', 5}, {'f', 6}});
   s21::map<char, int> b({{'a', 1}, {'b', 2}, {'c', 3}});
   s21::map<char, int> b1({{'d', 4}, {'e', 5}, {'f', 6}});
@@ -718,7 +718,7 @@ TEST(ModifiersMap, Swap) {
 }
 
 TEST(ModifiersMap, SwapFromEmpty) {
-  std::map<char, int> a({{'a', 1}, {'b', 2},{'c', 3}});
+  std::map<char, int> a({{'a', 1}, {'b', 2}, {'c', 3}});
   std::map<char, int> a1;
   s21::map<char, int> b({{'a', 1}, {'b', 2}, {'c', 3}});
   s21::map<char, int> b1;

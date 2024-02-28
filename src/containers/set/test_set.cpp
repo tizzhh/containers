@@ -1,8 +1,10 @@
 #include <gtest/gtest.h>
+
 #include <set>
+
 #include "../s21_containersplus.hpp"
 
-// СДЕЛАТЬ ИНСЕРТ МЭНИ БЭК ДЛЯ ВЕКТОРА  
+// СДЕЛАТЬ ИНСЕРТ МЭНИ БЭК ДЛЯ ВЕКТОРА
 // СДЕЛАТЬ ИНСЕРТ МЭНИ ДЛЯ СЕТА
 
 TEST(ConstructorSet, Default) {
@@ -98,7 +100,6 @@ TEST(IteratorSet, IncrLastElem) {
 //   --iter2;
 //   ASSERT_EQ(*iter1, *iter2);
 // }
-
 
 TEST(IteratorSet, DecrFirstElement) {
   s21::set<long> b({1, 2, 3});

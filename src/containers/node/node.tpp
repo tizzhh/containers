@@ -67,7 +67,7 @@ constexpr Node<T, K> *Node<T, K>::prevElement() {
     while (res->right) res = res->right;
     return res;
   } else {
-    Node *res = prev;
+    Node *res = this;
     while (res->prev && res == res->prev->left) {
       res = res->prev;
     }

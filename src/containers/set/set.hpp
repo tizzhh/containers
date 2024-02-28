@@ -1,64 +1,68 @@
 #ifndef S21_CONTAINERS_SRC_S21_CONTAINERS_SET_SET_HPP
 #define S21_CONTAINERS_SRC_S21_CONTAINERS_SET_SET_HPP
 
-#include "../node/node.hpp"
-#include "../vector/vector.hpp"
 #include <iostream>
 #include <limits>
+
+#include "../node/node.hpp"
+#include "../vector/vector.hpp"
 namespace s21 {
-  template <typename T> class SetIterator {
-  public:
-    using value_type = T;
-    SetIterator() = default;
-    SetIterator(Node<T> *item) : ptr_(item){};
-    ~SetIterator() = default;
-    constexpr value_type &operator*() { return ptr_->item; }
-    constexpr SetIterator &operator++() {
-      ptr_ = ptr_->next();
-      return *this;
-    }
-    constexpr SetIterator &operator--() {
-      ptr_ = ptr_->prevElement();
-      return *this;
-    }
-    constexpr bool operator==(const SetIterator &iter) const {
-      return this->ptr_ == iter.ptr_;
-    }
-    constexpr bool operator!=(const SetIterator &iter) const {
-      return this->ptr_ != iter.ptr_;
-    }
+template <typename T>
+class SetIterator {
+ public:
+  using value_type = T;
+  SetIterator() = default;
+  SetIterator(Node<T> *item) : ptr_(item){};
+  ~SetIterator() = default;
+  constexpr value_type &operator*() { return ptr_->item; }
+  constexpr SetIterator &operator++() {
+    ptr_ = ptr_->next();
+    return *this;
+  }
+  constexpr SetIterator &operator--() {
+    ptr_ = ptr_->prevElement();
+    return *this;
+  }
+  constexpr bool operator==(const SetIterator &iter) const {
+    return this->ptr_ == iter.ptr_;
+  }
+  constexpr bool operator!=(const SetIterator &iter) const {
+    return this->ptr_ != iter.ptr_;
+  }
 
-  private:
-    Node<T> *ptr_ = nullptr;
-  };
-  template <typename T> class SetConstIterator {
-  public:
-    using value_type = T;
-    SetConstIterator() = default;
-    SetConstIterator(Node<T> *item) : ptr_(item){};
-    ~SetConstIterator() = default;
-    constexpr value_type operator*() const { return ptr_->item; }
-    constexpr SetConstIterator &operator++() {
-      ptr_ = ptr_->next();
-      return *this;
-    }
-    constexpr SetConstIterator &operator--() {
-      ptr_ = ptr_->prevElement();
-      return *this;
-    }
-    constexpr bool operator==(const SetConstIterator &iter) const {
-      return this->ptr_ == iter.ptr_;
-    }
-    constexpr bool operator!=(const SetConstIterator &iter) const {
-      return this->ptr_ != iter.ptr_;
-    }
+ private:
+  Node<T> *ptr_ = nullptr;
+};
+template <typename T>
+class SetConstIterator {
+ public:
+  using value_type = T;
+  SetConstIterator() = default;
+  SetConstIterator(Node<T> *item) : ptr_(item){};
+  ~SetConstIterator() = default;
+  constexpr value_type operator*() const { return ptr_->item; }
+  constexpr SetConstIterator &operator++() {
+    ptr_ = ptr_->next();
+    return *this;
+  }
+  constexpr SetConstIterator &operator--() {
+    ptr_ = ptr_->prevElement();
+    return *this;
+  }
+  constexpr bool operator==(const SetConstIterator &iter) const {
+    return this->ptr_ == iter.ptr_;
+  }
+  constexpr bool operator!=(const SetConstIterator &iter) const {
+    return this->ptr_ != iter.ptr_;
+  }
 
-  private:
-    Node<T> *ptr_ = nullptr;
-  };
+ private:
+  Node<T> *ptr_ = nullptr;
+};
 
-template <typename K> class set {
-public:
+template <typename K>
+class set {
+ public:
   using key_type = K;
   using value_type = K;
   using reference = value_type &;
@@ -68,8 +72,7 @@ public:
   using size_type = size_t;
   constexpr set() = default;
   constexpr set(std::initializer_list<value_type> const &items) {
-    for (auto i = items.begin(); i != items.end(); ++i)
-      insert(*i);
+    for (auto i = items.begin(); i != items.end(); ++i) insert(*i);
   }
   constexpr set(const set &s) {
     for (auto iter = s.cbegin(); iter != s.cend(); ++iter) {
@@ -89,9 +92,7 @@ public:
     }
     return *this;
   }
-  ~set() {
-    clear();
-  }
+  ~set() { clear(); }
 
   iterator begin() {
     if (size_ == 0) {
@@ -112,7 +113,7 @@ public:
   constexpr size_type max_size() {
     return (std::numeric_limits<size_type>::max() / (sizeof(size_type) * 10));
   }
-  void clear() { 
+  void clear() {
     if (root_ != nullptr) {
       delete root_->getHead();
       root_ = nullptr;
@@ -121,10 +122,11 @@ public:
   }
   std::pair<iterator, bool> insert(const value_type &value) {
     bool does_contain = contains(value);
-    std::pair<iterator, bool> iter{(!does_contain ? root_ : find(value)), false};
+    std::pair<iterator, bool> iter{(!does_contain ? root_ : find(value)),
+                                   false};
     if (empty()) {
-        root_ = new Node(value);
-        ++size_;
+      root_ = new Node(value);
+      ++size_;
     } else {
       if (!does_contain) {
         iter = root_->insert(value);
@@ -141,7 +143,7 @@ public:
     if (pos != end()) {
       auto iter = root_->find(*pos);
       root_ = root_->erase(iter);
-      --size_;  
+      --size_;
     }
   }
   void swap(set &other) {
@@ -165,9 +167,11 @@ public:
     }
   }
   iterator find(const key_type &key) { return SetIterator(root_->find(key)); };
-  bool contains(const key_type &key) { return root_->find(key) != root_->end(); }
+  bool contains(const key_type &key) {
+    return root_->find(key) != root_->end();
+  }
   template <typename... Args>
-  vector<std::pair<iterator, bool>> insert_many(Args&&... args) {
+  vector<std::pair<iterator, bool>> insert_many(Args &&...args) {
     s21::vector<std::pair<iterator, bool>> result;
     for (auto &&elem : {args...}) {
       auto res = insert(elem);
@@ -176,10 +180,10 @@ public:
     return result;
   }
 
-private:
+ private:
   size_type size_ = 0;
   Node<value_type> *root_ = nullptr;
 };
-}; // namespace s21
+};  // namespace s21
 
-#endif // S21_CONTAINERS_SRC_S21_CONTAINERS_SET_SET_HPP
+#endif  // S21_CONTAINERS_SRC_S21_CONTAINERS_SET_SET_HPP

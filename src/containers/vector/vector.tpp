@@ -277,9 +277,10 @@ constexpr void vector<T>::swap(vector& other) noexcept {
 
 template <typename T>
 template <typename... Args>
-typename vector<T>::iterator vector<T>::insert_many(const_iterator pos, Args&&... args) {
-  iterator last_inserted = const_cast<iterator> (pos);
-  for (auto &&elem : {args...}) {
+typename vector<T>::iterator vector<T>::insert_many(const_iterator pos,
+                                                    Args&&... args) {
+  iterator last_inserted = const_cast<iterator>(pos);
+  for (auto&& elem : {args...}) {
     last_inserted = insert(last_inserted, elem);
     ++last_inserted;
   }
@@ -288,8 +289,8 @@ typename vector<T>::iterator vector<T>::insert_many(const_iterator pos, Args&&..
 
 template <typename T>
 template <typename... Args>
-void vector<T>::insert_many_back(Args &&...args) {
-  for (auto &&elem : {args...}) {
+void vector<T>::insert_many_back(Args&&... args) {
+  for (auto&& elem : {args...}) {
     push_back(elem);
   }
 }

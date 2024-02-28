@@ -178,20 +178,20 @@ class multiset {
   iterator lower_bound(const key_type &key) {
     auto iter = begin();
     while (*iter < key) {
-        ++iter;
+      ++iter;
     }
     return iter;
   }
   iterator upper_bound(const key_type &key) {
     auto iter = begin();
     while (*iter <= key) {
-        ++iter;
+      ++iter;
     }
     return iter;
   }
 
   template <typename... Args>
-  vector<std::pair<iterator, bool>> insert_many(Args&&... args) {
+  vector<std::pair<iterator, bool>> insert_many(Args &&...args) {
     s21::vector<std::pair<iterator, bool>> result;
     for (auto &&elem : {args...}) {
       result.push_back({insert(elem), true});
