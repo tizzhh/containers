@@ -476,10 +476,10 @@ TEST(ModifiersSet, EraseTwoElem2) {
   s21::set<int> b({1, 2});
   auto it1 = a.begin();
   auto it2 = b.begin();
-  a.erase(it1);
-  b.erase(it2);
   ++it1;
   ++it2;
+  a.erase(it1);
+  b.erase(it2);
   ASSERT_EQ(a.size(), b.size());
   ASSERT_EQ(a.empty(), b.empty());
   ASSERT_EQ(*b.end(), int());
